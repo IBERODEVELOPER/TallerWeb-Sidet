@@ -5,11 +5,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.ibero.demo.entity.Rol;
+
+import com.ibero.demo.entity.User;
 
 @Repository
-public interface IRolUserDao extends JpaRepository<Rol, Integer>{
+public interface IUserDao extends JpaRepository<User, Integer> {
 
-	@Query(value = "SELECT * FROM roles WHERE level_user = :level", nativeQuery = true)
-    Rol findByLevelUser(@Param("level") String level);
+    @Query(value = "SELECT * FROM users WHERE username = :username", nativeQuery = true)
+    User findByUsername(@Param("username") String username);
+    
 }

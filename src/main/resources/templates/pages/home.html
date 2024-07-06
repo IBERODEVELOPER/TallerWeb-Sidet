@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Bienvenida</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light border-4 border-bottom border-info">
+        <div class="container">
+            <a href="#" class="navbar-brand">Sidet 2024</a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menunav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="menunav" class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Eventos</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:text="${usuario}"></a>
+                    </li>
+                    <li class="nav-item">
+    <a class="nav-link" href="#" th:text="'ROL: ' + ${rol}"></a>
+</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1>Bienvenido, <span th:text="${usuario}"></span>!</h1>
+        <p>Tu rol es: <span th:text="${rol}"></span></p>
+    </div>
+
+    <!-- Bootstrap JS (bundle includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

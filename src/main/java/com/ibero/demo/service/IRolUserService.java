@@ -17,5 +17,7 @@ public interface IRolUserService {
 	
 	/*Metodo para eliminar Roles por su ID*/
 	public void deleteIdRol(Integer id);
+	
+	public Rol findRolByLevel(String level);
 
 }

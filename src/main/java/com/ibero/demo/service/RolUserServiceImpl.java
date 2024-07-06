@@ -39,5 +39,11 @@ public class RolUserServiceImpl implements IRolUserService{
 	public void deleteIdRol(Integer id) {
 		rolUserDao.deleteById(id);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Rol findRolByLevel(String level) {
+        return rolUserDao.findByLevelUser(level);
+    }
 
 }

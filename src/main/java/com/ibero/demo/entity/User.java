@@ -1,64 +1,115 @@
 package com.ibero.demo.entity;
 
-public class User {
+import java.io.Serializable;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+
+@Entity
+@Table(name = "users")
+public class User implements Serializable{
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer idUser;
 	
-	private People idPeople; // Obtendría el id de la persona
-	private int idRolUser; 
-    private String UserName;
-    private String Userpassword;
-    private String UserState;
+	@OneToOne
+	@JoinColumn(name="idpeople")
+	private People people;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="roles")
+	private Rol roles;
+	
+	@NotEmpty
+	@Column(length = 20)
+    private String userName;
+	
+	@NotEmpty
+	@Column(length = 20)
+    private String userPassword;
+	
+	@NotEmpty
+	@Column(length = 20)
+    private char userState;
     
 	public User() {
-
-	}
-
-	public User(People idPeople, int idRolUser, String userName, String userpassword, String userState) {
 		super();
-		this.idPeople = idPeople;
-		this.idRolUser = idRolUser;
-		UserName = userName;
-		Userpassword = userpassword;
-		UserState = userState;
 	}
 
-	public People getIdPeople() {
-		return idPeople;
+	public User(Integer idUser, People people, Rol roles, @NotEmpty String userName, @NotEmpty String userPassword,
+			@NotEmpty char userState) {
+		super();
+		this.idUser = idUser;
+		this.people = people;
+		this.roles = roles;
+		this.userName = userName;
+		this.userPassword = userPassword;
+		this.userState = userState;
 	}
 
-	public void setIdPeople(People idPeople) {
-		this.idPeople = idPeople;
+	@Override
+	public String toString() {
+		return "User [idUser=" + idUser + ", people=" + people + ", roles=" + roles + ", userName=" + userName
+				+ ", userPassword=" + userPassword + ", userState=" + userState + "]";
 	}
 
-	public int getIdRolUser() {
-		return idRolUser;
+	public Integer getIdUser() {
+		return idUser;
 	}
 
-	public void setIdRolUser(int idRolUser) {
-		this.idRolUser = idRolUser;
+	public void setIdUser(Integer idUser) {
+		this.idUser = idUser;
+	}
+
+	public People getPeople() {
+		return people;
+	}
+
+	public void setPeople(People people) {
+		this.people = people;
+	}
+
+	public Rol getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Rol roles) {
+		this.roles = roles;
 	}
 
 	public String getUserName() {
-		return UserName;
+		return userName;
 	}
 
 	public void setUserName(String userName) {
-		UserName = userName;
+		this.userName = userName;
 	}
 
-	public String getUserpassword() {
-		return Userpassword;
+	public String getUserPassword() {
+		return userPassword;
 	}
 
-	public void setUserpassword(String userpassword) {
-		Userpassword = userpassword;
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
 	}
 
-	public String getUserState() {
-		return UserState;
+	public char getUserState() {
+		return userState;
 	}
 
-	public void setUserState(String userState) {
-		UserState = userState;
-	}  
-	
+	public void setUserState(char userState) {
+		this.userState = userState;
+	}
+
+	private static final long serialVersionUID = 1L;
 }
