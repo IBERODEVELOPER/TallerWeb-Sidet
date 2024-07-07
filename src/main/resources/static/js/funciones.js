@@ -2,7 +2,7 @@ function QuestionDeleteByIdPerson(id) {
 	console.log(id);
 	swal({
 		title: "¿Estas seguro de eliminar este registro?",
-		text: "¡Una vez eliminado no se prodra restablecer!",
+		text: "¡Una vez eliminado no se podrá restablecer!",
 		icon: "warning",
 		buttons: true,
 		dangerMode: true,
@@ -57,7 +57,7 @@ function QuestionDeleteByIdRol(id) {
 function QuestionEditPeople(id) {
 	console.log(id);
 	swal({
-		title: "¿Deseas editar los datos de la Persona?",
+		title: "¿Deseas editar los datos del Cliente?",
 		text: "¡Existen algunos datos sensible, por favor solicita permiso!",
 		icon: "info",
 		buttons: true,

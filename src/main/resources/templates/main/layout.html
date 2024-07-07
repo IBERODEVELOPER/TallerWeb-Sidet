@@ -13,7 +13,7 @@
 
 <body>
 	<header th:fragment="header">
-		<nav class="navbar navbar-expand-md navbar-light bg-light border-4 border-bottom border-info">
+		<nav class="navbar navbar-expand-md navbar-light bg-light border-4 border-bottom border-warning">
 			<div class="container">
 				<a href="#" class="navbar-brand"><sup>Ⓡ</sup>Registrex</a>
 				<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menunav">
@@ -23,27 +23,43 @@
 					<ul class="navbar-nav ms-3">
 						<li class="nav-item">
 							<a class="nav-link " th:href="@{/rol/listRol}" />Inicio</a>
-		
+
 						</li>
-						<li class="nav-item">
-							<a class="nav-link " href="">Eventos</a>
+
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+								data-bs-toggle="dropdown" aria-expanded="false">
+								Usuario
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" th:href="@{/Peoples/listPeople}">Usuarios</a></li>
+								<li><a class="dropdown-item" th:href="@{/Peoples/formPeople}">Nuevo</a></li>
+							</ul>
+							
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+								data-bs-toggle="dropdown" aria-expanded="false">
+								Rol
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" th:href="@{/rol/listRol}">Roles</a></li>
+								<li><a class="dropdown-item" th:href="@{/rol/formRol}">Nuevo</a></li>
+							</ul>
+							
 						</li>
 					</ul>
 				</div>
 			</div>
 		</nav>
-		
-		
-		<div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
-		<div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
-		<div class="alert alert-warning" th:if="${warning != null}" th:text="${warning}"></div>
-		<div class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
+		<br>
+		<div class="container">
+			<div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
+			<div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+			<div class="alert alert-warning" th:if="${warning != null}" th:text="${warning}"></div>
+			<div class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
+		</div>
 	</header>
-
-
-	<div class="container">
-
-	</div>
 
 	<footer th:fragment="footer" class="container-fluid">
 		<hr />
@@ -54,12 +70,9 @@
 		<script th:src="@{/js/jquery-3.4.1.js}"></script>
 		<script th:src="@{/js/bootstrap.min.js}"></script>
 		<script th:src="@{/js/funciones.js}"></script>
-		<script th:src="@{/js/ionicons.esm.js}"></script>
 		<script th:src="@{/js/sweetalert.min.js}"></script>
+		<script type ="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+		<script nomodule  src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 	</footer>
-
-
-
 </body>
-
 </html>

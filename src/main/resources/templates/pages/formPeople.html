@@ -16,20 +16,12 @@
 						<li class="breadcrumb-item active" aria-current="page">Formulario de Registro Personas</li>
 					</ol>
 				</nav>
-				<p>
-					<a th:href="@{/Peoples/listPeople}" class="btn btn-success">
-						<ion-icon name="arrow-undo-outline"></ion-icon>
-						Regresar</a>
-				</p>
-				<div class="card">
-					<div class="card-header text-white bg-dark" th:text="${titleform}"></div>
-
+				<div class="card shadow">
 					<div class="card-body text-dark fa-solid fa-floppy-disk">
-
-						<form th:action="@{/Peoples/formPeople}" th:object="${people}" method="post">
-
+						<form class="container" th:action="@{/Peoples/formPeople}" th:object="${people}" method="post">
+							<legend class="text-center" th:text="${titleform}"></legend>
 							<div class="form-group row mb-3">
-								<label class="col-sm-3 col-form-label">Nombres</label>
+								<label class="col-sm-2 col-form-label">Nombres</label>
 								<div class="col-sm-9">
 									<input type="text" th:field="*{namePeople}" class="form-control"
 										placeholder="Ramón Esteban" th:errorclass="'form-control alert-danger'" />
@@ -40,7 +32,7 @@
 							</div>
 
 							<div class="form-group row mb-3">
-								<label class="col-sm-3 col-form-label">Apellido Paterno</label>
+								<label class="col-sm-2 col-form-label">Apellido Paterno</label>
 								<div class="col-sm-9">
 									<input type="text" th:field="*{firstLastNamePeople}" class="form-control"
 										placeholder="Gómez" th:errorclass="'form-control alert-danger'" />
@@ -52,7 +44,7 @@
 							</div>
 
 							<div class="form-group row mb-3">
-								<label class="col-sm-3 col-form-label">Apellido Materno</label>
+								<label class="col-sm-2 col-form-label">Apellido Materno</label>
 								<div class="col-sm-9">
 									<input type="text" th:field="*{secondLastNamePeople}" class="form-control"
 										placeholder="Valdés" th:errorclass="'form-control alert-danger'" />
@@ -64,7 +56,7 @@
 							</div>
 
 							<div class="form-group row mb-3">
-								<label class="col-sm-3 col-form-label">Edad</label>
+								<label class="col-sm-2 col-form-label">Edad</label>
 								<div class="col-sm-2">
 									<input type="text" th:field="*{agePeople}" class="form-control"
 										th:errorclass="'form-control alert-danger'" />
@@ -73,8 +65,8 @@
 									</div>
 								</div>
 
-								<label class="col-sm-4 col-form-label">Documento de Identidad</label>
-								<div class="col-sm-3">
+								<label class="col-sm-3 col-form-label">Documento de Identidad</label>
+								<div class="col-sm-4">
 									<input type="text" th:field="*{identityPeople}" class="form-control"
 										placeholder="75896458" th:errorclass="'form-control alert-danger'" />
 									<div class="form-text text-danger" th:if="${#fields.hasErrors('identityPeople')}"
@@ -85,7 +77,7 @@
 							</div>
 
 							<div class="form-group row mb-3">
-								<label class="col-sm-3 col-form-label">Correo</label>
+								<label class="col-sm-2 col-form-label">Correo</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" th:field="*{emailPeople}"
 										placeholder="migatomichi@gmail.com"
@@ -97,9 +89,14 @@
 							</div>
 							<br>
 							<div class="form-group row">
-								<input type="submit" value="Guardar" class="btn btn-primary col-sm-4"/>
+								<div class="row col-sm-5 mt-end" style="margin-left: 20px;margin-right: 20px;">
+									<input type="submit" value="Guardar" class="btn btn-outline-info" />
+								</div>
+								<div class="row col-sm-6">
+									<a th:href="@{/Peoples/listPeople}" class="btn btn-outline-success">
+										<ion-icon name="arrow-undo-outline"></ion-icon>Regresar</a>
+								</div>
 							</div>
-
 						</form>
 					</div>
 				</div>
