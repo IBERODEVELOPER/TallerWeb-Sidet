@@ -28,7 +28,7 @@ public class RolUserController {
 	
 	@RequestMapping(value = "/listRol", method = RequestMethod.GET)
 	public String ListPeople(Model model) {
-		model.addAttribute("titlepage", "Lista de Roles del Sistema");
+		model.addAttribute("titlepage", "Roles del Sistema");
 		model.addAttribute("rol", rolUserService.findAllRol());
 		return "/pages/allRol";
 	}

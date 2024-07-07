@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+	<meta charset="UTF-8" />
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}">
+	<link rel="stylesheet" th:href="@{/css/estilo.css}">
+	<!-- Titulo de la Página -->
+	<title th:text="'Ⓡ Registrex '+ ' : ' +${titlepage}"></title>
+</head>
+
+<body>
+	<header th:fragment="header">
+		<nav class="navbar navbar-expand-md navbar-light bg-light border-4 border-bottom border-info">
+			<div class="container">
+				<a href="#" class="navbar-brand"><sup>Ⓡ</sup>Registrex</a>
+				<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menunav">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div id="menunav" class="collapse navbar-collapse">
+					<ul class="navbar-nav ms-3">
+						<li class="nav-item">
+							<a class="nav-link " th:href="@{/rol/listRol}" />Inicio</a>
+		
+						</li>
+						<li class="nav-item">
+							<a class="nav-link " href="">Eventos</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		
+		<div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
+		<div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+		<div class="alert alert-warning" th:if="${warning != null}" th:text="${warning}"></div>
+		<div class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
+	</header>
+
+
+	<div class="container">
+
+	</div>
+
+	<footer th:fragment="footer" class="container-fluid">
+		<hr />
+		<p><img th:src="@{/images/iconibero.png}" width="50" height="50" alt="Logo el informatico" />
+			Derechos reservados copyright © <a href="https://mpersonales.blogspot.com/"> EL Informatico Ibero</a>
+		</p>
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script th:src="@{/js/jquery-3.4.1.js}"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>
+		<script th:src="@{/js/funciones.js}"></script>
+		<script th:src="@{/js/ionicons.esm.js}"></script>
+		<script th:src="@{/js/sweetalert.min.js}"></script>
+	</footer>
+
+
+
+</body>
+
+</html>

@@ -29,7 +29,7 @@ public class PeopleController {
 
 	@RequestMapping(value = "/listPeople", method = RequestMethod.GET)
 	public String ListPeople(Model model) {
-		model.addAttribute("titlepage", "Personas Registradas en el Sistema");
+		model.addAttribute("titlepage", "Clientes registrados en el Sistema");
 		model.addAttribute("people", peopleService.findAllPeople());
 		return "/pages/allUser";
 	}
@@ -37,7 +37,7 @@ public class PeopleController {
 	@RequestMapping(value = "/formPeople", method = RequestMethod.GET)
 	public String showForm(Map<String, Object> model) {
 	People people = new People();
-	model.put("titlepage", "Formulario de Registro de Personas");
+	model.put("titlepage", "Formulario de Registro de Clientes");
 	model.put("titleform", "Registro de Datos");
 	model.put("people",people);
 	return "/pages/formPeople";
@@ -46,7 +46,7 @@ public class PeopleController {
 	@RequestMapping(value = "/formPeople", method = RequestMethod.POST)
 	public String processForm(@Valid People people,BindingResult result,Model model,RedirectAttributes flash, SessionStatus status) {
 	if(result.hasErrors()) {
-		model.addAttribute("titlepage", "Formulario de Registro de Personas");
+		model.addAttribute("titlepage", "Formulario de Registro de Clientes");
 		model.addAttribute("titleform", "Registro de Datos");
 		return "/pages/formPeople";
 	}
@@ -70,7 +70,7 @@ public class PeopleController {
 			flash.addFlashAttribute("error", "El ID del cliente no puede ser 0");
 			return "redirect:/Peoples/listPeople";		
 		}
-		model.put("titlepage", "Formulario de Registro de Personas");
+		model.put("titlepage", "Formulario de Registro de Clientes");
 		model.put("titleform", "Actualizar Datos");
 		model.put("people",people);
 		return "/pages/formPeople";	
@@ -80,7 +80,7 @@ public class PeopleController {
 	public String deleteIdPerson(@PathVariable(value = "id") Integer id,RedirectAttributes flash) {
 		if(id > 0) {			
 			peopleService.deleteIdPerson(id);
-			flash.addFlashAttribute("success", "Persona eliminado con éxito");
+			flash.addFlashAttribute("success", "¡Cliente eliminado con éxito!");
 					
 		}
 		return "redirect:/Peoples/listPeople";
