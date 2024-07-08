@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="main/layout :: head"></head>
+
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container mt-5" id="pantll">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-body">
+						<!-- Formulario de registro -->
+						<form th:action="@{/usuarios/registro}" method="post">
+							<legend class="text-center" th:text="${titlepage}"></legend>
+							<div class="mb-3">
+							<select class="form-control" id="dropDownList">
+								<option value="0">Seleccion una opción</option>
+								<option th:each="option: ${people}" th:value="${option.idPeople}" th:text="${option.namePeople+' ' + option.firstLastNamePeople +' '+ option.secondLastNamePeople}"></option>
+								<!--th:text="'Campus '+ ' : ' +${titulo}"-->
+							</select>
+							</div>
+							<div class="mb-3">
+							<select class="form-control" id="dropDownList">
+								<option value="0">Seleccion una opción</option>
+								<option th:each="option: ${rol}" th:value="${option.idRolUser}" th:text="${option.levelUser+ ' : ' + option.descripRolUser}"></option>
+								<!--th:text="'Campus '+ ' : ' +${titulo}"-->
+							</select>
+							</div>
+							<div class="mb-3">
+								<label for="username" class="form-label">Nombre de Usuario:</label>
+								<input type="text" id="username" name="username" class="form-control" required />
+							</div>
+							<div class="mb-3">
+								<label for="password" class="form-label">Contraseña:</label>
+								<input type="password" id="password" name="password" class="form-control" required />
+							</div>
+							<button type="submit" class="btn btn-primary">Registrar</button>
+							<a th:href="@{/usuarios/login}" class="btn btn-secondary">Regresar</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="main/layout :: footer"></footer>
+	<!-- Script para mostrar SweetAlert -->
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var successMessage = /*[[${successMessage}]]*/ null;
+		var errorMessage = /*[[${errorMessage}]]*/ null;
+
+		if (successMessage) {
+			Swal.fire({
+				icon: 'success',
+				title: '¡Éxito!',
+				text: successMessage,
+				showConfirmButton: true,
+				confirmButtonText: 'OK'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					window.location.href = '/usuarios/login'; // Redirige al login si se confirma
+				}
+			});
+		}
+
+		if (errorMessage) {
+			Swal.fire({
+				icon: 'error',
+				title: '¡Error!',
+				text: errorMessage
+			});
+		}
+        /*]]>*/
+	</script>
+</body>
+
+</html>

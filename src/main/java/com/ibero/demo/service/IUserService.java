@@ -20,7 +20,7 @@ public interface IUserService {
 	/*Metodo para eliminar Persona por su ID*/
 	public void deleteIdUser(Integer id);
 
-	/*Metodo */
-	User findByUsername(String username);
+	/*Metodo para el filtro por nombre*/
+	public User findByUsername(String username);
 
 }

@@ -30,32 +30,12 @@ public class UserController {
 	@Autowired
 	private IPeopleService peopleService;
 
-	
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String showLoginForme(@RequestParam(required = true, value = "username") String username,
-			@RequestParam(required = true, value = "password") String password, Model model) {
-		User usuario = userService.findByUsername(username);
-
-		if (usuario != null && usuario.getUserPassword().equals(password)) {
-			model.addAttribute("usuario",
-					(usuario.getPeople().getNamePeople() + " " + usuario.getPeople().getFirstLastNamePeople() + " "
-							+ usuario.getPeople().getSecondLastNamePeople()).toUpperCase());
-			model.addAttribute("rol", usuario.getRoles().getLevelUser());
-
-			return "/pages/home";
-			// return "redirect:/home"; // Página de inicio después del login exitoso
-		} else {
-			model.addAttribute("error", true);
-			// return "/pages/login?error=true";
-			return "/pages/login";// Manejo de error de login
-		}
-
-	}
-
 	@GetMapping("/userReg")
-	public String showRegistrationForm() {
-		return "/pages/registeruser"; // Nombre de tu archivo HTML de registro
+	public String showFormUser(Model model) {
+		model.addAttribute("titlepage", "Creación de Cuenta");
+		model.addAttribute("people", peopleService.findAllPeople());
+		model.addAttribute("rol", rolService.findAllRol());
+		return "/pages/formUser"; // Nombre de tu archivo HTML de registro
 	}
 
 	@RequestMapping(value = "/userReg", method = RequestMethod.POST)
