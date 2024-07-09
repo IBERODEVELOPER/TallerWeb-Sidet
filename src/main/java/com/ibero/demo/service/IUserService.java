@@ -21,6 +21,6 @@ public interface IUserService {
 	public void deleteIdUser(Integer id);
 
 	/*Metodo para el filtro por nombre*/
-	public User findByUsername(String username);
+	//public User findByUsername(String username);
 
 }

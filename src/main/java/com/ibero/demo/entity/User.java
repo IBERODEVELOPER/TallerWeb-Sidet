@@ -23,7 +23,7 @@ public class User implements Serializable{
 	private Integer idUser;
 	
 	@OneToOne
-	@JoinColumn(name="idpeople")
+	@JoinColumn(name="idPeople")
 	private People people;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
@@ -38,16 +38,15 @@ public class User implements Serializable{
 	@Column(length = 20)
     private String userPassword;
 	
-	@NotEmpty
 	@Column(length = 20)
     private char userState;
-    
+
 	public User() {
 		super();
 	}
 
 	public User(Integer idUser, People people, Rol roles, @NotEmpty String userName, @NotEmpty String userPassword,
-			@NotEmpty char userState) {
+			char userState) {
 		super();
 		this.idUser = idUser;
 		this.people = people;
@@ -55,12 +54,6 @@ public class User implements Serializable{
 		this.userName = userName;
 		this.userPassword = userPassword;
 		this.userState = userState;
-	}
-
-	@Override
-	public String toString() {
-		return "User [idUser=" + idUser + ", people=" + people + ", roles=" + roles + ", userName=" + userName
-				+ ", userPassword=" + userPassword + ", userState=" + userState + "]";
 	}
 
 	public Integer getIdUser() {
@@ -109,7 +102,8 @@ public class User implements Serializable{
 
 	public void setUserState(char userState) {
 		this.userState = userState;
-	}
-
+	} 
+	
 	private static final long serialVersionUID = 1L;
+	
 }
