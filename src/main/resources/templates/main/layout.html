@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="head">
 	<meta charset="UTF-8" />
@@ -8,21 +8,22 @@
 	<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}">
 	<link rel="stylesheet" th:href="@{/css/estilo.css}">
 	<!-- Titulo de la Página -->
-	<title th:text="'Ⓡ Registrex '+ ' : ' +${titlepage}"></title>
+	<link rel="icon" type="image/jpg" href="/images/favicon.png" />
+	<title th:text="'Ⓡ CONTACTEMP'+ ' : ' +${titlepage}"></title>
 </head>
 
 <body>
 	<header th:fragment="header">
 		<nav class="navbar navbar-expand-md navbar-light bg-light border-4 border-bottom border-warning">
 			<div class="container">
-				<a href="#" class="navbar-brand"><sup>Ⓡ</sup>Registrex</a>
+				<a href="#" class="navbar-brand fs-3 " style="color: #198754;"><b><sup>Ⓡ</sup>CONTACTEMP</b></a>
 				<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menunav">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div id="menunav" class="collapse navbar-collapse">
 					<ul class="navbar-nav ms-3">
 						<li class="nav-item">
-							<a class="nav-link " th:href="@{/rol/listRol}" />Inicio</a>
+							<a class="nav-link " th:href="@{/}" />Inicio</a>
 
 						</li>
 
@@ -32,10 +33,11 @@
 								Usuario
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/Peoples/listPeople}">Usuarios</a></li>
-								<li><a class="dropdown-item" th:href="@{/Peoples/formPeople}">Nuevo</a></li>
+								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Lista de Clientes</a></li>
+								<li><a class="dropdown-item" th:href="@{/user/userReg}">Crear usuario</a></li>
+								<li><a class="dropdown-item" th:href="@{/peoples/formPeople}">Nuevo</a></li>
 							</ul>
-							
+
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -46,12 +48,26 @@
 								<li><a class="dropdown-item" th:href="@{/rol/listRol}">Roles</a></li>
 								<li><a class="dropdown-item" th:href="@{/rol/formRol}">Nuevo</a></li>
 							</ul>
-							
+
 						</li>
 					</ul>
 				</div>
+				<form class="d-flex" id="logoutForm" th:action="@{/logout}" method="post">
+					<li class="nav-item dropdown d-flex">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false">
+							<span sec:authentication="name"></span>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<li><button class="dropdown-item" onclick="document.getElementById('logoutForm').submit;" type="submit">Cerrar Sesión</button></li>
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value"${_csrf.token}"/>
+						</ul>
+				</form>
 			</div>
 		</nav>
+
+
+
 		<br>
 		<div class="container">
 			<div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
@@ -63,16 +79,19 @@
 
 	<footer th:fragment="footer" class="container-fluid">
 		<hr />
-		<p><img th:src="@{/images/iconibero.png}" width="50" height="50" alt="Logo el informatico" />
-			Derechos reservados copyright © <a href="https://mpersonales.blogspot.com/"> EL Informatico Ibero</a>
-		</p>
+		<div class="container">
+			<p><img th:src="@{/images/iconlogo.png}" width="20" height="20" alt="Logo el informatico" />
+				Derechos reservados copyright ©<a href="#">CONTACTEMP</a>
+			</p>
+		</div>
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 		<script th:src="@{/js/jquery-3.4.1.js}"></script>
 		<script th:src="@{/js/bootstrap.min.js}"></script>
 		<script th:src="@{/js/funciones.js}"></script>
 		<script th:src="@{/js/sweetalert.min.js}"></script>
-		<script type ="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-		<script nomodule  src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+		<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 	</footer>
 </body>
+
 </html>

@@ -20,7 +20,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/Peoples")
+@RequestMapping("peoples")
 @SessionAttributes("people")
 public class PeopleController {
 
@@ -53,7 +53,7 @@ public class PeopleController {
 	flash.addFlashAttribute("success", "Registro con Exito");
 	peopleService.SavePeople(people);
 	status.setComplete();
-	return "redirect:/Peoples/listPeople";
+	return "redirect:/peoples/listPeople";
 	}
 
 	@RequestMapping(value = "/formPeople/{id}", method = RequestMethod.GET)
@@ -64,11 +64,11 @@ public class PeopleController {
 			flash.addFlashAttribute("success", "Datos actualizados con Exito");
 			if(people == null) {
 				flash.addFlashAttribute("error", "El ID del cliente no existe en la BBDD");
-				return "redirect:/Peoples/listPeople";
+				return "redirect:/peoples/listPeople";
 			}
 		}else {
 			flash.addFlashAttribute("error", "El ID del cliente no puede ser 0");
-			return "redirect:/Peoples/listPeople";		
+			return "redirect:/peoples/listPeople";		
 		}
 		model.put("titlepage", "Formulario de Registro de Clientes");
 		model.put("titleform", "Actualizar Datos");
@@ -83,7 +83,7 @@ public class PeopleController {
 			flash.addFlashAttribute("success", "¡Cliente eliminado con éxito!");
 					
 		}
-		return "redirect:/Peoples/listPeople";
+		return "redirect:/peoples/listPeople";
 	}
 
 

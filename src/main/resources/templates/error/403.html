@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="main/layout :: head"></head>
 
 <body>
+
 	<nav class="navbar navbar-expand-md navbar-light bg-light border-4 border-bottom border-danger">
 		<div class="container">
 			<a href="#" class="navbar-brand fs-3 " style="color: #198754;"><b><sup>Ⓡ</sup>CONTACTEMP</b></a>
@@ -13,7 +14,7 @@
 			<div id="menunav" class="collapse navbar-collapse">
 				<ul class="navbar-nav ms-3">
 					<li class="nav-item">
-						<a class="nav-link " th:href="@{/}" />Inicio</a>
+						<a class="nav-link " th:href="@{/rol/listRol}" />Inicio</a>
 
 					</li>
 
@@ -44,16 +45,19 @@
 			</div>
 		</div>
 	</nav>
-	<br>
+
 	<div class="container-fluid" id="pantll">
+		<br>
 		<div class="container" align="center">
-			<div class="card" style="width: 30rem;">
-				<h1 style="color:rgb(0, 64, 128)"><strong>Error 500</strong></h1>
-				<h3 style="color:rgb(0, 128, 128)">Ooops.... Parece que algo salió mal.</h3>
-				<img th:src="@{'/images/500.png'}" class="card-img-top" alt="error 500">
+			<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+				<div class="card-header">Alerta</div>
+				<div class="card-body">
+					<h5 class="card-title"><strong>Acceso denegado</strong></h5>
+					<p class="card-text"><p><span sec:authentication="name"></span> no cuenta con permiso para realizar esta acción.</p>
+					<br>Contáctese con el <strong>Administrado</strong></p>
+				</div>
 			</div>
 		</div>
-
 	</div>
 	<footer th:replace="main/layout :: footer"></footer>
 </body>

@@ -51,7 +51,7 @@ public class UserController {
 	flash.addFlashAttribute("success", "Usuario creado correctamente");
 	userService.saveUser(user);
 	status.setComplete();
-	return "redirect:/Peoples/listPeople";
+	return "redirect:/peoples/listPeople";
 	}
 
 }

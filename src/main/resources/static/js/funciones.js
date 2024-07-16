@@ -10,7 +10,7 @@ function QuestionDeleteByIdPerson(id) {
 		.then((OK) => {
 			if (OK) {
 				$.ajax({
-					url: "/Peoples/deleteByIdPerson/" + id,
+					url: "/peoples/deleteByIdPerson/" + id,
 					success: function(res) {
 						console.log(res);
 					},
@@ -19,7 +19,7 @@ function QuestionDeleteByIdPerson(id) {
 					icon: "success",
 				}).then((ok) => {
 					if (ok) {
-						location.href = "/Peoples/listPeople";
+						location.href = "/peoples/listPeople";
 					}
 				});
 			}
@@ -65,7 +65,7 @@ function QuestionEditPeople(id) {
 	})
 		.then((OK) => {
 			if (OK) {
-				location.href = "/Peoples/formPeople/" + id;
+				location.href = "/peoples/formPeople/" + id;
 			}
 		});
 }
@@ -96,7 +96,7 @@ function QuestionSavePeople() {
 	})
 		.then((OK) => {
 			if (OK) {
-				location.href = "/Peoples/listPeople";
+				location.href = "/peoples/listPeople";
 			}
 		});
 }
