@@ -10,3 +10,7 @@ body {
 	height: 100%;
 	width: 100%;
 }
+
+#nameUserStile:hover{
+	color:rgb(128, 128, 128);
+}

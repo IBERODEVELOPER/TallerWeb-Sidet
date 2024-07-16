@@ -21,6 +21,7 @@ public class SpringSecurityConf {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((authz) -> authz.requestMatchers("/", "/css/**", "/js/**", "/images/**","/error/**", "/peoples/listPeople").permitAll()
 				.requestMatchers("/peoples/listPeople").hasAnyRole("USER")
+				.requestMatchers("/user/userReg").hasAnyRole("ADMIN")
 				.requestMatchers("/peoples/**").hasAnyRole("ADMIN")
 				.requestMatchers("/rol/**").hasAnyRole("ADMIN")
 				.anyRequest().authenticated())

@@ -52,11 +52,11 @@
 						</li>
 					</ul>
 				</div>
-				<form class="d-flex" id="logoutForm" th:action="@{/logout}" method="post">
+				<form class="nav-item d-flex" id="logoutForm" th:action="@{/logout}" method="post">
 					<li class="nav-item dropdown d-flex">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
 							data-bs-toggle="dropdown" aria-expanded="false">
-							<span sec:authentication="name"></span>
+							<span style="color:rgb(128, 128, 128)" sec:authentication="name"></span>
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<li><button class="dropdown-item" onclick="document.getElementById('logoutForm').submit;" type="submit">Cerrar Sesión</button></li>
@@ -80,9 +80,14 @@
 	<footer th:fragment="footer" class="container-fluid">
 		<hr />
 		<div class="container">
-			<p><img th:src="@{/images/iconlogo.png}" width="20" height="20" alt="Logo el informatico" />
-				Derechos reservados copyright ©<a href="#">CONTACTEMP</a>
+			<p>
+				<span align="right" sec:authentication="name"></span> | Role : <span sec:authentication="principal.authorities"></span>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<img align="center" th:src="@{/images/iconlogo.png}" width="20" height="20" alt="Logo el informatico" />
+				Derechos reservados copyright © CONTACTEMP
+				
 			</p>
+			
 		</div>
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 		<script th:src="@{/js/jquery-3.4.1.js}"></script>
