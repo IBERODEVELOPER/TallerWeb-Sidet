@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="main/layout :: head"></head>
 
@@ -30,7 +30,7 @@
 							<th>Age</th>
 							<th>Identity Document</th>
 							<th>Email</th>
-							<th><ion-icon name="ellipsis-vertical-outline"></ion-icon></th>
+							<th sec:authorize="hasRole('ROLE_ADMIN')"><ion-icon name="ellipsis-vertical-outline"></ion-icon></th>
 						</tr>
 					</thead>
 					<tbody >
@@ -41,11 +41,11 @@
 							<td th:text="${people.secondLastNamePeople}"></td>
 							<td th:text="${people.agePeople}"></td>
 							<td th:text="${people.emailPeople}"></td>
-							<td class="text-center">
-								<a th:onclick="QuestionEditPeople([[${people.idPeople}]])"
+							<td class="text-center" sec:authorize="hasRole('ROLE_ADMIN')">
+								<a sec:authorize="hasRole('ROLE_ADMIN')" th:onclick="QuestionEditPeople([[${people.idPeople}]])"
 									class="btn btn-outline-primary col-sm-4">
 									<ion-icon name="create-outline"></ion-icon></a>
-								<a th:onclick="QuestionDeleteByIdPerson([[${people.idPeople}]])"
+								<a sec:authorize="hasRole('ROLE_ADMIN')" th:onclick="QuestionDeleteByIdPerson([[${people.idPeople}]])"
 									class="btn btn-outline-danger col-sm-4">
 									<ion-icon name="trash-outline"></ion-icon></a>
 							</td>

@@ -11,6 +11,23 @@ body {
 	width: 100%;
 }
 
-#nameUserStile:hover{
-	color:rgb(128, 128, 128);
+#fondologin {
+	background-image: url('/images/background.jpg');
+	background-position: center;
+	/* Center the image */
+	background-repeat: no-repeat;
+	/* Do not repeat the image */
+	background-size: cover;
+}
+
+
+div.contenedor {
+	width: 100%;
+}
+
+button.centrado {
+	width: 110px;
+	/* Para que no se rompa en dos líneas, y lo translade tal cual. */
+	margin-left: 50%;
+	transform: translateX(-50%);
 }

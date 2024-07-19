@@ -9,18 +9,19 @@
 	<link rel="stylesheet" th:href="@{/css/estilo.css}">
 	<!-- Titulo de la Página -->
 	<link rel="icon" type="image/jpg" href="/images/favicon.png" />
-	<title th:text="'Ⓡ CONTACTEMP'+ ' : ' +${titlepage}"></title>
+	<title th:if="${titlepage != null}" th:text="'Ⓡ CONTACTEMP'+ ' : ' +${titlepage}"></title>
 </head>
 
 <body>
 	<header th:fragment="header">
-		<nav class="navbar navbar-expand-md navbar-light bg-light border-4 border-bottom border-warning">
+		<nav class="navbar navbar-expand-md navbar-light bg-warning border-4 border-bottom border-primary">
 			<div class="container">
-				<a href="#" class="navbar-brand fs-3 " style="color: #198754;"><b><sup>Ⓡ</sup>CONTACTEMP</b></a>
+				<a th:href="@{/login}" class="navbar-brand fs-3 "
+					style="color: rgb(0, 0, 255);"><b><sup>Ⓡ</sup>CONTACTEMP</b></a>
 				<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menunav">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div id="menunav" class="collapse navbar-collapse">
+				<div id="menunav" class="collapse navbar-collapse" sec:authorize="isAuthenticated()">
 					<ul class="navbar-nav ms-3">
 						<li class="nav-item">
 							<a class="nav-link " th:href="@{/}" />Inicio</a>
@@ -34,12 +35,14 @@
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Lista de Clientes</a></li>
-								<li><a class="dropdown-item" th:href="@{/user/userReg}">Crear usuario</a></li>
-								<li><a class="dropdown-item" th:href="@{/peoples/formPeople}">Nuevo</a></li>
+								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')"
+										th:href="@{/user/userReg}">Crear usuario</a></li>
+								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')"
+										th:href="@{/peoples/formPeople}">Nuevo</a></li>
 							</ul>
 
 						</li>
-						<li class="nav-item dropdown">
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
 								data-bs-toggle="dropdown" aria-expanded="false">
 								Rol
@@ -52,22 +55,23 @@
 						</li>
 					</ul>
 				</div>
-				<form class="nav-item d-flex" id="logoutForm" th:action="@{/logout}" method="post">
+				<form class="d-flex" sec:authorize="isAuthenticated()" id="logoutForm" th:action="@{/logout}"
+					method="post">
 					<li class="nav-item dropdown d-flex">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+						<a class="dropdown-item dropdown-toggle" href="#" id="navbarDropdown" role="button"
 							data-bs-toggle="dropdown" aria-expanded="false">
-							<span style="color:rgb(128, 128, 128)" sec:authentication="name"></span>
+
+							<span sec:authorize="isAuthenticated()" style="color:rgb(128, 128, 128)"
+								sec:authentication="name"></span>
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<li><button class="dropdown-item" onclick="document.getElementById('logoutForm').submit;" type="submit">Cerrar Sesión</button></li>
-							<input type="hidden" th:name="${_csrf.parameterName}" th:value"${_csrf.token}"/>
+							<li><button class="dropdown-item" onclick="document.getElementById('logoutForm').submit;"
+									type="submit">Cerrar Sesión</button></li>
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value"${_csrf.token}" />
 						</ul>
 				</form>
 			</div>
 		</nav>
-
-
-
 		<br>
 		<div class="container">
 			<div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
@@ -80,14 +84,10 @@
 	<footer th:fragment="footer" class="container-fluid">
 		<hr />
 		<div class="container">
-			<p>
-				<span align="right" sec:authentication="name"></span> | Role : <span sec:authentication="principal.authorities"></span>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<img align="center" th:src="@{/images/iconlogo.png}" width="20" height="20" alt="Logo el informatico" />
+			<p align="center">
+				<img th:src="@{/images/iconlogo.png}" width="20" height="20" alt="Logo el informatico" />
 				Derechos reservados copyright © CONTACTEMP
-				
 			</p>
-			
 		</div>
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 		<script th:src="@{/js/jquery-3.4.1.js}"></script>
