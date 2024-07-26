@@ -10,12 +10,18 @@ import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.ibero.demo.auth.handler.LoginSuccesHandler;
+
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConf {
+	
+	@Autowired
+	private LoginSuccesHandler successHandler;
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -25,7 +31,10 @@ public class SpringSecurityConf {
 				.requestMatchers("/peoples/**").hasAnyRole("ADMIN")
 				.requestMatchers("/rol/**").hasAnyRole("ADMIN")
 				.anyRequest().authenticated())
-				.formLogin(login -> login.loginPage("/login") .permitAll())
+				.formLogin(login -> login
+						.successHandler(successHandler)
+						.loginPage("/login") 
+						.permitAll())
 				.logout(logout -> logout.permitAll());
 
 		return http.build();

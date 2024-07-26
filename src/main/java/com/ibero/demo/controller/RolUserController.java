@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -26,14 +28,14 @@ public class RolUserController {
 	@Autowired
 	private IRolUserService rolUserService;
 	
-	@RequestMapping(value = "/listRol", method = RequestMethod.GET)
+	@GetMapping(value = "/listRol")
 	public String ListPeople(Model model) {
 		model.addAttribute("titlepage", "Roles del Sistema");
 		model.addAttribute("rol", rolUserService.findAllRol());
 		return "/pages/allRol";
 	}
 	
-	@RequestMapping(value = "/formRol", method = RequestMethod.GET)
+	@GetMapping(value = "/formRol")
 	public String showForm(Map<String, Object> model) {
 	Rol rol = new Rol();
 	model.put("titlepage", "Formulario de Registro de Roles del Sistema");
@@ -42,7 +44,7 @@ public class RolUserController {
 	return "/pages/formRol";
 	}
 	
-	@RequestMapping(value = "/formRol", method = RequestMethod.POST)
+	@PostMapping(value = "/formRol")
 	public String processForm(@Valid Rol rol,BindingResult result,Model model,RedirectAttributes flash, SessionStatus status) {
 	if(result.hasErrors()) {
 		model.addAttribute("titlepage", "Formulario de Registro de Roles del Sistema");
@@ -55,7 +57,7 @@ public class RolUserController {
 	return "redirect:/rol/listRol";
 	}
 
-	@RequestMapping(value = "/formRol/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/formRol/{id}")
 	public String editForm(@PathVariable(value = "id") int id,Map<String, Object> model,RedirectAttributes flash) {
 		Rol rol = null;
 		if(id > 0) {
@@ -75,7 +77,7 @@ public class RolUserController {
 		return "/pages/formRol";	
 	}
 	
-	@RequestMapping(value = "/deleteByIdRol/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/deleteByIdRol/{id}")
 	public String deleteIdRol(@PathVariable(value = "id") Integer id,RedirectAttributes flash) {
 		if(id > 0) {			
 			rolUserService.deleteIdRol(id);

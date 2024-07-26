@@ -20,53 +20,37 @@
 					<div class="card-body text-dark fa-solid fa-floppy-disk">
 						<form class="container" th:action="@{/peoples/formPeople}" th:object="${people}" method="post">
 							<legend class="text-center" th:text="${titleform}"></legend>
-							<div class="form-group row mb-3">
+							<div class="form-group row mb-3" style="margin-bottom: 2px;">
 								<label class="col-sm-2 col-form-label">Nombres</label>
-								<div class="col-sm-9">
-									<input type="text" th:field="*{namePeople}" class="form-control"
+								<div class="col-sm-4">
+									<input type="text" th:field="*{name}" class="form-control"
 										placeholder="Ramón Esteban" th:errorclass="'form-control alert-danger'" />
-									<div class="form-text text-danger" th:if="${#fields.hasErrors('namePeople')}"
-										th:errors="*{namePeople}">
+									<div class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
+										th:errors="*{name}">
 									</div>
 								</div>
-							</div>
-
-							<div class="form-group row mb-3">
 								<label class="col-sm-2 col-form-label">Apellido Paterno</label>
-								<div class="col-sm-9">
-									<input type="text" th:field="*{firstLastNamePeople}" class="form-control"
+								<div class="col-sm-4" style="padding-left: 0px;">
+									<input type="text" th:field="*{firstLastName}" class="form-control"
 										placeholder="Gómez" th:errorclass="'form-control alert-danger'" />
-									<div class="form-text text-danger"
-										th:if="${#fields.hasErrors('firstLastNamePeople')}"
-										th:errors="*{firstLastNamePeople}">
+									<div class="form-text text-danger" th:if="${#fields.hasErrors('firstLastName')}"
+										th:errors="*{firstLastName}">
 									</div>
 								</div>
 							</div>
 
 							<div class="form-group row mb-3">
 								<label class="col-sm-2 col-form-label">Apellido Materno</label>
-								<div class="col-sm-9">
-									<input type="text" th:field="*{secondLastNamePeople}" class="form-control"
-										placeholder="Valdés" th:errorclass="'form-control alert-danger'" />
-									<div class="form-text text-danger"
-										th:if="${#fields.hasErrors('secondLastNamePeople')}"
-										th:errors="*{secondLastNamePeople}">
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group row mb-3">
-								<label class="col-sm-2 col-form-label">Edad</label>
-								<div class="col-sm-2">
-									<input type="text" th:field="*{agePeople}" class="form-control"
-										th:errorclass="'form-control alert-danger'" />
-									<div class="form-text text-danger" th:if="${#fields.hasErrors('agePeople')}"
-										th:errors="*{agePeople}">
-									</div>
-								</div>
-
-								<label class="col-sm-3 col-form-label">Documento de Identidad</label>
 								<div class="col-sm-4">
+									<input type="text" th:field="*{secondLastName}" class="form-control"
+										placeholder="Valdés" th:errorclass="'form-control alert-danger'" />
+									<div class="form-text text-danger" th:if="${#fields.hasErrors('secondLastName')}"
+										th:errors="*{secondLastName}">
+									</div>
+								</div>
+
+								<label class="col-sm-2 col-form-label">Documento de Identidad</label>
+								<div class="col-sm-4" style="padding-left: 0px;">
 									<input type="text" th:field="*{identityPeople}" class="form-control"
 										placeholder="75896458" th:errorclass="'form-control alert-danger'" />
 									<div class="form-text text-danger" th:if="${#fields.hasErrors('identityPeople')}"
@@ -77,8 +61,17 @@
 							</div>
 
 							<div class="form-group row mb-3">
-								<label class="col-sm-2 col-form-label">Correo</label>
-								<div class="col-sm-9">
+								<label class="col-sm-2 col-form-label">Edad</label>
+								<div class="col-sm-1">
+									<input type="text" th:field="*{agePeople}" class="form-control"
+										th:errorclass="'form-control alert-danger'" />
+									<div class="form-text text-danger" th:if="${#fields.hasErrors('agePeople')}"
+										th:errors="*{agePeople}">
+									</div>
+								</div>
+
+								<label class="col-sm-1 col-form-label">Correo</label>
+								<div class="col-sm-3" style="padding-left: 0px;">
 									<input type="text" class="form-control" th:field="*{emailPeople}"
 										placeholder="migatomichi@gmail.com"
 										th:errorclass="'form-control alert-danger'" />
@@ -86,17 +79,50 @@
 										th:errors="*{emailPeople}">
 									</div>
 								</div>
+
+								<label class="col-sm-2 col-form-label">Fecha de Nacimiento</label>
+								<div class="col-sm-3" style="padding-left: 0px;">
+									<input type="text" class="form-control" th:field="*{happyDay}"
+										placeholder="dd/mes/Año" style="WIDTH: 100%; HEIGHT: auto"
+										th:errorclass="'form-control alert-danger'" />
+									<div class="form-text text-danger" th:if="${#fields.hasErrors('happyDay')}"
+										th:errors="*{happyDay}">
+									</div>
+								</div>
 							</div>
 							<br>
+							<hr />
+							<legend class="text-center" th:text="'Crear cuenta de usuario'"></legend>
+							<hr />
+							<div class="form-group row mb-3">
+								<label class="col-sm-2 col-form-label">Usuario </label>
+								<div class="col-sm-4">
+									<input type="text" th:field="*{user.userName}" class="form-control" />
+								</div>
+								<label class="col-sm-2 col-form-label">Contraseña </label>
+								<div class="col-sm-4">
+									<input type="text" th:field="*{user.userPassword}" class="form-control" />
+								</div>
+							</div>
+							
+							<div class="form-group row mb-3">
+								
+								
+							</div>
+							
 							<div class="form-group row">
 								<div class="row col-sm-5 mt-end" style="margin-left: 20px;margin-right: 20px;">
 									<input type="submit" value="Guardar" class="btn btn-outline-info" />
 								</div>
 								<div class="row col-sm-6">
-									<a th:href="@{/Peoples/listPeople}" class="btn btn-outline-success">
+									<a th:href="@{/peoples/listPeople}" class="btn btn-outline-success">
 										<ion-icon name="arrow-undo-outline"></ion-icon>Regresar</a>
 								</div>
+
+
+
 							</div>
+
 						</form>
 					</div>
 				</div>

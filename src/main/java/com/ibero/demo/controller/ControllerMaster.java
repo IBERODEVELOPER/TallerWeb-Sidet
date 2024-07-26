@@ -13,11 +13,11 @@ public class ControllerMaster {
 	@GetMapping({"/login","/"})
 	public String showLoginForm(@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout,Model model,Principal principal) {
-		model.addAttribute("titlepage", "ⓇRegistrex");
+		model.addAttribute("titlepage", "©Registrex");
 
 		if (error != null) {
 			model.addAttribute("error",
-					"¡Error al intentar iniciar sesión : Revise el nombre de usuario y contraseña, sean correctas, por favor vuelva a intentarlo!");
+					"¡Error al intentar iniciar sesión : Revise el nombre de usuario y/o contraseña, sean correctas,vuelva a intentarlo!");
 		}
 		
 		if (logout != null) {

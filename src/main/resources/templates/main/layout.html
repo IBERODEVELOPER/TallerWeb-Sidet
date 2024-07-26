@@ -9,7 +9,7 @@
 	<link rel="stylesheet" th:href="@{/css/estilo.css}">
 	<!-- Titulo de la Página -->
 	<link rel="icon" type="image/jpg" href="/images/favicon.png" />
-	<title th:if="${titlepage != null}" th:text="'Ⓡ CONTACTEMP'+ ' : ' +${titlepage}"></title>
+	<title th:if="${titlepage != null}" th:text="'© CONTACTEMP'+ ' : ' +${titlepage}"></title>
 </head>
 
 <body>
@@ -17,11 +17,11 @@
 		<nav class="navbar navbar-expand-md navbar-light bg-warning border-4 border-bottom border-primary">
 			<div class="container">
 				<a th:href="@{/login}" class="navbar-brand fs-3 "
-					style="color: rgb(0, 0, 255);"><b><sup>Ⓡ</sup>CONTACTEMP</b></a>
+					style="color: rgb(0, 0, 255);"><b><sup>©</sup>CONTACTEMP</b></a>
 				<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menunav">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div id="menunav" class="collapse navbar-collapse" sec:authorize="isAuthenticated()">
+				<div id="menunav" class="collapse navbar-collapse">
 					<ul class="navbar-nav ms-3">
 						<li class="nav-item">
 							<a class="nav-link " th:href="@{/}" />Inicio</a>
@@ -55,8 +55,7 @@
 						</li>
 					</ul>
 				</div>
-				<form class="d-flex" sec:authorize="isAuthenticated()" id="logoutForm" th:action="@{/logout}"
-					method="post">
+				<form class="d-flex" id="logoutForm" th:action="@{/logout}" method="post">
 					<li class="nav-item dropdown d-flex">
 						<a class="dropdown-item dropdown-toggle" href="#" id="navbarDropdown" role="button"
 							data-bs-toggle="dropdown" aria-expanded="false">
@@ -64,11 +63,34 @@
 							<span sec:authorize="isAuthenticated()" style="color:rgb(128, 128, 128)"
 								sec:authentication="name"></span>
 						</a>
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<li><button class="dropdown-item" onclick="document.getElementById('logoutForm').submit;"
-									type="submit">Cerrar Sesión</button></li>
+						<ul class="dropdown-menu bg-light" aria-labelledby="navbarDropdown" style="max-width: 40rem;">
+							<li>
+								<section class="relative">
+									<div class="card-header">
+										<strong><sup>©</sup>CONTACTEMP</strong>
+									</div>
+									<div class="card-body" style="padding-bottom: 2px;">
+										<img th:src="@{'/images/predeterminado.png'}" width="80px" height="80px"
+											alt="foto del usuario" class="img-thumbnail">&nbsp;
+										<span class="col-sm-1" sec:authentication="name"></span>
+
+										<hr style="margin-top: 4px;margin-bottom: 4px;" />
+
+										<button class="dropdown-item"><!--text-dark border-light-->
+											<ion-icon name="person-circle-outline"></ion-icon><span>&nbsp;Mi cuenta</span>
+										</button>
+
+										<hr style="margin-top: 4px;margin-bottom: 4px;" />
+										<button class="dropdown-item"
+											onclick="document.getElementById('logoutForm').submit;" type="submit"
+											style="padding-top: 1px;padding-bottom: 1px;">
+											<ion-icon name="log-out-outline"></ion-icon>&nbsp;Cerrar Sesión</button>
+									</div>
+								</section>
+							</li>
 							<input type="hidden" th:name="${_csrf.parameterName}" th:value"${_csrf.token}" />
 						</ul>
+					</li>
 				</form>
 			</div>
 		</nav>
@@ -81,9 +103,9 @@
 		</div>
 	</header>
 
-	<footer th:fragment="footer" class="container-fluid">
+	<footer th:fragment="footer" class="container-fluid" style="height: auto;">
 		<hr />
-		<div class="container">
+		<div class="container" style="height: auto;">
 			<p align="center">
 				<img th:src="@{/images/iconlogo.png}" width="20" height="20" alt="Logo el informatico" />
 				Derechos reservados copyright © CONTACTEMP

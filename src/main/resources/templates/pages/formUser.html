@@ -15,22 +15,23 @@
 							<legend class="text-center" th:text="${titlepage}"></legend>
 							
 							<div class="form-group row mb-3">
-								<label class="col-sm-4 col-form-label">Cliente : </label>
+								<label class="col-sm-4 col-form-label">Cliente &nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
 								<div class="col-sm-7">
 									<select class="form-control" th:field="*{people}">
-										<option value="0">Seleccion una opción</option>
-										<option th:each="option: ${people}" th:value="${option.idPeople}"
-											th:text="${option.namePeople+ ' '+option.firstLastNamePeople+ ' '+option.secondLastNamePeople+' ('+option.agePeople+')'}">
+										<option value="0">Seleccione Cliente</option>
+										<option th:each="option: ${people}" th:value="${option.id}"
+											th:text="${option.name+ ' '+option.firstLastName+ ' '+option.secondLastName+' ('+option.agePeople+')'}">
 										</option>
 									</select>
 								</div>
 							</div>
 							
 							<div class="form-group row mb-3">
-								<label class="col-sm-4 col-form-label">Rol del Usuario </label>
+								<label class="col-sm-4 col-form-label">Rol del Usuario        : </label>
 								<div class="col-sm-7">
 									<select class="form-control" th:field="*{roles}">
-										<option value="0">Seleccion una opción</option>
+										<option value="0">Seleccion rol del Cliente</option>
 										<option th:each="option: ${rol}" th:value="${option.idRolUser}"
 											th:text="${option.levelUser+ ' : ' + option.descripRolUser}"></option>
 									</select>
@@ -38,32 +39,26 @@
 							</div>
 					
 							<div class="form-group row mb-3">
-								<label class="col-sm-4 col-form-label">Usuario :</label>
+								<label class="col-sm-4 col-form-label">Usuario &nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
 								<div class="col-sm-7">
 									<input type="text" th:field="*{userName}" class="form-control"/>
 								</div>
 							</div>
 							
 							<div class="form-group row mb-3">
-								<label class="col-sm-4 col-form-label">Contraseña :</label>
+								<label class="col-sm-4 col-form-label">Contraseña &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
 								<div class="col-sm-7">
 									<input type="text" th:field="*{userPassword}" class="form-control"/>
 								</div>
 							</div>
-							
-							<div class="form-group row mb-3">
-								<label class="col-sm-4 col-form-label">Estado :</label>
-								<div class="col-sm-7">
-									<input type="text" th:field="*{userState}" class="form-control"/>
-								</div>
-							</div>
-							
+
 							<div class="form-group row">
 								<div class="row col-sm-5 mt-end" style="margin-left: 20px;margin-right: 20px;">
 									<input type="submit" value="Guardar" class="btn btn-outline-info" />
 								</div>
 								<div class="row col-sm-6">
-									<a th:href="@{/Peoples/listPeople}" class="btn btn-outline-success">
+									<a th:href="@{/peoples/listPeople}" class="btn btn-outline-success">
 										<ion-icon name="arrow-undo-outline"></ion-icon>Regresar</a>
 								</div>
 							</div>

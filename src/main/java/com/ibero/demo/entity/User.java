@@ -2,6 +2,7 @@ package com.ibero.demo.entity;
 
 import java.io.Serializable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -20,10 +23,10 @@ public class User implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idUser;
+	private Integer id;
 	
 	@OneToOne
-	@JoinColumn(name="idPeople")
+	@JoinColumn(name = "people_id", referencedColumnName = "id")
 	private People people;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
@@ -38,30 +41,26 @@ public class User implements Serializable{
 	@Column(length = 20)
     private String userPassword;
 	
-	@Column(length = 20)
-    private char userState;
 
 	public User() {
 		super();
 	}
 
-	public User(Integer idUser, People people, Rol roles, @NotEmpty String userName, @NotEmpty String userPassword,
-			char userState) {
+	public User(Integer id, People people, Rol roles, @NotEmpty String userName, @NotEmpty String userPassword) {
 		super();
-		this.idUser = idUser;
+		this.id = id;
 		this.people = people;
 		this.roles = roles;
 		this.userName = userName;
 		this.userPassword = userPassword;
-		this.userState = userState;
+	}
+	
+	public Integer getId() {
+		return id;
 	}
 
-	public Integer getIdUser() {
-		return idUser;
-	}
-
-	public void setIdUser(Integer idUser) {
-		this.idUser = idUser;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public People getPeople() {
@@ -95,14 +94,6 @@ public class User implements Serializable{
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
-
-	public char getUserState() {
-		return userState;
-	}
-
-	public void setUserState(char userState) {
-		this.userState = userState;
-	} 
 	
 	private static final long serialVersionUID = 1L;
 	

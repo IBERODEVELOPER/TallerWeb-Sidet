@@ -12,6 +12,9 @@ public interface IUserService {
 	public List<User> findAllUsers();
 	
 	/*Metodo para guardar los datos del formulario Persona*/
+	public User save(User user);
+	
+	/*Metodo para guardar los datos del formulario Persona*/
 	public void saveUser(User user);
 	
 	/*Metodo para Obtener datos de una Persona por si ID*/
@@ -20,7 +23,7 @@ public interface IUserService {
 	/*Metodo para eliminar Persona por su ID*/
 	public void deleteIdUser(Integer id);
 
-	/*Metodo para el filtro por nombre*/
-	//public User findByUsername(String username);
+	/*Metodo para el filtro por nombre
+	public User findByUserForId(Integer id);*/
 
 }

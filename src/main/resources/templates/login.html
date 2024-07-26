@@ -18,7 +18,7 @@
 			<div class="position-relative">
 				<div class="col-md-4" style="margin-left: 60%;">
 					<div class="card shadow p-3 mb-5 bg-body rounded">
-						<div class="card-header bg-white text-center" style="color: rgb(0, 0, 255);"><strong><sup>Ⓡ</sup>CONTACTEMP</strong></div>
+						<div class="card-header bg-white text-center" style="color: rgb(0, 0, 255);"><strong><sup>©</sup>CONTACTEMP</strong></div>
 						<div class="card-body">
 							<form th:action="@{/login}" method="post">
 
@@ -33,6 +33,10 @@
 									<input type="password" id="password" name="password" class="form-control"
 										required />
 								</div>
+								<div class="mb-3">
+									<div class="alert alert-danger" style="margin-bottom: 0px;" th:if="${error != null}"><p style="text-align: justify;margin-bottom: 0px;" th:text="${error}"></p></div>
+								</div>
+								
 								<div class="contenedor"><button type="submit"
 										class="btn btn-primary centrado">Ingresar</button></div>
 							</form>

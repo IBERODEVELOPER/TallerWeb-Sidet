@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="main/layout :: head"></head>
+
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container-fluid" id="pantll">
+		<div class="container">
+			<div class="row card shadow">
+				<div class="container rounded bg-white mt-5 mb-5">
+					<div class="row" style="margin-left: 20px;margin-right: 20px;">
+						<div class="col-md-3 border-right border border-warning" 
+						style="margin-left: 10%;">
+							<div class="d-flex flex-column align-items-center text-center p-3 py-5">
+								<img class="rounded-circle mt-5" width="150px" th:src="@{/images/raul.ruiz.jpg}">
+								<span class="font-weight-bold" th:text="${people.fullName}"></span>
+								<span class="text-black-50" th:text="${people.emailPeople}"></span>
+							</div>
+						</div>
+						<div class="col-md-5 border-right border border-success" style="margin-left: 20px;">
+							<div class="p-3 py-5">
+								<div class="d-flex justify-content-between align-items-center mb-3">
+									<h4 class="text-right text-center" th:text="${titlepage}" 
+									style="margin-left:36px;margin-right: 36px;"></h4>
+								</div>
+								<div class="row mt-2">
+									<div class="col-md-6">
+										<label class="labels">Nombre</label>
+										<input type="text" class="form-control" th:field="*{people.name}" disabled>
+									</div>
+									<div class="col-md-6">
+										<label class="labels">Ap. Paterno</label>
+										<input type="text" class="form-control" th:field="*{people.firstLastName}" disabled>
+									</div>
+									<div class="col-md-6">
+										<label class="labels">Ap. Materno</label>
+										<input type="text" class="form-control" th:field="*{people.secondLastName}" disabled>
+									</div>
+									<div class="col-md-6">
+										<label class="labels">Doc. Identidad</label>
+										<input type="text" class="form-control" th:field="*{people.identityPeople}" disabled>
+									</div>
+									<div class="col-md-6">
+										<label class="labels">Fch. Nacimiento</label>
+										<input type="text" class="form-control" th:field="*{people.happyDay}" disabled>
+									</div>
+									<div class="col-md-6">
+										<label class="labels">Edad</label>
+										<input type="text" class="form-control" th:field="*{people.agePeople}" disabled>
+									</div>
+									<div class="col-md-6">
+										<label class="labels">Usuario</label>
+										<input type="text" class="form-control" th:field="*{people.user.userName}" disabled>
+										
+										<label class="labels">Usuario</label>
+										<input type="text" class="form-control" th:field="*{people.user.userPassword}" disabled>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-12 text-center">
+										<a th:href="@{/peoples/listPeople}" class="btn btn-outline-success">
+										<ion-icon name="arrow-undo-outline"></ion-icon>Regresar</a>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+	<footer th:replace="main/layout :: footer"></footer>
+</body>
+
+</html>

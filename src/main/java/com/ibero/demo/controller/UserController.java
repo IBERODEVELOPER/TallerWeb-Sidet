@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -30,6 +31,26 @@ public class UserController {
 	
 	@Autowired
 	private IRolUserService rolUserService;
+	
+	@GetMapping("/listUser")
+	public String showUsers(Model model) {
+		model.addAttribute("titlepage", "Credenciales de Usuarios");
+		model.addAttribute("user", userService.findAllUsers());
+		return "/pages/formUser"; // Nombre de tu archivo HTML de registro
+	}
+	
+	/*@GetMapping(value = "/ver/{id}")
+	public String ListPeopleconcredenciales(@PathVariable(value = "id") Integer id,Model model, RedirectAttributes flash) {
+		User user = userService.findByUserForId(id);
+		if(user == null) {
+			flash.addFlashAttribute("error", "El usuario no existe en la base de datos");
+			return "redirect:/peoples/listPeople";
+		}
+
+		model.addAttribute("user", user);
+		model.addAttribute("titulo","Credenciales de : ");
+		return "/pages/ver";
+	}*/
 
 	@GetMapping("/userReg")
 	public String showFormUser(Model model) {
@@ -41,7 +62,7 @@ public class UserController {
 		return "/pages/formUser"; // Nombre de tu archivo HTML de registro
 	}
 
-	@RequestMapping(value = "/userReg", method = RequestMethod.POST)
+	@PostMapping(value = "/userReg")
 	public String processForm(@Valid User user,BindingResult result,Model model,RedirectAttributes flash, SessionStatus status) {
 	if(result.hasErrors()) {
 		model.addAttribute("titlepage", "Formulario de Registro de Usuarios");

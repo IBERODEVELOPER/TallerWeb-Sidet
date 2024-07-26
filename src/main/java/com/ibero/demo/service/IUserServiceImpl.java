@@ -14,7 +14,7 @@ import com.ibero.demo.entity.User;
 public class IUserServiceImpl implements IUserService {
 
 	@Autowired
-	private IUserDao userDao;
+	public IUserDao userDao;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -40,10 +40,9 @@ public class IUserServiceImpl implements IUserService {
 		userDao.deleteById(id);
 	}
 
-	/*@Override
-	@Transactional(readOnly = true)
-	public User findByUsername(String username) {
-		return userDao.findByUsername(username);
-	}*/
-
+	@Override
+	@Transactional
+	public User save(User user) {
+		return userDao.save(user);
+	}
 }

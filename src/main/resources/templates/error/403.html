@@ -5,58 +5,8 @@
 
 <body>
 
-	<nav class="navbar navbar-expand-md navbar-light bg-light border-4 border-bottom border-danger">
-		<div class="container">
-			<a href="#" class="navbar-brand fs-3 " style="color: #198754;"><b><sup>Ⓡ</sup>CONTACTEMP</b></a>
-			<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menunav">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div id="menunav" class="collapse navbar-collapse">
-				<ul class="navbar-nav ms-3">
-					<li class="nav-item">
-						<a class="nav-link " th:href="@{/}" />Inicio</a>
-
-					</li>
-
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-							data-bs-toggle="dropdown" aria-expanded="false">
-							Usuario
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Lista de Clientes</a></li>
-							<li><a class="dropdown-item" th:href="@{/user/userReg}">Crear usuario</a></li>
-							<li><a class="dropdown-item" th:href="@{/peoples/formPeople}">Nuevo</a></li>
-						</ul>
-
-					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-							data-bs-toggle="dropdown" aria-expanded="false">
-							Rol
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item" th:href="@{/rol/listRol}">Roles</a></li>
-							<li><a class="dropdown-item" th:href="@{/rol/formRol}">Nuevo</a></li>
-						</ul>
-
-					</li>
-				</ul>
-			</div>
-			<form class="nav-item d-flex" id="logoutForm" th:action="@{/logout}" method="post">
-					<li class="nav-item dropdown d-flex">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-							data-bs-toggle="dropdown" aria-expanded="false">
-							<span style="color:rgb(128, 128, 128)" sec:authentication="name"></span>
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<li><button class="dropdown-item" onclick="document.getElementById('logoutForm').submit;" type="submit">Cerrar Sesión</button></li>
-							<input type="hidden" th:name="${_csrf.parameterName}" th:value"${_csrf.token}"/>
-						</ul>
-				</form>
-		</div>
-	</nav>
-
+	<header th:replace="main/layout :: header"></header>
+	<br>
 	<div class="container-fluid" id="pantll">
 		<br>
 		<div class="container" align="center">
