@@ -16,12 +16,11 @@ public class ControllerMaster {
 		model.addAttribute("titlepage", "©Registrex");
 
 		if (error != null) {
-			model.addAttribute("error",
-					"¡Error al intentar iniciar sesión : Revise el nombre de usuario y/o contraseña, sean correctas,vuelva a intentarlo!");
+			model.addAttribute("error","¡Error al intentar iniciar sesión!");
 		}
 		
 		if (logout != null) {
-			model.addAttribute("error","¡Cerro sesión con exito!");
+			model.addAttribute("success","¡Cerro sesión con exito!");
 		}
 		
 		if (principal != null) {

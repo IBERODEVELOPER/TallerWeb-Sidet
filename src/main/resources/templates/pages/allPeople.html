@@ -37,16 +37,17 @@
 							<td th:text="${item.happyDay}"></td>
 							<td th:text="${item.emailPeople}"></td>
 							<td class="text-center" sec:authorize="hasRole('ROLE_ADMIN')">
-
-								<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/peoples/verdata/} + ${item.id}" class="btn btn-outline-info col-xs-4">
+								<!-- th:href="@{/peoples/deleteByIdPerson/} + ${item.id}"-->
+								<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/peoples/verdata/} + ${item.id}" 
+									class="btn btn-outline-info col-xs-4">
 									<ion-icon name="eye-outline"></ion-icon></a>
 
 								<a sec:authorize="hasRole('ROLE_ADMIN')" th:onclick="QuestionEditPeople([[${item.id}]])"
 									class="btn btn-outline-primary col-xs-4">
 									<ion-icon name="create-outline"></ion-icon></a>
 
-								<a sec:authorize="hasRole('ROLE_ADMIN')"
-									th:onclick="QuestionDeleteByIdPerson([[${item.id}]])"
+								<a sec:authorize="hasRole('ROLE_ADMIN')" th:onclick="QuestionDeleteByIdPerson([[${item.id}]])"
+									
 									class="btn btn-outline-danger col-xs-4">
 									<ion-icon name="trash-outline"></ion-icon></a>
 							</td>

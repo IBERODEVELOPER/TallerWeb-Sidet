@@ -5,11 +5,10 @@
 	<meta charset="UTF-8" />
 	<link rel="icon" type="image/jpg" href="/images/favicon.png" />
 	<title th:text="${titlepage}"></title>
-
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-	<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}">
 	<link rel="stylesheet" th:href="@{/css/estilo.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body id="fondologin">
@@ -18,27 +17,63 @@
 			<div class="position-relative">
 				<div class="col-md-4" style="margin-left: 60%;">
 					<div class="card shadow p-3 mb-5 bg-body rounded">
-						<div class="card-header bg-white text-center" style="color: rgb(0, 0, 255);"><strong><sup>©</sup>CONTACTEMP</strong></div>
+						<div class="card-header bg-white text-center" style="color: rgb(0, 0, 255);">
+							<strong><sup>©</sup>CONTACTEMP</strong>
+						</div>
 						<div class="card-body">
 							<form th:action="@{/login}" method="post">
 
 								<div class="mb-3">
 									<label for="username" class="form-label">Usuario:</label>
-									<input type="text" id="username" name="username" class="form-control" autofocus
-										required />
+									<input type="text" id="username" name="username" autocomplete="username"
+										class="form-control" autofocus required />
 								</div>
 
 								<div class="mb-3">
 									<label for="password" class="form-label">Contraseña:</label>
-									<input type="password" id="password" name="password" class="form-control"
-										required />
+									<input type="password" id="password" name="password" autocomplete="current-password"
+										class="form-control" required />
 								</div>
+
 								<div class="mb-3">
-									<div class="alert alert-danger" style="margin-bottom: 0px;" th:if="${error != null}"><p style="text-align: justify;margin-bottom: 0px;" th:text="${error}"></p></div>
+									<!--Para los mensajes-->
+									<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+										<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+											<path
+												d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+										</symbol>
+										<symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+											<path
+												d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+										</symbol>
+										<symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+											<path
+												d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+										</symbol>
+									</svg>
+									<div id="message" th:if="${error != null}"
+										class="alert alert-danger d-flex align-items-center" role="alert">
+										<i class="fas fa-exclamation-triangle"></i>
+										<div th:text="${error}" style="margin-left: 6px"></div>
+									</div>
+
+									<div id="message1" class="alert alert-success d-flex align-items-center"
+										role="alert" th:if="${success != null}">
+										<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img"
+											aria-label="Success:">
+											<use xlink:href="#check-circle-fill" />
+										</svg>
+										<div th:text="${success}"></div>
+									</div>
 								</div>
-								
-								<div class="contenedor"><button type="submit"
-										class="btn btn-primary centrado">Ingresar</button></div>
+
+								<div id="alert-dialog" title="Alerta" style="display:none;">
+									<p id="alert-message"></p>
+								</div>
+
+								<div class="contenedor">
+									<button type="submit" class="btn btn-primary centrado">Ingresar</button>
+								</div>
 							</form>
 
 						</div>
@@ -47,12 +82,79 @@
 			</div>
 		</div>
 	</div>
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
-		<script th:src="@{/js/popper.min.js}"></script>
-		<script th:src="@{/js/bootstrap.min.js}"></script>
-		<script th:src="@{/js/jquery-ui.min.js}"></script>
-	</footer>
+
+	<!-- Modal de Alerta -->
+	<div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content" style="border-top: 8px solid #dc3545 !important;">
+				<div class="modal-header custom-modal-header">
+					<h2 class="modal-title" id="alertModalLabel" style="margin-left: 40%;">Alerta</h2>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<strong class="row" style="margin-bottom: 2px;">
+						<i class="fas fa-exclamation-triangle me-3"><span style="margin-left: 2%;">Ocurrio un error de
+								Autenticación</span></i>
+					</strong>
+					<section>
+						<ul>
+							<li>Revise su suario y/o contraseña</li>
+						</ul>
+					</section>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="/js/jquery-3.6.0.min.js"></script>
+	<script src="/js/popper.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+
+	<!-- Script para mostrar el modal si hay un mensaje de error -->
+	<script>
+		$(document).ready(function () {
+			function showModal() {
+				var errorMessage = $('#message');
+				if (errorMessage.is(':visible')) {
+					// Extraer el texto del mensaje de error
+					var messageText = errorMessage.text().trim();
+
+					// Mostrar el modal
+					$('#modalMessage').text(messageText);
+					$('#alertModal').modal('show');
+
+					// Ocultar el mensaje después de mostrar el modal
+					setTimeout(function () {
+						errorMessage.hide(3000, function () {
+							errorMessage.addClass('hidden');
+						});
+					}, 5000); // 5 segundos
+				}
+			}
+			var messagesHidden = false;
+			function showLogout() {
+				if (messagesHidden) return;
+				var successMessage = $('#message1');
+				// Ocultar mensajes después de 5 segundos
+				setTimeout(function () {
+					if (successMessage.is(':visible')) {
+						successMessage.hide(3000, function () {
+							successMessage.addClass('hidden');
+						});
+					}
+					messagesHidden = true;
+				}, 5000);
+			}
+			
+			showLogout();
+			showModal();
+		});
+	</script>
 </body>
 
 </html>

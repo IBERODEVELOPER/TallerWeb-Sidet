@@ -5,6 +5,11 @@ body {
 	display: flex;
 	flex-direction: column;
 }
+
+.hidden {
+    display: none !important;
+}
+
 	.labels {
 		font-size: 11px
 	}
