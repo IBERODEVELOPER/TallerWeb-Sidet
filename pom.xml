@@ -86,6 +86,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>edu.ibero</groupId>
+			<artifactId>
+				Spring_Data_Tablas_Relacionales_One_To_Many
+			</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

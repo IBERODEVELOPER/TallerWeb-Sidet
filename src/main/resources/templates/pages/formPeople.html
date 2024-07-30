@@ -82,8 +82,7 @@
 
 								<label class="col-sm-2 col-form-label">Fecha de Nacimiento</label>
 								<div class="col-sm-3" style="padding-left: 0px;">
-									<input type="date" class="form-control" th:field="*{happyDay}"
-										placeholder="dd/mes/Año" style="WIDTH: 100%; HEIGHT: auto"
+									<input type="date" class="form-control" th:field="*{happyDay}" style="WIDTH: 100%; HEIGHT: auto"
 										th:errorclass="'form-control alert-danger'" />
 									<div class="form-text text-danger" th:if="${#fields.hasErrors('happyDay')}"
 										th:errors="*{happyDay}">

@@ -1,9 +1,12 @@
 package com.ibero.demo;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
@@ -17,19 +20,26 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SpringSecurityConf {
 	
 	@Autowired
 	private LoginSuccesHandler successHandler;
 	
+	@Autowired
+	private DataSource dataSource;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((authz) -> authz.requestMatchers("/", "/css/**", "/js/**", "/images/**","/error/**", "/peoples/listPeople").permitAll()
-				.requestMatchers("/peoples/listPeople").hasAnyRole("USER")
+				/*.requestMatchers("/peoples/listPeople").hasAnyRole("USER")
 				.requestMatchers("/user/userReg").hasAnyRole("ADMIN")
 				.requestMatchers("/peoples/**").hasAnyRole("ADMIN")
-				.requestMatchers("/rol/**").hasAnyRole("ADMIN")
+				.requestMatchers("/rol/**").hasAnyRole("ADMIN")*/
 				.anyRequest().authenticated())
 				.formLogin(login -> login
 						.successHandler(successHandler)
@@ -39,21 +49,15 @@ public class SpringSecurityConf {
 
 		return http.build();
 	}
-	
-	@Bean
-	public static BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+
 	
 	@Autowired
 	public void configurerGlobal (AuthenticationManagerBuilder builder) throws Exception{
-		PasswordEncoder encoder = passwordEncoder();
-		UserBuilder users = User.builder().passwordEncoder(encoder::encode);
-		builder.inMemoryAuthentication()
-		.withUser(users.username("Jose").password("12345").roles("ADMIN","USER"))
-		.withUser(users.username("Jack").password("12345").roles("USER"));
+		builder.jdbcAuthentication()
+		.dataSource(dataSource)
+		.passwordEncoder(passwordEncoder)
+		.usersByUsernameQuery("SELECT USERNAME,USERPASSWORD, USERENABLED FROM USERS WHERE USERNAME=?")
+		.authoritiesByUsernameQuery("SELECT u.username,r.authority from rols r inner join users u on (r.user_id=u.id) where u.username=?");
 	}
-
-	
 
 }

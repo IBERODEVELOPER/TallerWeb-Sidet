@@ -1,6 +1,8 @@
 package com.ibero.demo.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,10 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -29,30 +29,27 @@ public class User implements Serializable{
 	@JoinColumn(name = "people_id", referencedColumnName = "id")
 	private People people;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="roles")
-	private Rol roles;
-	
 	@NotEmpty
-	@Column(length = 20)
+	@Column(name="username", length = 20)
     private String userName;
 	
 	@NotEmpty
-	@Column(length = 20)
+	@Column(name="userpassword",length = 70)
     private String userPassword;
 	
-
+	@NotEmpty
+	@Column(name="userenabled")
+    private String userestado;
+	
+	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	private List<Rol> roles;
+	
 	public User() {
-		super();
+		roles = new ArrayList<Rol>();
 	}
-
-	public User(Integer id, People people, Rol roles, @NotEmpty String userName, @NotEmpty String userPassword) {
-		super();
-		this.id = id;
-		this.people = people;
-		this.roles = roles;
-		this.userName = userName;
-		this.userPassword = userPassword;
+	
+	public void addRole(Rol role) {
+		roles.add(role);
 	}
 	
 	public Integer getId() {
@@ -71,14 +68,6 @@ public class User implements Serializable{
 		this.people = people;
 	}
 
-	public Rol getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Rol roles) {
-		this.roles = roles;
-	}
-
 	public String getUserName() {
 		return userName;
 	}
@@ -94,7 +83,25 @@ public class User implements Serializable{
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
+
+	public String getUserestado() {
+		return userestado;
+	}
+
+	public void setUserestado(String userestado) {
+		this.userestado = userestado;
+	}
 	
+	public List<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	}
+
+
+
 	private static final long serialVersionUID = 1L;
 	
 }

@@ -134,7 +134,7 @@ $(document).ready(function() {
                 });
 			}
 			if (warningMessage.is(':visible')) {
-				warningMessage.hide(3000, function() {
+				warningMessage.fadeOut(3000, function() {
                     warningMessage.addClass('hidden');
                 });
 			}
