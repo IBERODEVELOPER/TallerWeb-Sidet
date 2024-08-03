@@ -92,6 +92,9 @@ public class Employee implements Serializable {
 	@OneToOne(mappedBy = "employe",cascade = CascadeType.ALL)
 	private Address address;
 	
+	@OneToOne(mappedBy = "employet",cascade = CascadeType.ALL)
+	private Phone phone;
+	
 	public Employee() {	}
 	
 	/* Gestionar el nombre completo*/
@@ -104,17 +107,27 @@ public class Employee implements Serializable {
 	{		this.fullName =  this.name + " "+ this.firstLastName + " "+ this.secondLastName ;	}
 	
 	//Manejo de relaciones inversas
-	public UserEntity getUser() {
+	public UserEntity getUserEntity() {
 		return userEntity;
 	}
 
-	public void setUser(UserEntity userEntity) {
+	public void setUserEntity(UserEntity userEntity) {
 		this.userEntity = userEntity;
 		if(userEntity != null) {
-			userEntity.setEmployee(this);
+			userEntity.setEmployee(this);// Establece la relación inversa
 		}
 	}
-	
+
+	public Phone getPhone() {
+		return phone;
+	}
+
+	public void setPhone(Phone phone) {
+		this.phone = phone;
+		if(phone != null) {
+			phone.setEmployet(this);// Establece la relación inversa
+		}
+	}
 	public Address getAddress() {
 		return address;
 	}

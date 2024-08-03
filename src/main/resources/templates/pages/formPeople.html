@@ -23,7 +23,7 @@
 	</style>
 </head>
 
-<body>
+<body class="bg-light bg-gradient">
 	<header th:replace="main/layout :: header"></header>
 	<div class="container-fluid" id="pantll">
 		<br>
@@ -61,7 +61,7 @@
 							</div>
 
 							<!-- Campos del formulario -->
-							<div class="form-group row mb-3">
+							<div class="form-group row mb-3 xs-3">
 								<label class="col-sm-2 col-form-label">Nombres</label>
 								<div class="col-sm-4">
 									<input type="text" th:field="*{name}" class="form-control"
@@ -99,7 +99,7 @@
 								</div>
 							</div>
 
-							<div class="form-group row mb-3">
+							<div class="form-group row mb-3 xs-3">
 								<label class="col-sm-2 col-form-label">Tipo de documento</label>
 								<div class="col-sm-2">
 									<select th:errorclass="'form-control alert-danger'" class="form-control"
@@ -149,7 +149,7 @@
 								</div>
 							</div>
 
-							<div class="form-group row mb-3">
+							<div class="form-group row mb-3 xs-3">
 								<label class="col-sm-2 col-form-label">Fecha de Nacimiento</label>
 								<div class="col-sm-2">
 									<input type="date" class="form-control" th:field="*{happyDay}" style="width: 100%;"
@@ -188,6 +188,23 @@
 										style="width: 100%;" th:errorclass="'form-control alert-danger'" />
 									<div class="form-text text-danger" th:if="${#fields.hasErrors('fechingreso')}"
 										th:errors="*{fechingreso}"></div>
+								</div>
+							</div>
+							
+							<div class="form-group row mb-3 xs-3">
+								<label class="col-sm-2 col-form-label">N° Telefono</label>
+								<div class="col-sm-4">
+									<input type="text" th:field="*{phone.phonenumber}" class="form-control"
+										placeholder="+014516458" th:errorclass="'form-control alert-danger'" />
+									<div class="form-text text-danger" th:if="${#fields.hasErrors('phone.phonenumber')}"
+										th:errors="*{phone.phonenumber}"></div>
+								</div>
+								<label class="col-sm-2 col-form-label">N° Celular</label>
+								<div class="col-sm-4">
+									<input type="text" th:field="*{phone.cellphone}" class="form-control"
+										placeholder="+51943292759" th:errorclass="'form-control alert-danger'" />
+									<div class="form-text text-danger" th:if="${#fields.hasErrors('phone.cellphone')}"
+										th:errors="*{phone.cellphone}"></div>
 								</div>
 							</div>
 
@@ -258,17 +275,17 @@
 								<!--Columna 1-->
 								<label class="col-sm-2 col-form-label">Usuario</label>
 								<div class="col-sm-2">
-									<input type="text" th:field="*{user.userName}" class="form-control" />
+									<input type="text" th:field="*{userEntity.userName}" class="form-control" />
 								</div>
 								<!--Columna 2-->
 								<label class="col-sm-2 col-form-label">Contraseña</label>
 								<div class="col-sm-4">
-									<input type="text" th:field="*{user.userPassword}" class="form-control" />
+									<input type="text" th:field="*{userEntity.userPassword}" class="form-control" />
 								</div>
 								<!--Columna 3-->
 								<div class="form-check" style="width:auto !important;">
 									<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-									 th:field="*{user.userestado}" checked>
+									 th:field="*{userEntity.userestado}" checked>
 									<label class="form-check-label" for="flexCheckDefault">Activo</label>
 								</div>
 							</div>

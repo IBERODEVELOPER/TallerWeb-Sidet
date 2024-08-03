@@ -31,16 +31,13 @@
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
 								data-bs-toggle="dropdown" aria-expanded="false">
-								Usuario
+								Empleados
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Lista de Clientes</a></li>
-								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')"
-										th:href="@{/user/userReg}">Crear usuario</a></li>
-								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')"
-										th:href="@{/peoples/formPeople}">Nuevo</a></li>
+								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Lista de Empleados</a></li>								
+								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/peoples/formPeople}">Registrar Empleado</a></li>
 							</ul>
-
+							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
 						</li>
 						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

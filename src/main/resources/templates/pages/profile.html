@@ -65,20 +65,20 @@
 									</div>
 									<div class="col-md-4 mb-3">
 										<label>Usuario</label>
-										<input type="text" class="form-control" th:field="*{employee.user.userName}"
+										<input type="text" class="form-control" th:field="*{employee.userEntity.userName}"
 											disabled>
 
 									</div>
 									<div class="col-md-4 mb-3">
 										<label>Contraseña</label>
-										<input type="text" class="form-control" th:field="*{employee.user.userPassword}"
+										<input type="text" class="form-control" th:field="*{employee.userEntity.userPassword}"
 											disabled>
 									</div>
 									<div class="col-md-4 mb-3">
 										<label>Estado</label>
-										<input th:if="${employee.user.getUserestado() == 1}" type="text" class="form-control" value="Activo"
+										<input th:if="${employee.userEntity.getUserestado() == true}" type="text" class="form-control" value="Activo"
 											disabled>
-										<input th:if="${employee.user.getUserestado() == 0}" type="text" class="form-control" value="Inactivo"
+										<input th:if="${employee.userEntity.getUserestado() == false}" type="text" class="form-control" value="Inactivo"
 											disabled>
 									</div>
 								</div>

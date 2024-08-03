@@ -106,7 +106,7 @@ public class PeopleController {
 		employee.setAgePeople(18);
 		model.put("titlepage", "Formulario de Registro de Clientes");
 		model.put("titleform", "Registro de Datos");
-		model.put("people", employee);
+		model.put("employee", employee);
 		return "/pages/formPeople";
 	}
 
