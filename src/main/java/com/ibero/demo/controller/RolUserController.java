@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ibero.demo.entity.Rol;
+import com.ibero.demo.entity.Role;
 import com.ibero.demo.service.IRolUserService;
 
 import jakarta.validation.Valid;
@@ -37,7 +37,7 @@ public class RolUserController {
 	
 	@GetMapping(value = "/formRol")
 	public String showForm(Map<String, Object> model) {
-	Rol rol = new Rol();
+	Role rol = new Role();
 	model.put("titlepage", "Formulario de Registro de Roles del Sistema");
 	model.put("titleform", "Registro de Datos");
 	model.put("rol",rol);
@@ -45,7 +45,7 @@ public class RolUserController {
 	}
 	
 	@PostMapping(value = "/formRol")
-	public String processForm(@Valid Rol rol,BindingResult result,Model model,RedirectAttributes flash, SessionStatus status) {
+	public String processForm(@Valid Role rol,BindingResult result,Model model,RedirectAttributes flash, SessionStatus status) {
 	if(result.hasErrors()) {
 		model.addAttribute("titlepage", "Formulario de Registro de Roles del Sistema");
 		model.addAttribute("titleform", "Registro de Datos");
@@ -59,7 +59,7 @@ public class RolUserController {
 
 	@GetMapping(value = "/formRol/{id}")
 	public String editForm(@PathVariable(value = "id") int id,Map<String, Object> model,RedirectAttributes flash) {
-		Rol rol = null;
+		Role rol = null;
 		if(id > 0) {
 			rol = rolUserService.findOneRol(id);
 			flash.addFlashAttribute("success", "Datos actualizados con Exito");

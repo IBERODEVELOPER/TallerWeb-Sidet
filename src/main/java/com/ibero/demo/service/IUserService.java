@@ -4,21 +4,21 @@ import java.util.List;
 
 import org.springframework.data.repository.query.Param;
 
-import com.ibero.demo.entity.User;
+import com.ibero.demo.entity.UserEntity;
 
 public interface IUserService {
 	
 	/*Metodo para listar todos los usuarios*/
-	public List<User> findAllUsers();
+	public List<UserEntity> findAllUsers();
 	
 	/*Metodo para guardar los datos del formulario Persona*/
-	public User save(User user);
+	public UserEntity save(UserEntity userEntity);
 	
 	/*Metodo para guardar los datos del formulario Persona*/
-	public void saveUser(User user);
+	public void saveUser(UserEntity userEntity);
 	
 	/*Metodo para Obtener datos de una Persona por si ID*/
-	public User findOneUser(Integer id);
+	public UserEntity findOneUser(Integer id);
 	
 	/*Metodo para eliminar Persona por su ID*/
 	public void deleteIdUser(Integer id);

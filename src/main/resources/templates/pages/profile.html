@@ -11,63 +11,76 @@
 				style="margin-left: 48px;margin-right: 48px;margin-top: 40px;margin-bottom: 40px;padding-left: 0px;padding-right: 0px;padding-left: 10px;padding-right: 10px">
 				<div class="container rounded bg-white mt-5 mb-5" style="margin-top: 24px !important;">
 					<h4 class="text-right text-center" th:text="${titlepage}"
-										style="margin-left:36px;margin-right: 36px;"></h4>
+						style="margin-left:36px;margin-right: 36px;"></h4>
 					<div class="row">
 						<div class="col-md-3 border-right border border-warning"
 							style="margin-left: 15px;margin-right: 10px;width: 30%;">
 							<div class="d-flex flex-column align-items-center text-center p-3 py-5">
 								<img class="rounded-circle mt-5" width="150px" th:src="@{/images/raul.ruiz.jpg}">
-								<span class="font-weight-bold" th:text="${people.fullName}"></span>
-								<span class="text-black-50" th:text="${people.emailPeople}"></span>
+								<span class="font-weight-bold" th:text="${employee.fullName}"></span>
+								<span class="text-black-50" th:text="${employee.emailPeople}"></span>
 							</div>
 						</div>
 						<div class="col-md-10 mx-auto border border-success" style="width: 66%;">
 							<div class="p-3 py-5">
 
-								<div class="d-flex justify-content-between align-items-center mb-3" style="margin-bottom: 4px !important;">
+								<div class="d-flex justify-content-between align-items-center mb-3"
+									style="margin-bottom: 4px !important;">
 									<h4 class="text-right text-center" th:text="${'Información personal'}"></h4>
 								</div>
 
 								<div class="row">
 									<!-- Columna 1 -->
 									<div class="col-md-4 mb-3">
-										<label >Nombre</label>
-										<input type="text" class="form-control" th:field="*{people.name}" disabled>
+										<label>Nombre</label>
+										<input type="text" class="form-control" th:field="*{employee.name}" disabled>
 
 										<label>Doc. Identidad</label>
-										<input type="text" class="form-control" th:field="*{people.identityPeople}"
+										<input type="text" class="form-control" th:field="*{employee.identityPeople}"
 											disabled>
 									</div>
 									<!-- Columna 2 -->
 									<div class="col-md-4 mb-3">
 										<label>Ap. Paterno</label>
-										<input type="text" class="form-control" th:field="*{people.firstLastName}"
+										<input type="text" class="form-control" th:field="*{employee.firstLastName}"
 											disabled>
 
 										<label>Fec. Nacimiento</label>
-										<input type="text" class="form-control" th:field="*{people.happyDay}" disabled>
+										<input type="text" class="form-control" th:field="*{employee.happyDay}" disabled>
 									</div>
 									<!-- Columna 3 -->
 									<div class="col-md-4 mb-3">
 										<label>Ap. Materno</label>
-										<input type="text" class="form-control" th:field="*{people.secondLastName}"
+										<input type="text" class="form-control" th:field="*{employee.secondLastName}"
 											disabled>
 
-										<label >Cargo</label>
-										<input type="text" class="form-control" placeholder="Soporte de Porcesos"
+										<label>Cargo</label>
+										<input type="text" class="form-control" th:field="*{employee.cargo}" placeholder="Soporte de Procesos"
 											disabled>
 									</div>
-									<!-- Columna 4 -->
+									<!-- Columna 1 - fila2 -->
+									<div class="d-flex justify-content-between align-items-center mb-3"
+										style="margin-bottom: 4px !important;">
+										<h4 class="text-right text-center" th:text="${'Cuenta de usuario'}"></h4>
+									</div>
 									<div class="col-md-4 mb-3">
-										<label >Usuario</label>
-										<input type="text" class="form-control" th:field="*{people.user.userName}"
+										<label>Usuario</label>
+										<input type="text" class="form-control" th:field="*{employee.user.userName}"
 											disabled>
 
-										<label >Contraseña</label>
-										<input type="text" class="form-control" th:field="*{people.user.userPassword}"
+									</div>
+									<div class="col-md-4 mb-3">
+										<label>Contraseña</label>
+										<input type="text" class="form-control" th:field="*{employee.user.userPassword}"
 											disabled>
 									</div>
-
+									<div class="col-md-4 mb-3">
+										<label>Estado</label>
+										<input th:if="${employee.user.getUserestado() == 1}" type="text" class="form-control" value="Activo"
+											disabled>
+										<input th:if="${employee.user.getUserestado() == 0}" type="text" class="form-control" value="Inactivo"
+											disabled>
+									</div>
 								</div>
 								<div class="row mt-3">
 									<div class="col-md-12 text-center">

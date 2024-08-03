@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ibero.demo.entity.User;
+import com.ibero.demo.entity.UserEntity;
 import com.ibero.demo.service.IPeopleService;
 import com.ibero.demo.service.IRolUserService;
 import com.ibero.demo.service.IUserService;
@@ -54,23 +54,23 @@ public class UserController {
 
 	@GetMapping("/userReg")
 	public String showFormUser(Model model) {
-		User user = new User();
+		UserEntity userEntity = new UserEntity();
 		model.addAttribute("titlepage", "Creación de Cuenta");
 		model.addAttribute("people", peopleService.findAllPeople());
 		model.addAttribute("rol", rolUserService.findAllRol());
-		model.addAttribute("user", user);
+		model.addAttribute("user", userEntity);
 		return "/pages/formUser"; // Nombre de tu archivo HTML de registro
 	}
 
 	@PostMapping(value = "/userReg")
-	public String processForm(@Valid User user,BindingResult result,Model model,RedirectAttributes flash, SessionStatus status) {
+	public String processForm(@Valid UserEntity userEntity,BindingResult result,Model model,RedirectAttributes flash, SessionStatus status) {
 	if(result.hasErrors()) {
 		model.addAttribute("titlepage", "Formulario de Registro de Usuarios");
 		model.addAttribute("titleform", "Creación de usuarios");
 		return "/pages/formPeople";
 	}
 	flash.addFlashAttribute("success", "Usuario creado correctamente");
-	userService.saveUser(user);
+	userService.saveUser(userEntity);
 	status.setComplete();
 	return "redirect:/peoples/listPeople";
 	}

@@ -19,7 +19,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable{
+public class UserEntity implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,45 +27,57 @@ public class User implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name = "people_id", referencedColumnName = "id")
-	private People people;
+	private Employee employee;
 	
 	@NotEmpty
-	@Column(name="username", length = 20)
+	@Column(name="username", length = 40)
     private String userName;
 	
 	@NotEmpty
 	@Column(name="userpassword",length = 70)
     private String userPassword;
 	
-	@NotEmpty
 	@Column(name="userenabled")
-    private String userestado;
+    private Boolean userestado;
 	
-	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	private List<Rol> roles;
+	//@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="user_id")
+	private List<Role> roles;
 	
-	public User() {
-		roles = new ArrayList<Rol>();
+	public UserEntity(Integer id, @NotEmpty String userName, 
+			@NotEmpty String userPassword, Boolean userestado,
+			List<Role> roles) {
+		super();
+		this.id = id;
+		this.userName = userName;
+		this.userPassword = userPassword;
+		this.userestado = userestado;
+		this.roles = roles;
+	}
+
+	public UserEntity() {
+		roles = new ArrayList<Role>();
 	}
 	
-	public void addRole(Rol role) {
+	public void addRole(Role role) {
 		roles.add(role);
 	}
 	
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public People getPeople() {
-		return people;
-	}
-
-	public void setPeople(People people) {
-		this.people = people;
 	}
 
 	public String getUserName() {
@@ -84,24 +96,22 @@ public class User implements Serializable{
 		this.userPassword = userPassword;
 	}
 
-	public String getUserestado() {
+	public Boolean getUserestado() {
 		return userestado;
 	}
 
-	public void setUserestado(String userestado) {
+	public void setUserestado(Boolean userestado) {
 		this.userestado = userestado;
 	}
 	
-	public List<Rol> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Rol> roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
-
-
-
+	
 	private static final long serialVersionUID = 1L;
 	
 }

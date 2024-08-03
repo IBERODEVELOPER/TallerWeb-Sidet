@@ -1,7 +1,9 @@
 package com.ibero.demo.controller;
 
-import com.ibero.demo.entity.People;
-import com.ibero.demo.entity.User;
+import com.ibero.demo.entity.Employee;
+import com.ibero.demo.entity.UserEntity;
+import com.ibero.demo.entity.Address;
+import com.ibero.demo.service.IAddressService;
 import com.ibero.demo.service.IPeopleService;
 import com.ibero.demo.service.IUserService;
 
@@ -30,7 +32,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,121 +42,117 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("peoples")
-@SessionAttributes("people")
+@SessionAttributes("employee")
 public class PeopleController {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-	
-	@Autowired
-	private IUserService userService;
 
 	@Autowired
 	private IPeopleService peopleService;
 
-	@Secured({"ROLE_USER","ROLE_ADMIN"})
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "/listPeople")
-	public String ListPeople(Model model,Authentication authentication,HttpSession session,HttpServletRequest request) {
-		
-		if(authentication != null && authentication.isAuthenticated()) {
+	public String ListPeople(Model model, Authentication authentication, HttpSession session,
+			HttpServletRequest request) {
+
+		if (authentication != null && authentication.isAuthenticated()) {
 			// Verificar si el mensaje ya ha sido mostrado en esta sesión
-            Boolean isMessageShown = (Boolean) session.getAttribute("messageShown");
-            if (isMessageShown == null || !isMessageShown) {
-			 // Obtener la hora actual
-	        LocalDateTime now = LocalDateTime.now();
-	        // Formatear la hora en el formato deseado
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-	        String formattedNow = now.format(formatter);
-			model.addAttribute("success","Hola "+authentication.getName()+" ha iniciado sesión con éxito,".concat("Hora de ingreso: "+formattedNow));
-			// Marcar el mensaje como mostrado en esta sesión
-            session.setAttribute("messageShown", true);
-            }
+			Boolean isMessageShown = (Boolean) session.getAttribute("messageShown");
+			if (isMessageShown == null || !isMessageShown) {
+				// Obtener la hora actual
+				LocalDateTime now = LocalDateTime.now();
+				// Formatear la hora en el formato deseado
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+				String formattedNow = now.format(formatter);
+				model.addAttribute("success", "Hola " + authentication.getName()
+						+ " ha iniciado sesión con éxito,".concat("Hora de ingreso: " + formattedNow));
+				// Marcar el mensaje como mostrado en esta sesión
+				session.setAttribute("messageShown", true);
+			}
 		}
 		SecurityContext context = SecurityContextHolder.getContext();
 		Authentication aut = context.getAuthentication();
-		if(request.isUserInRole("ROLE_ADMIN")) {
+		if (request.isUserInRole("ROLE_ADMIN")) {
 			logger.info("HttpServletRequest Hola ".concat(aut.getName()).concat("tienes acceso"));
-		}else {
+		} else {
 			logger.info("HttpServletRequest Hola ".concat(aut.getName()).concat("NO tienes acceso"));
 		}
-		
+
 		model.addAttribute("titlepage", "Clientes registrados en el Sistema");
-		model.addAttribute("people", peopleService.findAllPeople());
+		model.addAttribute("employee", peopleService.findAllPeople());
 		return "/pages/allPeople";
 	}
-	
-	@Secured("ROLE_USER")
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "/verdata/{id}")
-	public String verDatosCompleto(@PathVariable(value = "id") int id,Model model, RedirectAttributes flash) {
-		People people = null;
-		if(id > 0) {
-			people = peopleService.findOnePerson(id);
-		}else {
+	public String verDatosCompleto(@PathVariable(value = "id") int id, Model model, RedirectAttributes flash) {
+		Employee employee = null;
+		if (id > 0) {
+			employee = peopleService.findOnePerson(id);
+		} else {
 			flash.addFlashAttribute("error", "El ID del cliente no puede ser 0");
 			return "redirect:/peoples/listPeople";
 		}
+		
 		model.addAttribute("titlepage", "Ficha de Datos de la Persona");
-		model.addAttribute("people", people);
+		model.addAttribute("employee", employee);
 		return "/pages/profile";
 	}
 
 	@Secured("ROLE_ADMIN")
 	@GetMapping(value = "/formPeople")
 	public String showForm(Map<String, Object> model) {
-		People people = new People();
-		people.setAgePeople(18);
+		Employee employee = new Employee();
+		employee.setAgePeople(18);
 		model.put("titlepage", "Formulario de Registro de Clientes");
 		model.put("titleform", "Registro de Datos");
-		model.put("people", people);
+		model.put("people", employee);
 		return "/pages/formPeople";
 	}
 
 	@Secured("ROLE_ADMIN")
 	@PostMapping(value = "/formPeople")
-	public String processForm(@Valid People people, BindingResult result, Model model, RedirectAttributes flash,
+	public String processForm(@Valid Employee employee, BindingResult result, Model model, RedirectAttributes flash,
 			SessionStatus status) {
-		User user = people.getUser();
+		
 		if (result.hasErrors()) {
 			model.addAttribute("titlepage", "Formulario de Registro de Clientes");
 			model.addAttribute("titleform", "Registro de Datos");
 			return "/pages/formPeople";
 		}
-		
-		if(people.getId()==null) {
-			peopleService.SavePeople(people);
-			flash.addFlashAttribute("success", "Datos registrados correctamente");			
-		}else {
-			peopleService.SavePeople(people);
-			flash.addFlashAttribute("success", "Datos Actualizados correctamente");
+
+	    if(employee.getId()==null){
+			logger.info("Creando nuevo empleado");
+			peopleService.SavePeople(employee);
+			flash.addFlashAttribute("success", "Datos registrados correctamente");	
+			
+		}else{
+			logger.info("Actualizando sus datos");
+			// Actualizar solo los campos específicos si es necesario
+			peopleService.SavePeople(employee);
+			flash.addFlashAttribute("success", "Datos Actualizados correctamente");		
 		}
-		
-		if(people.getId() > 0){
-			user.setUserName(people.getUser().getUserName());
-			user.setUserPassword(people.getUser().getUserPassword());
-			user.setPeople(people);
-			user= userService.save(user);
-		}
-		status.setComplete();
+	    status.setComplete();
 		return "redirect:/peoples/listPeople";
 	}
 
-	@Secured("ROLE_ADMIN")
+
 	@GetMapping(value = "/formPeople/{id}")
 	public String editForm(@PathVariable(value = "id") int id, Map<String, Object> model, RedirectAttributes flash) {
-		People people = null;
-		if (id > 0) {
-			people = peopleService.findOnePerson(id);
-			flash.addFlashAttribute("success", "Datos actualizados con Exito");
-			if (people == null) {
-				flash.addFlashAttribute("error", "El ID del cliente no existe en la BBDD");
-				return "redirect:/peoples/listPeople";
-			}
-		} else {
+		if (id <= 0) {
 			flash.addFlashAttribute("error", "El ID del cliente no puede ser 0");
 			return "redirect:/peoples/listPeople";
 		}
+
+		Employee employee = peopleService.findOnePerson(id);
+		if (employee == null) {
+			flash.addFlashAttribute("error", "El ID del cliente no existe en la BBDD");
+			return "redirect:/peoples/listPeople";
+		}
+
 		model.put("titlepage", "Formulario de Registro de Clientes");
 		model.put("titleform", "Actualizar Datos");
-		model.put("people", people);
+		model.put("employee", employee);
 		return "/pages/formPeople";
 	}
 
@@ -168,36 +165,28 @@ public class PeopleController {
 			response.put("message", "¡Cliente eliminado con éxito!");
 			return ResponseEntity.ok(response);
 
-		}else {
+		} else {
 			response.put("message", "Error al intentar eliminar el Cliente");
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);	
-			}
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		}
 	}
-	
+
 	private boolean hasRole(String role) {
 		SecurityContext context = SecurityContextHolder.getContext();
-		if(context == null) {
+		if (context == null) {
 			return false;
 		}
-		
+
 		Authentication aut = context.getAuthentication();
-		
-		if(aut == null) {
+
+		if (aut == null) {
 			return false;
 		}
-		
+
 		Collection<? extends GrantedAuthority> authorities = aut.getAuthorities();
-		
+
 		return authorities.contains(new SimpleGrantedAuthority(role));
-		/*for(GrantedAuthority authority: authorities) {
-			if(role.equals(authority.getAuthority())) {
-				logger.info("Hola".concat(aut.getName()).concat("tu role es:").concat(authority.getAuthority()));
-				return true;
-			}
-		}
-		return false;	*/
-		
-		}
-	
-	
+
+	}
+
 }

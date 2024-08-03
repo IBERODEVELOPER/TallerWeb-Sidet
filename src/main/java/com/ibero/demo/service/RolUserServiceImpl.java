@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import com.ibero.demo.entity.Rol;
+import com.ibero.demo.entity.Role;
 import com.ibero.demo.dao.IRolUserDao;
 
 @Service
@@ -18,19 +18,19 @@ public class RolUserServiceImpl implements IRolUserService{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Rol> findAllRol() {		
-		return (List<Rol>) rolUserDao.findAll();
+	public List<Role> findAllRol() {		
+		return (List<Role>) rolUserDao.findAll();
 	}
 
 	@Override
 	@Transactional
-	public void saveRol(Rol rolUser) {
+	public void saveRol(Role rolUser) {
 		rolUserDao.save(rolUser);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Rol findOneRol(Integer id) {
+	public Role findOneRol(Integer id) {
 		return rolUserDao.findById(id).orElse(null);
 	}
 

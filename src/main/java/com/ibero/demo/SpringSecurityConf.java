@@ -1,6 +1,5 @@
 package com.ibero.demo;
 
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,19 +7,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
 import com.ibero.demo.auth.handler.LoginSuccesHandler;
-
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import com.ibero.demo.service.IUserServiceImpl;
 
 
 @Configuration
-//@EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SpringSecurityConf {
 	
@@ -28,7 +21,7 @@ public class SpringSecurityConf {
 	private LoginSuccesHandler successHandler;
 	
 	@Autowired
-	private DataSource dataSource;
+	private IUserServiceImpl userDetailsService;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -53,11 +46,8 @@ public class SpringSecurityConf {
 	
 	@Autowired
 	public void configurerGlobal (AuthenticationManagerBuilder builder) throws Exception{
-		builder.jdbcAuthentication()
-		.dataSource(dataSource)
-		.passwordEncoder(passwordEncoder)
-		.usersByUsernameQuery("SELECT USERNAME,USERPASSWORD, USERENABLED FROM USERS WHERE USERNAME=?")
-		.authoritiesByUsernameQuery("SELECT u.username,r.authority from rols r inner join users u on (r.user_id=u.id) where u.username=?");
-	}
+		builder.userDetailsService(userDetailsService)
+		.passwordEncoder(passwordEncoder);
+		}
 
 }

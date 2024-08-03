@@ -16,11 +16,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name = "rols")
-public class Rol implements Serializable{
+@Table(name = "rols",uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id","authority"})})
+public class Role implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,22 +29,22 @@ public class Rol implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private User user;
+	private UserEntity userEntity;
 	
 	@NotEmpty
 	@Column(name="authority",length = 20)
 	private String authority;
 	
 	@NotEmpty
-	@Column(length = 80)
+	@Column(length = 100)
 	private String descripRolUser;
 	
-	public Rol() {
+	public Role() {
 	}
 	
-	public Rol(User user, @NotEmpty String authority, @NotEmpty String descripRolUser) {
+	public Role(UserEntity userEntity, @NotEmpty String authority, @NotEmpty String descripRolUser) {
 		super();
-		this.user = user;
+		this.userEntity = userEntity;
 		this.authority = authority;
 		this.descripRolUser = descripRolUser;
 	}
@@ -56,12 +57,12 @@ public class Rol implements Serializable{
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
+	public UserEntity getUser() {
+		return userEntity;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser(UserEntity userEntity) {
+		this.userEntity = userEntity;
 	}
 
 	public String getAuthority() {

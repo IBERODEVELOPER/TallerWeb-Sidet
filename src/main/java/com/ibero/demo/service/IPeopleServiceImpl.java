@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ibero.demo.dao.IPeopleDao;
-import com.ibero.demo.entity.People;
+import com.ibero.demo.entity.Employee;
 
 @Service
 public class IPeopleServiceImpl implements IPeopleService{
@@ -17,19 +17,19 @@ public class IPeopleServiceImpl implements IPeopleService{
 	
 	@Override 
 	@Transactional(readOnly = true)
-	public List<People> findAllPeople() {
-		return (List<People>) peopleDao.findAll();
+	public List<Employee> findAllPeople() {
+		return (List<Employee>) peopleDao.findAll();
 	}
 
 	@Override
 	@Transactional
-	public void SavePeople(People people) {
-		peopleDao.save(people);
+	public void SavePeople(Employee employee) {
+		peopleDao.save(employee);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public People findOnePerson(Integer id) {
+	public Employee findOnePerson(Integer id) {
 		return peopleDao.findById(id).orElse(null);
 	}
 
@@ -38,7 +38,5 @@ public class IPeopleServiceImpl implements IPeopleService{
 	public void deleteIdPerson(Integer id) {
 		peopleDao.deleteById(id);	
 	}
-	
-	
 
 }
