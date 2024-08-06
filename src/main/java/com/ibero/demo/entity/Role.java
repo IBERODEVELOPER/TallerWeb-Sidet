@@ -35,7 +35,6 @@ public class Role implements Serializable{
 	@Column(name="authority",length = 20)
 	private String authority;
 	
-	@NotEmpty
 	@Column(length = 100)
 	private String descripRolUser;
 	
@@ -48,6 +47,11 @@ public class Role implements Serializable{
 		this.authority = authority;
 		this.descripRolUser = descripRolUser;
 	}
+	
+	// Constructor
+    public Role(String authority) {
+        this.authority = authority;
+    }
 	
 	public Integer getId() {
 		return id;

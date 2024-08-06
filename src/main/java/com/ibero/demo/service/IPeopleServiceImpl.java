@@ -36,21 +36,15 @@ public class IPeopleServiceImpl implements IPeopleService{
 	public void SavePeople(Employee employee) {
 		// Encriptar la contraseña del usuario asociado al empleado
 		UserEntity user = employee.getUserEntity();
+		List<Role> roles = user.getRoles();
         if (user != null && user.getUserPassword() != null) {
-        	logger.info("Encriptando contraseña : " + user.getUserPassword() +" Encode "+ passwordEncoder.encode(user.getUserPassword()));
             user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         }
         //Gestionar la referencia relación con Roles de usuario
         if (employee.getUserEntity() != null) {
             user.setEmployee(employee);
-            if (user.getRoles() != null) {
-                for (Role role : user.getRoles()) {
-                    // Validación
-                	if(role.getAuthority() == null || role.getUserEntity().getRoles().isEmpty()) {
-                		logger.info("Role no debe ser nulo");
-                	}
-                }
-            }
+            roles.add(new Role("ROLE_USER"));
+            user.setRoles(roles);
         }
         
 		peopleDao.save(employee);

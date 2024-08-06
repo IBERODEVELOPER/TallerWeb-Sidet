@@ -110,8 +110,8 @@ public class PeopleController {
 
 	@Secured("ROLE_ADMIN")
 	@PostMapping(value = "/formPeople")
-	public String processForm(@Valid Employee employee, BindingResult result, Model model, RedirectAttributes flash,
-			SessionStatus status) {
+	public String processForm(@Valid Employee employee, BindingResult result, 
+			Model model, RedirectAttributes flash,SessionStatus status) {
 		
 		if (result.hasErrors()) {
 			model.addAttribute("titlepage", "Formulario de Registro de Clientes");
@@ -152,7 +152,7 @@ public class PeopleController {
 		model.put("titleform", "Actualizar Datos");
 		model.put("roles", user.getRoles());
 		model.put("employee", employee);
-		return "/pages/formPeople";
+		return "/pages/formemployeeEdit";
 	}
 
 	@Secured("ROLE_ADMIN")
