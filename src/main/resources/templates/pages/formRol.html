@@ -16,15 +16,15 @@
 				</nav>
 				<div class="card">
 					<div class="card-body text-dark fa-solid fa-floppy-disk">
-						<form th:action="@{/rol/formRol}" th:object="${rol}" method="post">
+						<form th:action="@{/role/formrol}" th:object="${role}" method="post">
 						  <legend class="text-center" th:text="${titleform}"></legend>
 							<div class="form-group row mb-3">
 								<label class="col-sm-3 col-form-label">Rol</label>
 								<div class="col-sm-9">
-									<input type="text" th:field="*{levelUser}" class="form-control"
+									<input type="text" th:field="*{authority}" class="form-control"
 										placeholder="Administrador" th:errorclass="'form-control alert-danger'" />
-									<div class="form-text text-danger" th:if="${#fields.hasErrors('levelUser')}"
-										th:errors="*{levelUser}">
+									<div class="form-text text-danger" th:if="${#fields.hasErrors('authority')}"
+										th:errors="*{authority}">
 									</div>
 								</div>
 							</div>

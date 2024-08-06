@@ -57,11 +57,11 @@ public class Role implements Serializable{
 		this.id = id;
 	}
 
-	public UserEntity getUser() {
+	public UserEntity getUserEntity() {
 		return userEntity;
 	}
 
-	public void setUser(UserEntity userEntity) {
+	public void setUserEntity(UserEntity userEntity) {
 		this.userEntity = userEntity;
 	}
 

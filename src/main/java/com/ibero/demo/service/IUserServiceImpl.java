@@ -30,31 +30,36 @@ public class IUserServiceImpl implements IUserService,UserDetailsService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<UserEntity> findAllUsers() {
+		logger.info("Listar usuarios");
 		return (List<UserEntity>) userDao.findAll();
 	}
 
 	@Override
 	@Transactional
 	public void saveUser(UserEntity user) {
+		logger.info("Guardando usuario void");
 		userDao.save(user);
+	}
+	
+	@Override
+	@Transactional
+	public UserEntity save(UserEntity user) {
+		logger.info("Guardando usuario con retorno user");
+		return userDao.save(user);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public UserEntity findOneUser(Integer id) {
+		logger.info("Buscar usuario por su id: " + id);
 		return userDao.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
 	public void deleteIdUser(Integer id) {
+		logger.info("Eliminando usuario por su id: " + id);
 		userDao.deleteById(id);
-	}
-
-	@Override
-	@Transactional
-	public UserEntity save(UserEntity user) {
-		return userDao.save(user);
 	}
 
 	@Override

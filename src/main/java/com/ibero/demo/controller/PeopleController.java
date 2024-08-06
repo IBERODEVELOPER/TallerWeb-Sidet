@@ -2,10 +2,8 @@ package com.ibero.demo.controller;
 
 import com.ibero.demo.entity.Employee;
 import com.ibero.demo.entity.UserEntity;
-import com.ibero.demo.entity.Address;
-import com.ibero.demo.service.IAddressService;
 import com.ibero.demo.service.IPeopleService;
-import com.ibero.demo.service.IUserService;
+import java.util.ArrayList;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -149,9 +147,10 @@ public class PeopleController {
 			flash.addFlashAttribute("error", "El ID del cliente no existe en la BBDD");
 			return "redirect:/peoples/listPeople";
 		}
-
+		UserEntity user = employee.getUserEntity();
 		model.put("titlepage", "Formulario de Registro de Clientes");
 		model.put("titleform", "Actualizar Datos");
+		model.put("roles", user.getRoles());
 		model.put("employee", employee);
 		return "/pages/formPeople";
 	}

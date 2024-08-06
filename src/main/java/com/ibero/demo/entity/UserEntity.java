@@ -16,6 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -40,8 +41,7 @@ public class UserEntity implements Serializable{
 	@Column(name="userenabled")
     private Boolean userestado;
 	
-	//@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="user_id")
 	private List<Role> roles;
 	
@@ -60,8 +60,16 @@ public class UserEntity implements Serializable{
 		roles = new ArrayList<Role>();
 	}
 	
-	public void addRole(Role role) {
-		roles.add(role);
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+	
+	public void addRole(Role roles) {
+		this.roles.add(roles);
 	}
 	
 	public Employee getEmployee() {
@@ -103,15 +111,6 @@ public class UserEntity implements Serializable{
 	public void setUserestado(Boolean userestado) {
 		this.userestado = userestado;
 	}
-	
-	public List<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
-	
 	private static final long serialVersionUID = 1L;
 	
 }

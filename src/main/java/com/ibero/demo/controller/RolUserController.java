@@ -21,30 +21,30 @@ import com.ibero.demo.service.IRolUserService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/rol")
-@SessionAttributes("rol")
+@RequestMapping("/role")
+@SessionAttributes("role")
 public class RolUserController {
 
 	@Autowired
 	private IRolUserService rolUserService;
 	
-	@GetMapping(value = "/listRol")
+	@GetMapping(value = "/list")
 	public String ListPeople(Model model) {
 		model.addAttribute("titlepage", "Roles del Sistema");
-		model.addAttribute("rol", rolUserService.findAllRol());
+		model.addAttribute("role", rolUserService.findAllRol());
 		return "/pages/allRol";
 	}
 	
-	@GetMapping(value = "/formRol")
+	@GetMapping(value = "/formrol")
 	public String showForm(Map<String, Object> model) {
-	Role rol = new Role();
+	Role role = new Role();
 	model.put("titlepage", "Formulario de Registro de Roles del Sistema");
 	model.put("titleform", "Registro de Datos");
-	model.put("rol",rol);
+	model.put("role",role);
 	return "/pages/formRol";
 	}
 	
-	@PostMapping(value = "/formRol")
+	@PostMapping(value = "/formrol")
 	public String processForm(@Valid Role rol,BindingResult result,Model model,RedirectAttributes flash, SessionStatus status) {
 	if(result.hasErrors()) {
 		model.addAttribute("titlepage", "Formulario de Registro de Roles del Sistema");
@@ -54,18 +54,18 @@ public class RolUserController {
 	flash.addFlashAttribute("success", "Registro con Exito");
 	rolUserService.saveRol(rol);
 	status.setComplete();
-	return "redirect:/rol/listRol";
+	return "redirect:/role/list";
 	}
 
-	@GetMapping(value = "/formRol/{id}")
+	@GetMapping(value = "/formrol/{id}")
 	public String editForm(@PathVariable(value = "id") int id,Map<String, Object> model,RedirectAttributes flash) {
-		Role rol = null;
+		Role role = null;
 		if(id > 0) {
-			rol = rolUserService.findOneRol(id);
+			role = rolUserService.findOneRol(id);
 			flash.addFlashAttribute("success", "Datos actualizados con Exito");
-			if(rol == null) {
+			if(role == null) {
 				flash.addFlashAttribute("error", "El ID del Rol no existe en la BBDD");
-				return "redirect:/rol/listRol";
+				return "redirect:/rol/list";
 			}
 		}else {
 			flash.addFlashAttribute("error", "El ID del cliente no puede ser 0");
@@ -73,7 +73,7 @@ public class RolUserController {
 		}
 		model.put("titlepage", "Formulario de Registro de Roles");
 		model.put("titleform", "Actualizar Datos");
-		model.put("rol",rol);
+		model.put("role",role);
 		return "/pages/formRol";	
 	}
 	
@@ -83,7 +83,7 @@ public class RolUserController {
 			rolUserService.deleteIdRol(id);
 			flash.addFlashAttribute("success", "Rol eliminado con éxito");				
 		}
-		return "redirect:/rol/listRol";
+		return "redirect:/role/list";
 	}
 
 }

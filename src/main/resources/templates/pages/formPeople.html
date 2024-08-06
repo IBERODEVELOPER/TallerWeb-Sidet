@@ -21,6 +21,7 @@
 			/* Evita que el texto del botón se rompa */
 		}
 	</style>
+
 </head>
 
 <body class="bg-light bg-gradient">
@@ -38,7 +39,8 @@
 				</nav>
 				<div class="card shadow">
 					<div class="card-body text-dark fa-solid fa-floppy-disk">
-						<form class="container" th:action="@{/peoples/formPeople}" th:object="${employee}" method="post">
+						<form class="container" th:action="@{/peoples/formPeople}" th:object="${employee}"
+							method="post">
 							<legend class="text-center" th:text="${titleform}"></legend>
 							<!-- Foto -->
 							<div class="row justify-content-center mb-3">
@@ -190,7 +192,7 @@
 										th:errors="*{fechingreso}"></div>
 								</div>
 							</div>
-							
+
 							<div class="form-group row mb-3 xs-3">
 								<label class="col-sm-2 col-form-label">N° Telefono</label>
 								<div class="col-sm-4">
@@ -272,21 +274,47 @@
 								th:text="'Crear cuenta de usuario'"></legend>
 
 							<div class="form-group row mb-3">
-								<!--Columna 1-->
+								<!-- Columna 1 -->
 								<label class="col-sm-2 col-form-label">Usuario</label>
 								<div class="col-sm-2">
 									<input type="text" th:field="*{userEntity.userName}" class="form-control" />
 								</div>
-								<!--Columna 2-->
-								<label class="col-sm-2 col-form-label">Contraseña</label>
-								<div class="col-sm-4">
-									<input type="text" th:field="*{userEntity.userPassword}" class="form-control" />
+								<!-- Columna 2 Roles -->
+								<label class="col-sm-1 col-form-label">Roles</label>
+								<div class="col-sm-5">
+									<!-- Mostrar un input si la lista está vacía o nula -->
+									<div th:if="${roles.isEmpty()}">
+										<input type="text" th:field="*{userEntity.roles}" class="form-control" />
+									</div>
+									<!-- Mostrar campos de entrada para cada rol si la lista no está vacía -->
+									<div th:if="${!roles.isEmpty()}">
+										<div th:each="role, iter : ${roles}">
+											<input type="text" th:value="${role.authority}" class="form-control mb-2" />
+										</div>
+									</div>
+
 								</div>
-								<!--Columna 3-->
-								<div class="form-check" style="width:auto !important;">
-									<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-									 th:field="*{userEntity.userestado}" checked>
-									<label class="form-check-label" for="flexCheckDefault">Activo</label>
+								<!-- Columna 3 -->
+								<div class="col-sm-2">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+											th:field="*{userEntity.userestado}" checked>
+										<label class="form-check-label" for="flexCheckDefault">Activo</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-3">
+								<!--Columna 1-->
+								<label class="col-sm-2 col-form-label">Contraseña Nueva</label>
+								<div class="col-sm-4">
+									<input type="text" th:field="*{userEntity.userPassword}" class="form-control"
+										th:errorclass="'form-control alert-danger'" minlength="8" maxlength="12" />
+								</div>
+								<!--Columna 2-->
+								<label class="col-sm-2 col-form-label">Repita Nueva Contraseña </label>
+								<div class="col-sm-4">
+									<input type="text" th:field="*{userEntity.userPassword}" class="form-control"
+										th:errorclass="'form-control alert-danger'" minlength="8" maxlength="12" />
 								</div>
 							</div>
 							<div class="form-group row">

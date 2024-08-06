@@ -9,6 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 public class TallerWebApplication implements CommandLineRunner{
 
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(TallerWebApplication.class, args);
@@ -20,7 +23,7 @@ public class TallerWebApplication implements CommandLineRunner{
 		for(int i=0;i<2;i++){
 			String bcrypPassword = passwordEncoder.encode(password);
 			System.out.println(""+bcrypPassword);
-			}	*/
+			}*/
 	}
 
 }

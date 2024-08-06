@@ -14,45 +14,110 @@
 
 <body>
 	<header th:fragment="header">
-		<nav class="navbar navbar-expand-md navbar-light bg-warning border-4 border-bottom border-primary">
+		<nav class="navbar navbar-expand-md navbar-light border-4 border-bottom border-warning"
+			style="background-color: cadetblue;">
 			<div class="container">
-				<a th:href="@{/login}" class="navbar-brand fs-3 "
-					style="color: rgb(0, 0, 255);"><b><sup>©</sup>CONTACTEMP</b></a>
+				<a th:href="@{/}" class="navbar-brand"
+					style="color: rgb(255, 255, 255);"><b><sup>©</sup>CONTACTEMP</b></a>
 				<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menunav">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div id="menunav" class="collapse navbar-collapse">
-					<ul class="navbar-nav ms-3">
+				<div id="menunav" class="collapse navbar-collapse" style="width: 100%;">
+					<ul class="navbar-nav ms-3" style="width: 100%;">
 						<li class="nav-item">
-							<a class="nav-link " th:href="@{/}" />Inicio</a>
+							<a class="nav-link text-light fw-bold" th:href="@{/}" />Inicio</a>
 
 						</li>
 
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-								data-bs-toggle="dropdown" aria-expanded="false">
-								Empleados
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
+								role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Gestión
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Lista de Empleados</a></li>								
-								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/peoples/formPeople}">Registrar Empleado</a></li>
+								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Agregar operación</a></li>
+								<li><a class="dropdown-item" th:href="@{/peoples/formPeople}">Bandeja de Tickets</a>
+								</li>
 							</ul>
 							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
 						</li>
-						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-								data-bs-toggle="dropdown" aria-expanded="false">
-								Rol
+
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
+								role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Eventos
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/rol/listRol}">Roles</a></li>
-								<li><a class="dropdown-item" th:href="@{/rol/formRol}">Nuevo</a></li>
+								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Nuevo evento</a></li>
 							</ul>
+							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
+						</li>
 
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
+								role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Empleados
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Lista de Empleados</a>
+								</li>
+								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')"
+										th:href="@{/peoples/formPeople}">Registrar Empleado</a></li>
+							</ul>
+							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
+						</li>
+
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
+								role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Roles
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" th:href="@{/role/list}">Lista de Roles</a></li>
+								<li><a class="dropdown-item" th:href="@{/role/formrol}">Nuevo Rol</a></li>
+							</ul>
+						</li>
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')"
+							style="margin-right: 40% !important;">
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
+								role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Reportes
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" th:href="@{/role/list}">Gestión por Día</a></li>
+								<li><a class="dropdown-item" th:href="@{/role/formrol}">Gestión por Mes</a></li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-light" href="/">
+								<ion-icon name="card-outline" style="font-size: 20px;"></ion-icon>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-light" href="/">
+								<ion-icon name="key-outline" style="font-size: 20px;"></ion-icon>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-light" href="/">
+								<ion-icon name="person-outline" style="font-size: 20px;"></ion-icon>
+							</a>
+						</li>
+						<li class="nav-item">
+							<form th:action="@{/logout}" method="post" style="display: inline;">
+								<button type="submit" class="nav-link text-light"
+									style="background: none; border: none;">
+									<ion-icon name="log-out-outline" style="font-size: 20px;"></ion-icon>
+								</button>
+							</form>
+						</li>
+						<li class="nav-item">
+						<img class="rounded-circle" th:src="@{'/images/raul.ruiz.jpg'}" width="25px" height="25px"
+						style="margin-top: 4px;">
 						</li>
 					</ul>
 				</div>
-				<form class="d-flex" id="logoutForm" th:action="@{/logout}" method="post">
+				<!--<form class="d-flex" id="logoutForm" th:action="@{/logout}" method="post">
 					<li class="nav-item dropdown d-flex">
 						<a class="dropdown-item dropdown-toggle" href="#" id="navbarDropdown" role="button"
 							data-bs-toggle="dropdown" aria-expanded="false">
@@ -73,7 +138,7 @@
 
 										<hr style="margin-top: 4px;margin-bottom: 4px;" />
 
-										<button class="dropdown-item"><!--text-dark border-light-->
+										<button class="dropdown-item">text-dark border-light
 											<ion-icon name="person-circle-outline"></ion-icon><span>&nbsp;Mi
 												cuenta</span>
 										</button>
@@ -89,7 +154,7 @@
 							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 						</ul>
 					</li>
-				</form>
+				</form>-->
 			</div>
 		</nav>
 		<br>
@@ -144,13 +209,14 @@
 				Derechos reservados copyright © CONTACTEMP
 			</p>
 		</div>
+		<!-- Ionicons Script -->
+		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+		<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 		<script th:src="@{/js/jquery-3.4.1.js}"></script>
 		<script th:src="@{/js/bootstrap.min.js}"></script>
 		<script th:src="@{/js/funciones.js}"></script>
 		<script th:src="@{/js/sweetalert.min.js}"></script>
-		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-		<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 	</footer>
 
 </body>

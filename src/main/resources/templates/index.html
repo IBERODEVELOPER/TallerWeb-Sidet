@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<head th:replace="main/layout :: head"></head>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+	<style>
+		.chart-container {
+			position: relative;
+			width: 80%;
+			max-width: 500px;
+			margin: auto;
+		}
+
+		.chart {
+			width: 100%;
+			height: auto;
+		}
+
+		.small-input {
+			max-width: 150px;
+			/* Ajusta este valor según tus necesidades */
+		}
+
+		.small-label {
+			font-size: 0.9em;
+			/* Ajusta este valor según tus necesidades */
+		}
+
+		ul li a {
+			color: aliceblue;
+		}
+
+		.text-primary-custom {
+			color: white;
+		}
+
+		.navbar-brand {
+			color: aliceblue;
+		}
+
+		.navbar-expand-lg {
+			background-color: dodgerblue;
+		}
+
+		.card-header {
+			position: relative;
+		}
+
+		.toggle-btn {
+			cursor: pointer;
+			font-size: 1.5rem;
+			position: absolute;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		.card-body {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.header-row {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+			/* Espacio entre los elementos */
+		}
+
+		.info-icons {
+			display: flex;
+			gap: 20px;
+			/* Espacio entre los íconos */
+			align-items: center;
+			justify-content: space-around;
+		}
+
+		.info-icons div {
+			text-align: center;
+		}
+
+		.small-label {
+			margin-bottom: 0;
+		}
+
+		.small-input {
+			max-width: 150px;
+			/* Ajusta el tamaño máximo del input si es necesario */
+		}
+	</style>
+</head>
+
+<body>
+	<header th:replace="main/layout :: header"></header>
+
+	<div class="container mt-4" id="pantll">
+
+		<div class="card">
+			<div class="card-header">
+				<h5 class="mb-0"><i class="fas fa-clock" style="color: rgb(0, 0, 0);"></i> Evento en Progreso:
+					<strong>ACTIVIDADES ADMINISTRATIVAS</strong>
+				</h5>
+				<span class="toggle-btn" data-bs-toggle="collapse" data-bs-target="#collapseForm" aria-expanded="false"
+					aria-controls="collapseForm" style="margin-right: 10px;">
+					<i class="fas fa-chevron-down"></i>
+				</span>
+			</div>
+			<div id="collapseForm" class="collapse">
+				<div class="card-body">
+					<form>
+						<div class="form-group">
+							<label for="subtipoEvento">Subtipo de evento:</label>
+							<input type="text" class="form-control" id="subtipoEvento" value="Sesiones de Feedback"
+								readonly>
+						</div>
+						<div class="form-group" style="margin-bottom: 10px;">
+							<label for="detalleEvento">Detalle:</label>
+							<textarea class="form-control" id="detalleEvento" rows="3"></textarea>
+						</div>
+						<button type="button" class="btn btn-danger">Finalizar</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!--Eventos del dia-->
+		<div class="card mt-4">
+			<div class="card">
+				<div class="card-body">
+					<div class="header-row">
+						<h4 class="col-3">
+							<i class="fas fa-clock"></i> Minutos acumulados
+						</h4>
+						<div class="d-flex align-items-center gap-3">
+							<label for="fecha" class="small-label mb-0">Fecha:</label>
+							<input type="date" class="form-control small-input" id="fecha" value="2023-07-21">
+						</div>
+					<div class="info-icons mt-3 justify-content-around" style="width: 60% ;">
+						<div>
+							<i class="fas fa-coffee fa-lg"></i>
+							<p class="mb-0">0</p>
+						</div>
+						<div>
+							<i class="fas fa-utensils fa-lg"></i>
+							<p class="mb-0">0</p>
+						</div>
+						<div>
+							<i class="fas fa-users fa-lg"></i>
+							<p class="mb-0">0</p>
+						</div>
+						<div>
+							<i class="fas fa-tools fa-lg"></i>
+							<p class="mb-0">0</p>
+						</div>
+						<div>
+							<i class="fas fa-restroom fa-lg"></i>
+							<p class="mb-0">0</p>
+						</div>
+					</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<!--
+		<!-- Indicadores por Fecha 
+		<div class="card mt-4">
+			<div class="card-header">
+				<h5> <i class="fas fa-clock"></i> Indicadores por Fecha</h5>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-6">
+						<form id="indicatorForm">
+							<div class="form-group">
+								<label for="fechaInicio" class="small-label">Fecha de Inicio:</label>
+								<input type="date" class="form-control small-input" id="fechaInicio" value="2023-07-01">
+							</div>
+							<div class="form-group">
+								<label for="fechaFin" class="small-label">Fecha de Fin:</label>
+								<input type="date" class="form-control small-input" id="fechaFin" value="2023-07-21">
+							</div>
+							<div class="form-group">
+								<label for="productividad" class="small-label">Productividad:</label>
+								<input type="number" class="form-control small-input" id="productividad" value="94.35">
+							</div>
+							<div class="form-group">
+								<label for="adherencia" class="small-label">Adherencia:</label>
+								<input type="number" class="form-control small-input" id="adherencia" value="95.61">
+							</div>
+							<div class="form-group">
+								<label for="ocupacion" class="small-label">Ocupación:</label>
+								<input type="number" class="form-control small-input" id="ocupacion" value="96.34">
+							</div>
+							<div class="form-group">
+								<label for="efectividad" class="small-label">Efectividad:</label>
+								<input type="number" class="form-control small-input" id="efectividad" value="100.00">
+							</div>
+							<button type="button" class="btn btn-primary" onclick="updateChart()">Actualizar
+								Indicadores</button>
+						</form>
+					</div>
+					<div class="col-md-6">
+						<div class="chart-container mt-4">
+							<canvas id="indicatorChart" class="chart"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>-->
+		<!--UN DIV
+		<div class="card mt-4">
+			<div class="card-header">
+				<h5><i class="fas fa-chart-line"></i> Progreso Mensual</h5>
+			</div>
+			<div class="card-body">
+				<div class="chart-container">
+					<canvas id="monthlyProgressChart" class="chart"></canvas>
+				</div>
+			</div>
+		</div>
+		-->
+	</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+		function updateChart() {
+			const productividad = parseFloat(document.getElementById('productividad').value);
+			const adherencia = parseFloat(document.getElementById('adherencia').value);
+			const ocupacion = parseFloat(document.getElementById('ocupacion').value);
+			const efectividad = parseFloat(document.getElementById('efectividad').value);
+
+			const ctx = document.getElementById('indicatorChart').getContext('2d');
+			new Chart(ctx, {
+				type: 'polarArea',
+				data: {
+					labels: ['Productividad', 'Adherencia', 'Ocupación', 'Efectividad'],
+					datasets: [{
+						label: 'Indicadores',
+						data: [productividad, adherencia, ocupacion, efectividad],
+						backgroundColor: ['#a3e1d4', '#dedede', '#9CC3DA', '#f5b7b1']
+					}]
+				},
+				options: {
+					responsive: true,
+					scales: {
+						r: {
+							beginAtZero: true,
+							max: 100
+						}
+					}
+				}
+			});
+		}
+
+		function initializeMonthlyProgressChart() {
+			const ctx = document.getElementById('monthlyProgressChart').getContext('2d');
+			new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: ['8/2022', '9/2022', '10/2022', '11/2022', '12/2022', '1/2023', '2/2023', '3/2023', '4/2023', '5/2023', '6/2023', '7/2023'],
+					datasets: [
+						{
+							label: 'Productividad',
+							data: [0, 0, 0, 0, 25, 30, 35, 40, 45, 50, 55, 60],
+							borderColor: '#ff6f61',
+							backgroundColor: 'rgba(255, 111, 97, 0.2)',
+							fill: true
+						},
+						{
+							label: 'Adherencia',
+							data: [0, 0, 0, 0, 30, 35, 40, 45, 50, 55, 60, 65],
+							borderColor: '#6b5b95',
+							backgroundColor: 'rgba(107, 91, 149, 0.2)',
+							fill: true
+						},
+						{
+							label: 'Ocupación',
+							data: [0, 0, 0, 0, 40, 45, 50, 55, 60, 65, 70, 75],
+							borderColor: '#88d8b0',
+							backgroundColor: 'rgba(136, 216, 176, 0.2)',
+							fill: true
+						},
+						{
+							label: 'Efectividad',
+							data: [0, 0, 0, 0, 50, 55, 60, 65, 70, 75, 80, 85],
+							borderColor: '#f8c291',
+							backgroundColor: 'rgba(248, 194, 145, 0.2)',
+							fill: true
+						}
+					]
+				},
+				options: {
+					responsive: true,
+					scales: {
+						x: {
+							title: {
+								display: true,
+								text: 'Meses'
+							}
+						},
+						y: {
+							title: {
+								display: true,
+								text: 'Valor'
+							}
+						}
+					}
+				}
+			});
+		}
+
+		document.addEventListener('DOMContentLoaded', function () {
+			updateChart();
+			initializeMonthlyProgressChart();
+		});
+	</script>
+	<footer th:replace="main/layout :: footer"></footer>
+</body>
+
+</html>

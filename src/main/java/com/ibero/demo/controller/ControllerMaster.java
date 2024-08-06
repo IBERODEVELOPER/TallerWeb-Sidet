@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ControllerMaster {
 
-	@GetMapping({"/login","/"})
+	@GetMapping(value = "/login")
 	public String showLoginForm(@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout,Model model,Principal principal) {
 		model.addAttribute("titlepage", "©Registrex");
@@ -24,9 +24,15 @@ public class ControllerMaster {
 		}
 		
 		if (principal != null) {
-			return "redirect:/peoples/listPeople";
+			return "redirect:/index";
 		}
 		return "/login";
 	}
-		 
+	
+	@GetMapping(value = "/")
+	public String showIndex(Model model) {
+		model.addAttribute("titlepage", "©Registrex");
+		return "/index";
+	}
+	 
 }
