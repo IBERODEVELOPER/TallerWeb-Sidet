@@ -1,46 +1,46 @@
 function QuestionDeleteByIdPerson(id) {
-    console.log(id);
-    swal({
-        title: "¿Estás seguro de eliminar este registro?",
-        text: "¡Una vez eliminado no se podrá restablecer!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    })
-    .then((OK) => {
-        if (OK) {
-            $.ajax({
-                url: "/peoples/deleteByIdPerson/" + id,
-                method: "GET",
-                dataType: "json",  // Esperamos una respuesta JSON
-                success: function(res) {
-                    console.log(res);
-                    swal(res.message, {
-                        icon: "success",
-                    }).then((ok) => {
-                        if (ok) {
-                            location.href = "/peoples/listPeople";
-                        }
-                    });
-                },
-                error: function(xhr) {
-                    let errorMessage = "Hubo un problema al eliminar el registro.";
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage = xhr.responseJSON.message;
-                    }
-                    swal("Error", errorMessage, "error");
-                }
-            });
-        }
-    });
+	console.log(id);
+	swal({
+		title: "¿Estás seguro de eliminar este registro?",
+		text: "¡Una vez eliminado no se podrá restablecer!",
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	})
+		.then((OK) => {
+			if (OK) {
+				$.ajax({
+					url: "/peoples/deleteByIdPerson/" + id,
+					method: "GET",
+					dataType: "json",  // Esperamos una respuesta JSON
+					success: function(res) {
+						console.log(res);
+						swal(res.message, {
+							icon: "success",
+						}).then((ok) => {
+							if (ok) {
+								location.href = "/peoples/listPeople";
+							}
+						});
+					},
+					error: function(xhr) {
+						let errorMessage = "Hubo un problema al eliminar el registro.";
+						if (xhr.responseJSON && xhr.responseJSON.message) {
+							errorMessage = xhr.responseJSON.message;
+						}
+						swal("Error", errorMessage, "error");
+					}
+				});
+			}
+		});
 }
 
 
 
-function QuestionDeleteByIdRol(id) {
+function QuestionDeleteByIdUser(id) {
 	console.log(id);
 	swal({
-		title: "¿Estas seguro de eliminar este registro?",
+		title: "¿Estas seguro de eliminar el usuario?",
 		text: "¡Una vez eliminado no se prodra restablecer!",
 		icon: "warning",
 		buttons: true,
@@ -49,7 +49,7 @@ function QuestionDeleteByIdRol(id) {
 		.then((OK) => {
 			if (OK) {
 				$.ajax({
-					url: "/rol/deleteByIdRol/" + id,
+					url: "/user/deleteByIdUser/" + id,
 					success: function(res) {
 						console.log(res);
 					},
@@ -58,7 +58,7 @@ function QuestionDeleteByIdRol(id) {
 					icon: "success",
 				}).then((ok) => {
 					if (ok) {
-						location.href = "/rol/listRol";
+						location.href = "/user/listUsers";
 					}
 				});
 			}
@@ -81,10 +81,10 @@ function QuestionEditPeople(id) {
 		});
 }
 
-function QuestionEditRol(id) {
+function QuestionEditUser(id) {
 	console.log(id);
 	swal({
-		title: "¿Deseas editar los datos?",
+		title: "¿Deseas editar los datos del Usuario?",
 		text: "¡Existen algunos datos sensible, por favor solicita permiso!",
 		icon: "info",
 		buttons: true,
@@ -92,7 +92,7 @@ function QuestionEditRol(id) {
 	})
 		.then((OK) => {
 			if (OK) {
-				location.href = "/rol/formRol/" + id;
+				location.href = "/user/formUser/" + id;
 			}
 		});
 }
@@ -113,35 +113,35 @@ function QuestionSavePeople() {
 }
 
 $(document).ready(function() {
-	 var messagesHidden = false;
+	var messagesHidden = false;
 	function hideShowContainers() {
 		if (messagesHidden) return;
 		var successMessage = $('#message1');
-		var errorMessage   = $('#message2');
+		var errorMessage = $('#message2');
 		var warningMessage = $('#message3');
-		var infoMessage    = $('#message4');
+		var infoMessage = $('#message4');
 
 		// Ocultar mensajes después de 5 segundos
 		setTimeout(function() {
 			if (successMessage.is(':visible')) {
 				successMessage.hide(3000, function() {
-                    successMessage.addClass('hidden');
-                });
+					successMessage.addClass('hidden');
+				});
 			}
 			if (errorMessage.is(':visible')) {
 				errorMessage.hide(3000, function() {
-                    errorMessage.addClass('hidden');
-                });
+					errorMessage.addClass('hidden');
+				});
 			}
 			if (warningMessage.is(':visible')) {
 				warningMessage.fadeOut(3000, function() {
-                    warningMessage.addClass('hidden');
-                });
+					warningMessage.addClass('hidden');
+				});
 			}
 			if (infoMessage.is(':visible')) {
 				infoMessage.hide(3000, function() {
-                    infoMessage.addClass('hidden');
-                });
+					infoMessage.addClass('hidden');
+				});
 			}
 			messagesHidden = true;
 		}, 5000);

@@ -20,11 +20,6 @@ public class IPeopleServiceImpl implements IPeopleService{
 	@Autowired
 	private IPeopleDao peopleDao;
 	
-	@Autowired
-    private PasswordEncoder passwordEncoder;
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-	
 	@Override 
 	@Transactional(readOnly = true)
 	public List<Employee> findAllPeople() {
@@ -34,19 +29,6 @@ public class IPeopleServiceImpl implements IPeopleService{
 	@Override
 	@Transactional
 	public void SavePeople(Employee employee) {
-		// Encriptar la contraseña del usuario asociado al empleado
-		UserEntity user = employee.getUserEntity();
-		List<Role> roles = user.getRoles();
-        if (user != null && user.getUserPassword() != null) {
-            user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
-        }
-        //Gestionar la referencia relación con Roles de usuario
-        if (employee.getUserEntity() != null) {
-            user.setEmployee(employee);
-            roles.add(new Role("ROLE_USER"));
-            user.setRoles(roles);
-        }
-        
 		peopleDao.save(employee);
 	}
 

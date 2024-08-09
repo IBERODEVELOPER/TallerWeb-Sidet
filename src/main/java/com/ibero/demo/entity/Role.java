@@ -35,23 +35,21 @@ public class Role implements Serializable{
 	@Column(name="authority",length = 20)
 	private String authority;
 	
-	@Column(length = 100)
-	private String descripRolUser;
-	
 	public Role() {
-	}
-	
-	public Role(UserEntity userEntity, @NotEmpty String authority, @NotEmpty String descripRolUser) {
-		super();
-		this.userEntity = userEntity;
-		this.authority = authority;
-		this.descripRolUser = descripRolUser;
 	}
 	
 	// Constructor
     public Role(String authority) {
         this.authority = authority;
     }
+	
+	public Role(UserEntity userEntity, @NotEmpty String authority) {
+		super();
+		this.userEntity = userEntity;
+		this.authority = authority;
+	}
+	
+	
 	
 	public Integer getId() {
 		return id;
@@ -76,14 +74,5 @@ public class Role implements Serializable{
 	public void setAuthority(String authority) {
 		this.authority = authority;
 	}
-
-	public String getDescripRolUser() {
-		return descripRolUser;
-	}
-
-	public void setDescripRolUser(String descripRolUser) {
-		this.descripRolUser = descripRolUser;
-	}
-	
 	private static final long serialVersionUID = 1L;
 }

@@ -69,7 +69,7 @@ public class UserEntity implements Serializable{
 	}
 	
 	public void addRole(Role roles) {
-		this.roles.add(roles);
+		this.roles.add(roles);//agregar rol uno por uno
 	}
 	
 	public Employee getEmployee() {

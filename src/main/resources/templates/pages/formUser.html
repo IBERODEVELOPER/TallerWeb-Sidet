@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="main/layout :: head"></head>
+<head th:replace="main/layout :: head">
+	<style>
+		.input-group .form-control {
+			position: relative;
+		}
+
+		.input-group .password-toggle {
+			position: absolute;
+			top: 50%;
+			right: 15px;
+			transform: translateY(-50%);
+			cursor: pointer;
+			z-index: 1;
+		}
+	</style>
+</head>
 
 <body>
 	<header th:replace="main/layout :: header"></header>
@@ -11,14 +26,14 @@
 				<div class="card">
 					<div class="card-body">
 						<!-- Formulario de registro -->
-						<form th:action="@{/user/userReg}" th:object="${user}" method="post">
+						<form th:action="@{/user/formUser}" th:object="${user}" method="post"
+							onsubmit="return validateForm()">
 							<legend class="text-center" th:text="${titlepage}"></legend>
-							
-							<div class="form-group row mb-3">
-								<label class="col-sm-4 col-form-label">Cliente &nbsp;&nbsp;&nbsp;
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
+							<input type="hidden" th:field="*{id}">
+							<div th:if="${user.getId() == null}" class="form-group row mb-3">
+								<label class="col-sm-4 col-form-label">Empleado </label>
 								<div class="col-sm-7">
-									<select class="form-control" th:field="*{people}">
+									<select class="form-control" th:field="*{employee}">
 										<option value="0">Seleccione Cliente</option>
 										<option th:each="option: ${people}" th:value="${option.id}"
 											th:text="${option.name+ ' '+option.firstLastName+ ' '+option.secondLastName+' ('+option.agePeople+')'}">
@@ -26,30 +41,59 @@
 									</select>
 								</div>
 							</div>
-							
-							<div class="form-group row mb-3">
-								<label class="col-sm-4 col-form-label">Rol del Usuario        : </label>
+							<div th:if="${user.getId()>0}" class="form-group row mb-3">
+								<label class="col-sm-4 col-form-label">Empleado </label>
 								<div class="col-sm-7">
-									<select class="form-control" th:field="*{roles}">
-										<option value="0">Seleccion rol del Cliente</option>
-										<option th:each="option: ${rol}" th:value="${option.idRolUser}"
-											th:text="${option.levelUser+ ' : ' + option.descripRolUser}"></option>
-									</select>
+									<input type="text" th:field="*{employee.fullName}" class="form-control" disabled />
 								</div>
 							</div>
-					
 							<div class="form-group row mb-3">
-								<label class="col-sm-4 col-form-label">Usuario &nbsp;&nbsp;&nbsp;
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
-								<div class="col-sm-7">
-									<input type="text" th:field="*{userName}" class="form-control"/>
+								<!-- Columna 1 -->
+								<label class="col-sm-4 col-form-label">Usuario</label>
+								<div class="col-sm-5">
+									<input type="text" th:field="*{userName}" class="form-control" />
+								</div>
+								<!-- Columna 3 -->
+								<div class="col-sm-2">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" value="" id="estadouser"
+											th:field="*{userestado}" checked>
+										<label class="form-check-label" for="estadouser">Activo</label>
+									</div>
 								</div>
 							</div>
-							
 							<div class="form-group row mb-3">
-								<label class="col-sm-4 col-form-label">Contraseña &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
-								<div class="col-sm-7">
-									<input type="text" th:field="*{userPassword}" class="form-control"/>
+								<label class="col-sm-4 col-form-label">Nueva Contraseña</label>
+								<div class="col-sm-7 password-container">
+									<input type="password" id="newPassword" th:field="*{userPassword}"
+										class="form-control" autocomplete="current-password" />
+									<i class="fas fa-eye password-toggle"
+										onclick="togglePasswordVisibility('newPassword', this)"></i>
+									<span id="passwordHelpInline" class="form-text"> 8 Caracteres, una mayuscula, una
+										minuscula, un número y un caracter.</span>
+									<div class="form-text text-danger" id="newPasswordError"></div>
+								</div>
+							</div>
+							<div class="form-group row mb-3">
+								<label class="col-sm-4 col-form-label">Repita la Contraseña</label>
+								<div class="col-sm-7 password-container">
+									<input type="password" id="repeatPassword" class="form-control" />
+									<i class="fas fa-eye password-toggle"
+										onclick="togglePasswordVisibility('repeatPassword', this)"></i>
+									<span id="passwordHelpInline" class="form-text"> 8 Caracteres, una mayuscula, una
+										minuscula, un número y un caracter.</span>
+									<div class="form-text text-danger" id="repeatPasswordError"></div>
+								</div>
+							</div>
+							<div class="form-group row mb-3">
+								<label class="col-sm-4 col-form-label">Roles</label>
+								<div class="form-check">
+									<input class="form-check-input" name="Authority" type="checkbox" value="ROLE_ADMIN" id="administrador">
+									<label class="form-check-label" for="administrador">Administrador</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" name="Authority" type="checkbox" value="ROLE_USER" 	id="usuario">
+									<label class="form-check-label" for="usuario">Usuario</label>
 								</div>
 							</div>
 
@@ -62,7 +106,6 @@
 										<ion-icon name="arrow-undo-outline"></ion-icon>Regresar</a>
 								</div>
 							</div>
-							
 						</form>
 					</div>
 				</div>
@@ -70,34 +113,49 @@
 		</div>
 	</div>
 	<footer th:replace="main/layout :: footer"></footer>
-	<!-- Script para mostrar SweetAlert -->
-	<script th:inline="javascript">
-		/*<![CDATA[*/
-		var successMessage = /*[[${successMessage}]]*/ null;
-		var errorMessage = /*[[${errorMessage}]]*/ null;
+	<script>
+		function validateForm() {
+			const newPassword = document.getElementById('newPassword').value;
+			const repeatPassword = document.getElementById('repeatPassword').value;
 
-		if (successMessage) {
-			Swal.fire({
-				icon: 'success',
-				title: '¡Éxito!',
-				text: successMessage,
-				showConfirmButton: true,
-				confirmButtonText: 'OK'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					window.location.href = '/usuarios/login'; // Redirige al login si se confirma
-				}
-			});
+			const newPasswordError = document.getElementById('newPasswordError');
+			const repeatPasswordError = document.getElementById('repeatPasswordError');
+
+			// Limpiar mensajes de error
+			newPasswordError.textContent = '';
+			repeatPasswordError.textContent = '';
+
+			// Reglas de complejidad de la contraseña (puedes modificar estas reglas según tus necesidades)
+			const minLength = 8;
+			const hasUpperCase = /[A-Z]/.test(newPassword);
+			const hasLowerCase = /[a-z]/.test(newPassword);
+			const hasNumber = /[0-9]/.test(newPassword);
+			const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
+
+			let valid = true;
+
+			if (newPassword.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+				newPasswordError.textContent = 'La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una letra minúscula, un número y un carácter especial !@#$%^&*(),.?":{}|<>.';
+				valid = false;
+			}
+
+			if (newPassword !== repeatPassword) {
+				repeatPasswordError.textContent = 'Las contraseñas no coinciden.';
+				valid = false;
+			}
+
+			return valid;
 		}
 
-		if (errorMessage) {
-			Swal.fire({
-				icon: 'error',
-				title: '¡Error!',
-				text: errorMessage
-			});
+		function togglePasswordVisibility(passwordFieldId, toggleIcon) {
+			const passwordField = document.getElementById(passwordFieldId);
+			const isPasswordVisible = passwordField.type === 'text';
+
+			passwordField.type = isPasswordVisible ? 'password' : 'text';
+			toggleIcon.classList.toggle('fa-eye-slash', isPasswordVisible);
+			toggleIcon.classList.toggle('fa-eye', !isPasswordVisible);
 		}
-        /*]]>*/
+
 	</script>
 </body>
 

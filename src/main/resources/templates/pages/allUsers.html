@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="main/layout :: head"></head>
+
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container-fluid" id="pantll">
+		<br>
+		<div class="container">
+			<div class="row">
+				<h1 class="text-info" th:text="${titlepage}"></h1>
+				<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/rol/listRol}">Inicio</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Lista de Usuarios</li>
+					</ol>
+				</nav>
+				<table class="table table-bordered table-hover table-striped">
+					<thead class="table-dark">
+						<tr class="text-center">
+							<th class="col-2">Empleado</th>
+							<th>Usuario</th>
+							<th>Roles</th>
+							<th><ion-icon name="ellipsis-vertical-outline"></ion-icon></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item: ${user}">
+							<td th:text="${item.employee.fullName}"></td>
+							<td th:text="${item.userName}"></td>
+							<td>
+								<span th:each="role, iterStat : ${item.roles}">
+									<span th:text="${role.authority}"></span>
+									<span th:if="${iterStat.index < item.roles.size() - 1}">, </span>
+								</span>
+							</td>
+							<td class="text-center">
+								<a th:onclick="QuestionEditUser([[${item.id}]])"
+									class="btn btn-outline-primary col-sm-4">
+									<ion-icon name="create-outline"></ion-icon></a>
+								<a th:onclick="QuestionDeleteByIdUser([[${item.id}]])"
+									class="btn btn-outline-danger col-sm-4">
+									<ion-icon name="trash-outline"></ion-icon></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="main/layout :: footer"></footer>
+</body>
+
+</html>

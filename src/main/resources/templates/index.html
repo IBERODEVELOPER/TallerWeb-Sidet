@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" 
+xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<head th:replace="main/layout :: head"></head>
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -88,6 +90,67 @@
 			max-width: 150px;
 			/* Ajusta el tamaño máximo del input si es necesario */
 		}
+
+		/*<!--aqui el modificado-->*/
+		.out {
+			text-align: center;
+		}
+
+		.small-input {
+			max-width: 150px;
+			/* Ajusta este valor según tus necesidades */
+		}
+
+		.small-label {
+			font-size: 0.9em;
+			/* Ajusta este valor según tus necesidades */
+		}
+
+		ul li a {
+			color: aliceblue;
+		}
+
+		.text-primary-custom {
+			color: white;
+		}
+
+		.navbar-brand {
+			color: aliceblue;
+		}
+
+		.navbar-expand-lg {
+			background-color: dodgerblue;
+		}
+
+		.container2 {
+
+			display: flex;
+
+			margin-bottom: 1em;
+		}
+
+		.item {
+			flex: auto;
+			padding-top: 1em;
+			padding-bottom: 1em;
+			padding: 10px;
+			height: 500px;
+		}
+
+		.card2 {
+			box-shadow: 0 0 0 1px teal;
+			display: flex;
+			margin-bottom: 1em;
+			height: 200px;
+		}
+
+		.cardpersonalizada {
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+			display: flex;
+			margin-bottom: 1em;
+			height: 450px;
+
+		}
 	</style>
 </head>
 
@@ -98,27 +161,29 @@
 
 		<div class="card">
 			<div class="card-header">
-				<h5 class="mb-0"><i class="fas fa-clock" style="color: rgb(0, 0, 0);"></i> Evento en Progreso:
+				<h5 class="mb-0"><i class="fas fa-tasks" style="color: rgb(0, 0, 0);"></i> Evento en Progreso:
 					<strong>ACTIVIDADES ADMINISTRATIVAS</strong>
 				</h5>
 				<span class="toggle-btn" data-bs-toggle="collapse" data-bs-target="#collapseForm" aria-expanded="false"
 					aria-controls="collapseForm" style="margin-right: 10px;">
-					<i class="fas fa-chevron-down"></i>
+					<i class="fas fa-chevron-down" style="color: cadetblue;"></i>
 				</span>
 			</div>
 			<div id="collapseForm" class="collapse">
 				<div class="card-body">
 					<form>
-						<div class="form-group">
-							<label for="subtipoEvento">Subtipo de evento:</label>
-							<input type="text" class="form-control" id="subtipoEvento" value="Sesiones de Feedback"
-								readonly>
+						<div class="form-group row">
+							<label for="subtipoEvento" class="col-form-label col-sm-2">Subtipo de evento:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="subtipoEvento" value="Sesiones de Feedback"
+									readonly>
+							</div>
 						</div>
 						<div class="form-group" style="margin-bottom: 10px;">
 							<label for="detalleEvento">Detalle:</label>
 							<textarea class="form-control" id="detalleEvento" rows="3"></textarea>
 						</div>
-						<button type="button" class="btn btn-danger">Finalizar</button>
+						<button type="button" class="btn bg-dark text-light fw-bold">Finalizar</button>
 					</form>
 				</div>
 			</div>
@@ -129,40 +194,98 @@
 				<div class="card-body">
 					<div class="header-row">
 						<h4 class="col-3">
-							<i class="fas fa-clock"></i> Minutos acumulados
+							<i class="fas fa-stopwatch"></i> Minutos acumulados
 						</h4>
-						<div class="d-flex align-items-center gap-3">
+						<div class="d-flex align-items-center gap-1">
 							<label for="fecha" class="small-label mb-0">Fecha:</label>
 							<input type="date" class="form-control small-input" id="fecha" value="2023-07-21">
 						</div>
-					<div class="info-icons mt-3 justify-content-around" style="width: 60% ;">
-						<div>
-							<i class="fas fa-coffee fa-lg"></i>
-							<p class="mb-0">0</p>
-						</div>
-						<div>
-							<i class="fas fa-utensils fa-lg"></i>
-							<p class="mb-0">0</p>
-						</div>
-						<div>
-							<i class="fas fa-users fa-lg"></i>
-							<p class="mb-0">0</p>
-						</div>
-						<div>
-							<i class="fas fa-tools fa-lg"></i>
-							<p class="mb-0">0</p>
-						</div>
-						<div>
-							<i class="fas fa-restroom fa-lg"></i>
-							<p class="mb-0">0</p>
+						<div class="info-icons mt-3 justify-content-around" style="width: 60% ;">
+							<div>
+								<i class="fas fa-clock fa-lg"></i>
+								<p class="mb-0">0</p>
+							</div>
+							<div>
+								<i class="fas fa-coffee fa-lg"></i>
+								<p class="mb-0">0</p>
+							</div>
+							<div>
+								<i class="fas fa-utensils fa-lg"></i>
+								<p class="mb-0">0</p>
+							</div>
+							<div>
+								<i class="fas fa-users fa-lg"></i>
+								<p class="mb-0">0</p>
+							</div>
+							<div>
+								<i class="fas fa-tools fa-lg"></i>
+								<p class="mb-0">0</p>
+							</div>
+							<div>
+								<i class="fas fa-restroom fa-lg"></i>
+								<p class="mb-0">0</p>
+							</div>
 						</div>
 					</div>
-					</div>
-					
+
 				</div>
 			</div>
 		</div>
-		<!--
+
+		<div class="container2 d-flex justify-content-around">
+			<div class="item mt-4 col-md-4">
+				<div class="card cardpersonalizada mt-4 col-md-20">
+					<div class="card-header">
+						<h5><i class="fas fa-tasks"></i> Indicadores 21-07-2024</h5>
+					</div>
+					<div class="card-body">
+						<div class="out">
+							<div class="chart-container">
+								<canvas id="measurementChart"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item mt-4 col-md-4">
+				<div class="card cardpersonalizada mt-4 col-md-20">
+					<div class="card-header">
+						<h5> <i class="fas fa-chart-pie"></i> Indicadores por Fecha</h5>
+					</div>
+					<div class="card-body" style="align-items: center;justify-content: center;text-align: center;">
+						<div class="form-row">
+							<div class="form-group d-flex justify-content-center">
+								<label for="fechaInicio" class="small-label">Fecha de Inicio:</label>
+								<input type="date" class="form-control small-input" id="fechaInicio" value="2023-07-01">
+							</div>
+							<div class="form-group d-flex justify-content-center">
+								<label for="fechaFin" class="small-label">Fecha de Fin:</label>
+								<input type="date" class="form-control small-input" id="fechaFin" value="2023-07-21">
+							</div>
+							<div class="out">
+								<div class="chart-container">
+									<canvas id="indicatorChart"></canvas>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="item mt-4 col-md-4">
+				<div class="card cardpersonalizada mt-4">
+					<div class="card-header">
+						<h5><i class="fas fa-chart-line"></i> Progreso Mensual</h5>
+					</div>
+					<div class="card-body">
+						<div class="chart-container" style="height:300px;">
+							<canvas id="monthlyProgressChart" style="font-size:300px;" class="chart"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- Indicadores por Fecha 
 		<div class="card mt-4">
 			<div class="card-header">
@@ -207,8 +330,10 @@
 					</div>
 				</div>
 			</div>
-		</div>-->
-		<!--UN DIV
+		-->
+	</div>
+
+	<!--UN DIV
 		<div class="card mt-4">
 			<div class="card-header">
 				<h5><i class="fas fa-chart-line"></i> Progreso Mensual</h5>
@@ -220,8 +345,7 @@
 			</div>
 		</div>
 		-->
-	</div>
-	</div>
+
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -230,10 +354,10 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script>
 		function updateChart() {
-			const productividad = parseFloat(document.getElementById('productividad').value);
-			const adherencia = parseFloat(document.getElementById('adherencia').value);
-			const ocupacion = parseFloat(document.getElementById('ocupacion').value);
-			const efectividad = parseFloat(document.getElementById('efectividad').value);
+			const productividad = 10;
+			const adherencia = 20;
+			const ocupacion = 30;
+			const efectividad = 40;
 
 			const ctx = document.getElementById('indicatorChart').getContext('2d');
 			new Chart(ctx, {
@@ -248,6 +372,7 @@
 				},
 				options: {
 					responsive: true,
+					maintainAspectRatio: false,
 					scales: {
 						r: {
 							beginAtZero: true,
@@ -297,6 +422,7 @@
 				},
 				options: {
 					responsive: true,
+					maintainAspectRatio: false,
 					scales: {
 						x: {
 							title: {
@@ -314,10 +440,49 @@
 				}
 			});
 		}
+		function initializeMeasurementChart() {
+			const productividad = 10;
+			const adherencia = 20;
+			const ocupacion = 30;
+			const efectividad = 40;
+
+			const ctx = document.getElementById('measurementChart').getContext('2d');
+			new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: ['Productividad', 'Adherencia', 'Ocupación', 'Efectividad'],
+					datasets: [{
+						label: 'Indicadores',
+						data: [productividad, adherencia, ocupacion, efectividad],
+						backgroundColor: ['#a3e1d4', '#dedede', '#9CC3DA', '#f5b7b1']
+					}]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: true,
+					scales: {
+						x: {
+							title: {
+								display: true,
+								text: 'Indicadores'
+							}
+						},
+						y: {
+							title: {
+								display: true,
+								text: 'Valor'
+							},
+							beginAtZero: true
+						}
+					}
+				}
+			});
+		}
 
 		document.addEventListener('DOMContentLoaded', function () {
 			updateChart();
 			initializeMonthlyProgressChart();
+			initializeMeasurementChart();
 		});
 	</script>
 	<footer th:replace="main/layout :: footer"></footer>

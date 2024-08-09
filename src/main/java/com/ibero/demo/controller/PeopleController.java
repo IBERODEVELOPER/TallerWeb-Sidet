@@ -76,7 +76,7 @@ public class PeopleController {
 			logger.info("HttpServletRequest Hola ".concat(aut.getName()).concat("NO tienes acceso"));
 		}
 
-		model.addAttribute("titlepage", "Clientes registrados en el Sistema");
+		model.addAttribute("titlepage", "Empleados registrados en el sistema");
 		model.addAttribute("employee", peopleService.findAllPeople());
 		return "/pages/allPeople";
 	}
@@ -147,12 +147,10 @@ public class PeopleController {
 			flash.addFlashAttribute("error", "El ID del cliente no existe en la BBDD");
 			return "redirect:/peoples/listPeople";
 		}
-		UserEntity user = employee.getUserEntity();
 		model.put("titlepage", "Formulario de Registro de Clientes");
 		model.put("titleform", "Actualizar Datos");
-		model.put("roles", user.getRoles());
 		model.put("employee", employee);
-		return "/pages/formemployeeEdit";
+		return "/pages/formPeople";
 	}
 
 	@Secured("ROLE_ADMIN")
@@ -172,20 +170,11 @@ public class PeopleController {
 
 	private boolean hasRole(String role) {
 		SecurityContext context = SecurityContextHolder.getContext();
-		if (context == null) {
-			return false;
-		}
-
+		if (context == null) {return false;}
 		Authentication aut = context.getAuthentication();
-
-		if (aut == null) {
-			return false;
-		}
-
+		if (aut == null) { return false;}
 		Collection<? extends GrantedAuthority> authorities = aut.getAuthorities();
-
 		return authorities.contains(new SimpleGrantedAuthority(role));
-
 	}
 
 }

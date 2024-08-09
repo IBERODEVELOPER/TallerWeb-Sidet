@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.query.Param;
 
+import com.ibero.demo.entity.Role;
 import com.ibero.demo.entity.UserEntity;
 
 public interface IUserService {
@@ -23,7 +24,7 @@ public interface IUserService {
 	/*Metodo para eliminar Persona por su ID*/
 	public void deleteIdUser(Integer id);
 
-	/*Metodo para el filtro por nombre
-	public User findByUserForId(Integer id);*/
+	/*Metodo para el filtro por nombre*/
+	public void updateUser(Integer id, String userPassword, Boolean userestado,List<Role> roles);
 
 }
