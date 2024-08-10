@@ -1,9 +1,8 @@
 package com.ibero.demo.service;
 
 import java.util.List;
-
-import com.ibero.demo.entity.Address;
 import com.ibero.demo.entity.Employee;
+import com.ibero.demo.entity.UserEntity;
 
 public interface IPeopleService {
 
@@ -15,6 +14,9 @@ public interface IPeopleService {
 	
 	/*Metodo para Obtener datos de una Persona por si ID*/
 	public Employee findOnePerson(Integer id);
+	
+	/*Metodo para Obtener datos del usuario*/
+	public Employee findByUserEntity(UserEntity userEntity);
 	
 	/*Metodo para eliminar Persona por su ID*/
 	public void deleteIdPerson(Integer id);

@@ -21,6 +21,9 @@ public interface IUserService {
 	/*Metodo para Obtener datos de una Persona por si ID*/
 	public UserEntity findOneUser(Integer id);
 	
+	/*Metodo para Obtener datos del usuario*/
+	public UserEntity findByUserName(String userName);
+	
 	/*Metodo para eliminar Persona por su ID*/
 	public void deleteIdUser(Integer id);
 

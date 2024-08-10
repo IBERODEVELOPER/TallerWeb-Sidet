@@ -29,6 +29,8 @@ public class Employee implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	private String foto;
+	
 	@Column(name = "full_name")
 	private String fullName;
 	
@@ -249,7 +251,15 @@ public class Employee implements Serializable {
 
 	public void setFechingreso(Date fechingreso) {
 		this.fechingreso = fechingreso;
-	}	
+	}
 	
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
 	private static final long serialVersionUID = 1L;
 }

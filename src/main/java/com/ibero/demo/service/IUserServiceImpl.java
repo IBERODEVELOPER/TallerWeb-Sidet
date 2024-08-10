@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ibero.demo.dao.IUserDao;
-import com.ibero.demo.entity.Employee;
+import com.ibero.demo.entity.CustomUserDetails;
 import com.ibero.demo.entity.Role;
 import com.ibero.demo.entity.UserEntity;
 
@@ -89,7 +89,6 @@ public class IUserServiceImpl implements IUserService, UserDetailsService {
 			}
 		}
 		//lanzar un email 
-		
 		userDao.save(user);
 	}
 
@@ -110,7 +109,15 @@ public class IUserServiceImpl implements IUserService, UserDetailsService {
 			throw new UsernameNotFoundException(
 					"Error en el login: usuario '" + username + "' no tiene roles asignados");
 		}
-		return new User(user.getUserName(), user.getUserPassword(), user.getUserestado(), true, true, true,
-				authorities);
+		// Obtener la foto del empleado asociado al usuario
+	    String employeeFoto = user.getEmployee().getFoto();
+		
+		return new CustomUserDetails(user.getUserName(), user.getUserPassword(), user.getUserestado(),
+	            true, true, true, authorities, employeeFoto);
+	}
+
+	@Override
+	public UserEntity findByUserName(String userName) {
+		return userDao.findByUserName(userName);
 	}
 }

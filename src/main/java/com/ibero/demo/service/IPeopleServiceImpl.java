@@ -44,4 +44,9 @@ public class IPeopleServiceImpl implements IPeopleService{
 		peopleDao.deleteById(id);	
 	}
 
-}
+	@Override
+	public Employee findByUserEntity(UserEntity userEntity) {
+		return peopleDao.findByUserEntity(userEntity);
+	}
+
+	}

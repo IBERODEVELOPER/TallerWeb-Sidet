@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,20 @@ public class UserController {
 		model.addAttribute("user", userService.findAllUsers());
 		return "/pages/allUsers"; // Nombre de tu archivo HTML de registro
 	}
+	
+	@GetMapping("/perfil")
+    public String showProfile(Model model) {
+        // Obtener el usuario autenticado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName(); // Nombre del usuario autenticado
+        // Recuperar los datos del usuario y del empleado relacionado desde el servicio
+        UserEntity user = userService.findByUserName(username);
+        Employee employee = peopleService.findByUserEntity(user);
+        // Pasar los datos al modelo
+        model.addAttribute("user", user);
+        model.addAttribute("employee", employee);
+        return "/pages/profile";
+    }
 
 	@GetMapping("/formUser")
 	public String showFormUser(Model model) {

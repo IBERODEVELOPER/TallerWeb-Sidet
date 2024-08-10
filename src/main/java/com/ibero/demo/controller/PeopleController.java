@@ -1,9 +1,7 @@
 package com.ibero.demo.controller;
 
 import com.ibero.demo.entity.Employee;
-import com.ibero.demo.entity.UserEntity;
 import com.ibero.demo.service.IPeopleService;
-import java.util.ArrayList;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -13,6 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -34,8 +36,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -91,8 +95,8 @@ public class PeopleController {
 			flash.addFlashAttribute("error", "El ID del cliente no puede ser 0");
 			return "redirect:/peoples/listPeople";
 		}
-		
-		model.addAttribute("titlepage", "Ficha de Datos de la Persona");
+
+		model.addAttribute("titlepage", "Ficha de datos");
 		model.addAttribute("employee", employee);
 		return "/pages/profile";
 	}
@@ -110,30 +114,46 @@ public class PeopleController {
 
 	@Secured("ROLE_ADMIN")
 	@PostMapping(value = "/formPeople")
-	public String processForm(@Valid Employee employee, BindingResult result, 
-			Model model, RedirectAttributes flash,SessionStatus status) {
-		
+	public String processForm(@Valid Employee employee, BindingResult result, Model model,
+			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
+
 		if (result.hasErrors()) {
 			model.addAttribute("titlepage", "Formulario de Registro de Clientes");
 			model.addAttribute("titleform", "Registro de Datos");
 			return "/pages/formPeople";
 		}
+		// Procesar foto
+		if (!foto.isEmpty()) {
+			String rootPath = "C://Users//Ibero//Documents//Spring//Workspace//TallerWeb-Fotos";
+			try {
+				// Obtener el nombre del archivo original y la extensión
+		        String originalFilename = foto.getOriginalFilename();
+		        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+		        // Crear el nuevo nombre de archivo utilizando el nombre del empleado
+		        String nuevoNombreArchivo = employee.getName().replace(" ", "_") + extension;
+		        // Construir la ruta completa con el nuevo nombre
+		        Path rutaCompleta = Paths.get(rootPath + "//" + nuevoNombreArchivo);
+				byte[] bytes = foto.getBytes();
+				Files.write(rutaCompleta, bytes);
+				flash.addFlashAttribute("info", "Has subido correctamente '" + nuevoNombreArchivo + "'");
+				employee.setFoto(nuevoNombreArchivo);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
-	    if(employee.getId()==null){
-			logger.info("Creando nuevo empleado");
+		if (employee.getId() == null) {
 			peopleService.SavePeople(employee);
-			flash.addFlashAttribute("success", "Datos registrados correctamente");	
-			
-		}else{
-			logger.info("Actualizando sus datos");
+			flash.addFlashAttribute("success", "Datos registrados correctamente");
+
+		} else {
 			// Actualizar solo los campos específicos si es necesario
 			peopleService.SavePeople(employee);
-			flash.addFlashAttribute("success", "Datos Actualizados correctamente");		
+			flash.addFlashAttribute("success", "Datos Actualizados correctamente");
 		}
-	    status.setComplete();
+		status.setComplete();
 		return "redirect:/peoples/listPeople";
 	}
-
 
 	@GetMapping(value = "/formPeople/{id}")
 	public String editForm(@PathVariable(value = "id") int id, Map<String, Object> model, RedirectAttributes flash) {
@@ -170,9 +190,13 @@ public class PeopleController {
 
 	private boolean hasRole(String role) {
 		SecurityContext context = SecurityContextHolder.getContext();
-		if (context == null) {return false;}
+		if (context == null) {
+			return false;
+		}
 		Authentication aut = context.getAuthentication();
-		if (aut == null) { return false;}
+		if (aut == null) {
+			return false;
+		}
 		Collection<? extends GrantedAuthority> authorities = aut.getAuthorities();
 		return authorities.contains(new SimpleGrantedAuthority(role));
 	}

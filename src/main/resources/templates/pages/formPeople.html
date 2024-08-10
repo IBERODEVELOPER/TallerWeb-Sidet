@@ -40,22 +40,20 @@
 				<div class="card shadow">
 					<div class="card-body text-dark">
 						<form class="container" th:action="@{/peoples/formPeople}" th:object="${employee}"
-							method="post">
+							method="post" enctype="multipart/form-data">
 							<legend class="text-center" th:text="${titleform}"></legend>
 							<!-- Foto -->
 							<div class="row justify-content-center mb-3">
 								<div class="col-lg-2 text-center" style="width: 50%;">
 									<div class="row align-items-center">
 										<div class="col-12">
-											<img th:if="${employee.getId() == null}" id="imgAvatar"
+											<img id="imgAvatar"
 												th:src="@{/images/default.png}" width="150" height="150"
 												class="rounded-circle img-fluid">
-											<img th:if="${employee.getId() > 0}" id="imgAvatar"
-												th:src="@{/images/raul.ruiz.jpg}" width="150" height="150"
-												class="rounded-circle img-fluid">
+												
 										</div>
 										<div class="input-group mb-3" style="margin-top: 5px;">
-											<input class="form-control" type="file" id="formFile">
+											<input class="form-control" name="file" type="file" id="formFile">
 											<button type="button" class="btn btn-light">Actualizar</button>
 										</div>
 									</div>
