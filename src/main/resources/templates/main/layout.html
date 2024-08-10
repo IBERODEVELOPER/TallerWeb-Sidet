@@ -79,16 +79,6 @@
 								<li><a class="dropdown-item" th:href="@{/user/formUser}">Nuevo Usuario</a></li>
 							</ul>
 						</li>
-						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
-							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
-								role="button" data-bs-toggle="dropdown" aria-expanded="false">
-								Roles
-							</a>
-							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/user/listUsers}">Lista de Roles</a></li>
-								<li><a class="dropdown-item" th:href="@{/user/formUser}">Conf. Rol de Usuario</a></li>
-							</ul>
-						</li>
 						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')"
 							style="margin-right: 15% !important;">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"

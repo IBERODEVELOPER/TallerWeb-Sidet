@@ -102,8 +102,8 @@ public class PeopleController {
 	public String showForm(Map<String, Object> model) {
 		Employee employee = new Employee();
 		employee.setAgePeople(18);
-		model.put("titlepage", "Formulario de Registro de Clientes");
-		model.put("titleform", "Registro de Datos");
+		model.put("titlepage", "Registro de datos del Empleado");
+		model.put("titleform", "Ficha de datos");
 		model.put("employee", employee);
 		return "/pages/formPeople";
 	}
