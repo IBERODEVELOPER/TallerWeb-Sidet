@@ -116,6 +116,6 @@ public class Address implements Serializable{
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-	
+
 	private static final long serialVersionUID = 1L;
 }

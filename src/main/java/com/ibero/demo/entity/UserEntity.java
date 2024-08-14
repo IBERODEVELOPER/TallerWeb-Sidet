@@ -14,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -41,10 +43,17 @@ public class UserEntity implements Serializable{
 	@Column(name="userenabled")
     private Boolean userestado;
 	
+	private boolean isTemporaryPassword;
+	
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="user_id")
 	private List<Role> roles;
 	
+	public UserEntity(Integer id) {
+		super();
+		this.id = id;
+	}
+
 	public UserEntity(Integer id, 
 			@NotEmpty String userName, 
 			@NotEmpty String userPassword, 
@@ -56,6 +65,19 @@ public class UserEntity implements Serializable{
 		this.userPassword = userPassword;
 		this.userestado = userestado;
 		this.roles = roles;
+	}
+	
+	
+	public boolean isTemporaryPassword() {
+		return isTemporaryPassword;
+	}
+
+	@PrePersist
+	public void prePersist() {
+		this.isTemporaryPassword = false;
+	}
+	public void setTemporaryPassword(boolean isTemporaryPassword) {
+		this.isTemporaryPassword = isTemporaryPassword;
 	}
 
 	public UserEntity() {
@@ -113,6 +135,7 @@ public class UserEntity implements Serializable{
 	public void setUserestado(Boolean userestado) {
 		this.userestado = userestado;
 	}
+
 	private static final long serialVersionUID = 1L;
 	
 }

@@ -1,5 +1,6 @@
 package com.ibero.demo.controller;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +32,7 @@ import com.ibero.demo.entity.Employee;
 import com.ibero.demo.entity.UserEntity;
 import com.ibero.demo.service.IPeopleService;
 import com.ibero.demo.service.IUserService;
+
 import jakarta.validation.Valid;
 
 @Controller
@@ -39,51 +42,111 @@ public class UserController {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
 	private IUserService userService;
 
 	@Autowired
 	private IPeopleService peopleService;
-
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping("/listUsers")
 	public String showUsers(Model model) {
 		model.addAttribute("titlepage", "Lista de usuarios");
 		model.addAttribute("user", userService.findAllUsers());
 		return "/pages/allUsers"; // Nombre de tu archivo HTML de registro
 	}
-	
-	@GetMapping("/perfil")
-    public String showProfile(Model model) {
-        // Obtener el usuario autenticado
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName(); // Nombre del usuario autenticado
-        // Recuperar los datos del usuario y del empleado relacionado desde el servicio
-        UserEntity user = userService.findByUserName(username);
-        Employee employee = peopleService.findByUserEntity(user);
-        // Pasar los datos al modelo
-        model.addAttribute("user", user);
-        model.addAttribute("employee", employee);
-        return "/pages/profile";
-    }
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping("/changekey")
+	public String changePassword(Model model) {
+		// Obtener el usuario autenticado
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName(); // Nombre del usuario autenticado
+		// Recuperar los datos del usuario y del empleado relacionado desde el servicio
+		UserEntity user = userService.findByUserName(username);
+		model.addAttribute("titlepage", "Cambiar contraseña");
+		model.addAttribute("user", new UserEntity(user.getId()));
+		logger.info("id : " + user.getId());
+		return "/pages/formChangePass"; // Nombre de tu archivo HTML de registro
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@PostMapping("/changekey")
+	public String processFormchangePassword(@RequestParam("id") Integer id,
+			@RequestParam("userPassword") String userPassword, Model model, RedirectAttributes flash) {
+		try {
+			boolean isPasswordValid = userService.checkPassword(id, userPassword);
+
+			if (isPasswordValid) {
+				flash.addFlashAttribute("error", "La contraseña nueva no tiene que ser igual que la anterior");
+				logger.info("Resultado : " + isPasswordValid);
+				return "redirect:/user/changekey";
+			} else {
+				logger.info("Resultado : " + isPasswordValid);
+				String encodePass = passwordEncoder.encode(userPassword);
+				// Actualizar la contraseña y el estado de la contraseña temporal a false "0"
+				userService.updatePass(id, encodePass,false);
+				flash.addFlashAttribute("success", "Contraseña actualizada exitosamente.");
+			}
+		} catch (Exception e) {
+			logger.error("Error actualizando la contraseña", e);
+			flash.addFlashAttribute("error", "Hubo un problema al actualizar la contraseña. Inténtalo de nuevo.");
+			return "redirect:/user/changekey";
+		}
+
+		return "redirect:/user/changekey";// return "redirect:/user/perfil";
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@CrossOrigin(origins = "http://localhost:8090")
+	@GetMapping(value = "/password/{username}")
+	public ResponseEntity<String> getPassword(@PathVariable String username, @RequestParam String currentPassword) {
+		String password = userService.getPasswordByUsername(username);
+		// Verifica si la nueva contraseña coincide con la almacenada
+		if (password != null && passwordEncoder.matches(currentPassword, password)) {
+			return ResponseEntity.ok("Contraseña correcta");
+		} else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta");
+		}
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping("/perfil")
+	public String showProfile(Model model) {
+		// Obtener el usuario autenticado
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName(); // Nombre del usuario autenticado
+		// Recuperar los datos del usuario y del empleado relacionado desde el servicio
+		UserEntity user = userService.findByUserName(username);
+		Employee employee = peopleService.findByUserEntity(user);
+		// Pasar los datos al modelo
+		model.addAttribute("user", user);
+		model.addAttribute("employee", employee);
+		return "/pages/profile";
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping("/formUser")
 	public String showFormUser(Model model) {
 		UserEntity user = new UserEntity();
 		// Paso 1: Obtener la lista completa de empleados
 		List<Employee> allPeople = peopleService.findAllPeople();
-		// Crear un conjunto para almacenar los IDs de los empleados que ya tienen un usuario
+		// Crear un conjunto para almacenar los IDs de los empleados que ya tienen un
+		// usuario
 		Set<Integer> employeeIdsWithUsers = new HashSet<>();
 		// Paso 3: Rellenar el conjunto con los IDs de empleados asociados a un usuario
 		for (Employee empl : allPeople) {
-		    if (empl.getUserEntity() != null) {
-		        employeeIdsWithUsers.add(empl.getUserEntity().getId());
-		    }
+			if (empl.getUserEntity() != null) {
+				employeeIdsWithUsers.add(empl.getId());
+			}
 		}
 		// Filtrar la lista de empleados para remover aquellos que ya tienen un usuario
 		List<Employee> availablePeople = new ArrayList<>();
 		for (Employee person : allPeople) {
-		    if (!employeeIdsWithUsers.contains(person.getId())) {
-		        availablePeople.add(person);
-		    }
+			if (!employeeIdsWithUsers.contains(person.getId())) {
+				availablePeople.add(person);
+			}
 		}
 		model.addAttribute("titlepage", "Creación de Cuenta");
 		model.addAttribute("people", availablePeople);
@@ -91,10 +154,10 @@ public class UserController {
 		return "/pages/formUser"; // Nombre de tu archivo HTML de registro
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@PostMapping(value = "/formUser")
 	public String processForm(@Valid UserEntity user, BindingResult result, Model model, RedirectAttributes flash,
 			@RequestParam(value = "Authority", required = false) String[] roleNames) {
-
 		if (result.hasErrors()) {
 			logger.info("Sucedio un error hasErrors()");
 			model.addAttribute("titlepage", "Creación de usuarios");
@@ -122,11 +185,12 @@ public class UserController {
 		} else {
 			logger.info("Actualizando datos de usuario");
 			flash.addFlashAttribute("success", "Usuario actualizado correctamente");
-			userService.updateUser(user.getId(), user.getUserPassword(), user.getUserestado(),user.getRoles());
+			userService.updateUser(user.getId(), user.getUserPassword(), user.getUserestado(), user.getRoles());
 		}
 		return "redirect:/user/listUsers";
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "/formUser/{id}")
 	public String ListPeopleconcredenciales(@PathVariable(value = "id") int id, Model model, RedirectAttributes flash) {
 		UserEntity user = userService.findOneUser(id);

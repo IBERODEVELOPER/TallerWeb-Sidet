@@ -28,94 +28,108 @@ public class Employee implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String foto;
-	
+
 	@Column(name = "full_name")
 	private String fullName;
-	
+
 	@NotEmpty
-	@Column(name = "employeename",length = 20)
+	@Column(name = "employeename", length = 20)
 	private String name;
-	
+
 	@NotEmpty
 	@Column(length = 20)
 	private String firstLastName;
-	
+
 	@NotEmpty
 	@Column(length = 20)
 	private String secondLastName;
-	
+
 	@NotNull
-	@Column(name="happy_day")
+	@Column(name = "happy_day")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date happyDay;
-	
+
 	@NotNull
-	@Column(name="ingreso")
+	@Column(name = "ingreso")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fechingreso;
 	
+	//Salida de la empresa
+	@Column(name = "salida")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date fechsalida;
+
 	@NotNull
-    @Min(18)
+	@Min(18)
 	@Column(length = 2)
 	private int agePeople;
-	
+
 	@NotEmpty
-	@Column(name="tdocumento",length = 30)
+	@Column(name = "tdocumento", length = 30)
 	private String tipoDocumento;
-	
+
 	@NotEmpty
-	@Column(unique = true , length = 20)
+	@Column(unique = true, length = 20)
 	private String identityPeople;
-	
+
 	@NotEmpty
-	@Column(name="genero",length = 20)
+	@Column(name = "genero", length = 20)
 	private String genero;
-	
+
 	@NotEmpty
-	@Column(name="estadocivil",length = 10)
+	@Column(name = "estadocivil", length = 10)
 	private String estadoCivil;
-	
+
 	@NotEmpty
-	@Column(name="cargo",length = 100)
+	@Column(name = "cargo", length = 100)
 	private String cargo;
-	
+
 	@NotEmpty
 	@Email
 	@Column(length = 40)
 	private String emailPeople;
-	
-	@OneToOne(mappedBy = "employee",cascade = CascadeType.ALL)
+
+	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
 	private UserEntity userEntity;
-	
-	@OneToOne(mappedBy = "employe",cascade = CascadeType.ALL)
+
+	@OneToOne(mappedBy = "employe", cascade = CascadeType.ALL)
 	private Address address;
-	
-	@OneToOne(mappedBy = "employet",cascade = CascadeType.ALL)
+
+	@OneToOne(mappedBy = "employet", cascade = CascadeType.ALL)
 	private Phone phone;
-	
-	public Employee() {	}
-	
-	/* Gestionar el nombre completo*/
+
+	public Employee() {
+	}
+
+	// para manejar los dirección pais - Region y distrito
+	public String getFullAddressWithEmployee() {
+		return this.address.getPais() + " - " + this.address.getRegion() + " - " + this.address.getDistrito();
+	}
+
+	/* Gestionar el nombre completo */
 	@PreUpdate
-	public void preUpdate ()
-	{		this.fullName = this.name + " "+ this.firstLastName + " "+ this.secondLastName ;	}
+	public void preUpdate() {
+		this.fullName = this.name + " " + this.firstLastName + " " + this.secondLastName;
+	}
 
 	@PrePersist
-	public void prePersist ()
-	{		this.fullName =  this.name + " "+ this.firstLastName + " "+ this.secondLastName ;	}
-	
-	//Manejo de relaciones inversas
+	public void prePersist() {
+		this.fullName = this.name + " " + this.firstLastName + " " + this.secondLastName;
+	}
+
+	// Manejo de relaciones inversas
 	public UserEntity getUserEntity() {
 		return userEntity;
 	}
 
 	public void setUserEntity(UserEntity userEntity) {
 		this.userEntity = userEntity;
-		if(userEntity != null) {
+		if (userEntity != null) {
 			userEntity.setEmployee(this);// Establece la relación inversa
 		}
 	}
@@ -126,21 +140,22 @@ public class Employee implements Serializable {
 
 	public void setPhone(Phone phone) {
 		this.phone = phone;
-		if(phone != null) {
+		if (phone != null) {
 			phone.setEmployet(this);// Establece la relación inversa
 		}
 	}
+
 	public Address getAddress() {
 		return address;
 	}
 
 	public void setAddress(Address address) {
 		this.address = address;
-        if (address != null) {
-            address.setEmploye(this); // Establece la relación inversa
-        }
+		if (address != null) {
+			address.setEmploye(this); // Establece la relación inversa
+		}
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -252,7 +267,7 @@ public class Employee implements Serializable {
 	public void setFechingreso(Date fechingreso) {
 		this.fechingreso = fechingreso;
 	}
-	
+
 	public String getFoto() {
 		return foto;
 	}
@@ -260,6 +275,16 @@ public class Employee implements Serializable {
 	public void setFoto(String foto) {
 		this.foto = foto;
 	}
+	
+	public Date getFechsalida() {
+		return fechsalida;
+	}
+
+	public void setFechsalida(Date fechsalida) {
+		this.fechsalida = fechsalida;
+	}
+
+
 
 	private static final long serialVersionUID = 1L;
 }

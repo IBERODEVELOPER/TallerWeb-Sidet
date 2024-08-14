@@ -1,7 +1,10 @@
 package com.ibero.demo.controller;
 
 import com.ibero.demo.entity.Employee;
+import com.ibero.demo.entity.UserEntity;
 import com.ibero.demo.service.IPeopleService;
+import com.ibero.demo.service.IUserService;
+import com.ibero.demo.util.EmailValuesDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -12,18 +15,23 @@ import org.springframework.validation.BindingResult;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -48,38 +56,28 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class PeopleController {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
+	// obtenemos la ruta
+	private final static String UPLOADS_FOLDER = "C://Users//Ibero//Documents//Spring//Workspace//TallerWeb-Fotos/";
 
 	@Autowired
 	private IPeopleService peopleService;
+	
+	@Value("${spring.mail.username}")
+	private String mailFrom;
+	private static final String subject = "Credenciales de Acceso restablecido";
+	
+	@Autowired
+	private IUserService userService;
+
+	@GetMapping(value = "/events")
+	public String showEvents(Model model) {
+		model.addAttribute("titlepage", "©Registrex");
+		return "/pages/showevents";
+	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "/listPeople")
-	public String ListPeople(Model model, Authentication authentication, HttpSession session,
-			HttpServletRequest request) {
-
-		if (authentication != null && authentication.isAuthenticated()) {
-			// Verificar si el mensaje ya ha sido mostrado en esta sesión
-			Boolean isMessageShown = (Boolean) session.getAttribute("messageShown");
-			if (isMessageShown == null || !isMessageShown) {
-				// Obtener la hora actual
-				LocalDateTime now = LocalDateTime.now();
-				// Formatear la hora en el formato deseado
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-				String formattedNow = now.format(formatter);
-				model.addAttribute("success", "Hola " + authentication.getName()
-						+ " ha iniciado sesión con éxito,".concat("Hora de ingreso: " + formattedNow));
-				// Marcar el mensaje como mostrado en esta sesión
-				session.setAttribute("messageShown", true);
-			}
-		}
-		SecurityContext context = SecurityContextHolder.getContext();
-		Authentication aut = context.getAuthentication();
-		if (request.isUserInRole("ROLE_ADMIN")) {
-			logger.info("HttpServletRequest Hola ".concat(aut.getName()).concat("tienes acceso"));
-		} else {
-			logger.info("HttpServletRequest Hola ".concat(aut.getName()).concat("NO tienes acceso"));
-		}
-
+	public String ListPeople(Model model) {
 		model.addAttribute("titlepage", "Empleados registrados en el sistema");
 		model.addAttribute("employee", peopleService.findAllPeople());
 		return "/pages/allPeople";
@@ -112,6 +110,45 @@ public class PeopleController {
 		return "/pages/formPeople";
 	}
 
+	@Secured({"ROLE_USER","ROLE_ADMIN","ROLE_EDITOR","ROLE_EMPLOYEE","ROLE_SUPPORT"}) 
+	@PostMapping("/updatePicture")
+	public String updatePicture(@RequestParam("file") MultipartFile foto, @RequestParam("id") Integer id, RedirectAttributes flash) {
+		// obtenermos el empleado
+		Employee employee = peopleService.findOnePerson(id);
+		if (!foto.isEmpty()) {
+			
+			if (employee.getId() != null && employee.getId() > 0 && employee.getFoto() != null
+					&& employee.getFoto().length() > 0) {
+				// Construir la ruta completa con el nuevo nombre
+				Path rutaCompleta = Paths.get(UPLOADS_FOLDER + "//" + employee.getFoto());
+				// Obtenemos el archivo
+				File archivo = rutaCompleta.toFile();
+				if (archivo.exists() && archivo.canRead()) {
+					archivo.delete();
+				}
+			}
+			try {
+				// Obtener el nombre del archivo original y la extensión
+				String originalFilename = foto.getOriginalFilename();
+				String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+				// Crear el nuevo nombre de archivo utilizando el nombre del empleado
+				String nuevoNombreArchivo = employee.getName().replace(" ", "_") + extension;
+				// Construir la ruta completa con el nuevo nombre
+				Path rutaCompleta = Paths.get(UPLOADS_FOLDER + "//" + nuevoNombreArchivo);
+				byte[] bytes = foto.getBytes();
+				Files.write(rutaCompleta, bytes);
+				flash.addFlashAttribute("info", "Has subido correctamente '" + nuevoNombreArchivo + "'");
+				employee.setFoto(nuevoNombreArchivo);
+
+				logger.info("Archivo " + nuevoNombreArchivo + " Nombre Foto DB "+employee.getFoto());
+				peopleService.updateFoto(id,employee.getFoto());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return "redirect:/user/perfil";
+	}
+
 	@Secured("ROLE_ADMIN")
 	@PostMapping(value = "/formPeople")
 	public String processForm(@Valid Employee employee, BindingResult result, Model model,
@@ -124,15 +161,26 @@ public class PeopleController {
 		}
 		// Procesar foto
 		if (!foto.isEmpty()) {
-			String rootPath = "C://Users//Ibero//Documents//Spring//Workspace//TallerWeb-Fotos";
+
+			if (employee.getId() != null && employee.getId() > 0 && employee.getFoto() != null
+					&& employee.getFoto().length() > 0) {
+				// Construir la ruta completa con el nuevo nombre
+				Path rutaCompleta = Paths.get(UPLOADS_FOLDER + "//" + employee.getFoto());
+				// Obtenemos el archivo
+				File archivo = rutaCompleta.toFile();
+				if (archivo.exists() && archivo.canRead()) {
+					archivo.delete();
+				}
+			}
+
 			try {
 				// Obtener el nombre del archivo original y la extensión
-		        String originalFilename = foto.getOriginalFilename();
-		        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-		        // Crear el nuevo nombre de archivo utilizando el nombre del empleado
-		        String nuevoNombreArchivo = employee.getName().replace(" ", "_") + extension;
-		        // Construir la ruta completa con el nuevo nombre
-		        Path rutaCompleta = Paths.get(rootPath + "//" + nuevoNombreArchivo);
+				String originalFilename = foto.getOriginalFilename();
+				String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+				// Crear el nuevo nombre de archivo utilizando el nombre del empleado
+				String nuevoNombreArchivo = employee.getName().replace(" ", "_") + extension;
+				// Construir la ruta completa con el nuevo nombre
+				Path rutaCompleta = Paths.get(UPLOADS_FOLDER + "//" + nuevoNombreArchivo);
 				byte[] bytes = foto.getBytes();
 				Files.write(rutaCompleta, bytes);
 				flash.addFlashAttribute("info", "Has subido correctamente '" + nuevoNombreArchivo + "'");
@@ -161,7 +209,6 @@ public class PeopleController {
 			flash.addFlashAttribute("error", "El ID del cliente no puede ser 0");
 			return "redirect:/peoples/listPeople";
 		}
-
 		Employee employee = peopleService.findOnePerson(id);
 		if (employee == null) {
 			flash.addFlashAttribute("error", "El ID del cliente no existe en la BBDD");
@@ -178,12 +225,23 @@ public class PeopleController {
 	public ResponseEntity<Map<String, String>> deleteIdPerson(@PathVariable(value = "id") Integer id) {
 		Map<String, String> response = new HashMap<>();
 		if (id > 0) {
+			// obtenermos el empleado
+			Employee employee = peopleService.findOnePerson(id);
+			// eliminamos al empleado segun su id.
 			peopleService.deleteIdPerson(id);
-			response.put("message", "¡Cliente eliminado con éxito!");
+			response.put("message", "¡Empleado " + employee.getName() + " eliminado con éxito!");
+			// Construir la ruta completa con el nuevo nombre
+			Path rutaCompleta = Paths.get(UPLOADS_FOLDER + "//" + employee.getFoto());
+			// Obtenemos el archivo
+			File archivo = rutaCompleta.toFile();
+			if (archivo.exists() && archivo.canRead()) {
+				if (archivo.delete()) {
+					response.put("info", "¡Foto " + employee.getFoto() + "eliminado con éxito!");
+				}
+			}
 			return ResponseEntity.ok(response);
-
 		} else {
-			response.put("message", "Error al intentar eliminar el Cliente");
+			response.put("message", "Error al intentar eliminar al Empleado");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 	}

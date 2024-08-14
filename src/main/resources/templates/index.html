@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="es" 
-xmlns:th="http://www.thymeleaf.org" 
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<head th:replace="main/layout :: head"></head>
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 	<style>
+		.hidden {
+			display: none !important;
+		}
+
 		.chart-container {
 			position: relative;
 			width: 80%;
@@ -286,67 +288,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				</div>
 			</div>
 		</div>
-		<!-- Indicadores por Fecha 
-		<div class="card mt-4">
-			<div class="card-header">
-				<h5> <i class="fas fa-clock"></i> Indicadores por Fecha</h5>
-			</div>
-			<div class="card-body">
-				<div class="row">
-					<div class="col-md-6">
-						<form id="indicatorForm">
-							<div class="form-group">
-								<label for="fechaInicio" class="small-label">Fecha de Inicio:</label>
-								<input type="date" class="form-control small-input" id="fechaInicio" value="2023-07-01">
-							</div>
-							<div class="form-group">
-								<label for="fechaFin" class="small-label">Fecha de Fin:</label>
-								<input type="date" class="form-control small-input" id="fechaFin" value="2023-07-21">
-							</div>
-							<div class="form-group">
-								<label for="productividad" class="small-label">Productividad:</label>
-								<input type="number" class="form-control small-input" id="productividad" value="94.35">
-							</div>
-							<div class="form-group">
-								<label for="adherencia" class="small-label">Adherencia:</label>
-								<input type="number" class="form-control small-input" id="adherencia" value="95.61">
-							</div>
-							<div class="form-group">
-								<label for="ocupacion" class="small-label">Ocupación:</label>
-								<input type="number" class="form-control small-input" id="ocupacion" value="96.34">
-							</div>
-							<div class="form-group">
-								<label for="efectividad" class="small-label">Efectividad:</label>
-								<input type="number" class="form-control small-input" id="efectividad" value="100.00">
-							</div>
-							<button type="button" class="btn btn-primary" onclick="updateChart()">Actualizar
-								Indicadores</button>
-						</form>
-					</div>
-					<div class="col-md-6">
-						<div class="chart-container mt-4">
-							<canvas id="indicatorChart" class="chart"></canvas>
-						</div>
-					</div>
-				</div>
-			</div>
-		-->
 	</div>
-
-	<!--UN DIV
-		<div class="card mt-4">
-			<div class="card-header">
-				<h5><i class="fas fa-chart-line"></i> Progreso Mensual</h5>
-			</div>
-			<div class="card-body">
-				<div class="chart-container">
-					<canvas id="monthlyProgressChart" class="chart"></canvas>
-				</div>
-			</div>
-		</div>
-		-->
-
-
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

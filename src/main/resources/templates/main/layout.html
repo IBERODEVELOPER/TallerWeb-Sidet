@@ -12,6 +12,7 @@
 	<!-- Titulo de la Página -->
 	<link rel="icon" type="image/jpg" href="/images/favicon.png" />
 	<title th:if="${titlepage != null}" th:text="'© CONTACTEMP'+ ' : ' +${titlepage}"></title>
+	<title th:if="${titlepage == null}" th:text="'© CONTACTEMP'"></title>
 </head>
 
 <body>
@@ -27,8 +28,7 @@
 				<div id="menunav" class="collapse navbar-collapse" style="width: 100%;">
 					<ul class="navbar-nav ms-3" style="width: 100%;">
 						<li class="nav-item">
-							<a class="nav-link text-light fw-bold" th:href="@{/}" />Inicio</a>
-
+							<a class="nav-link text-light fw-bold" th:href="@{/}">Inicio</a>
 						</li>
 
 						<li class="nav-item dropdown">
@@ -45,12 +45,12 @@
 						</li>
 
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
+							<a class="nav-link dropdown-toggle text-light fw-bold" th:href="@{/peoples/events}" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Eventos
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Nuevo evento</a></li>
+								<li><a class="dropdown-item" th:href="@{/peoples/events}">Nuevo evento</a></li>
 							</ul>
 							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
 						</li>
@@ -69,7 +69,7 @@
 							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
 						</li>
 
-						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Usuarios
@@ -79,8 +79,7 @@
 								<li><a class="dropdown-item" th:href="@{/user/formUser}">Nuevo Usuario</a></li>
 							</ul>
 						</li>
-						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')"
-							style="margin-right: 15% !important;">
+						<li class="nav-item dropdown" >
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Reportes
@@ -90,31 +89,29 @@
 								<li><a class="dropdown-item" th:href="@{/role/formrol}">Gestiones del Mes</a></li>
 							</ul>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link text-light" href="/">
-								<ion-icon name="card-outline" style="font-size: 20px;"></ion-icon>
-							</a>
+						<li class="nav-item dropdown" style="margin-right: 7% !important;margin-left: 7%;margin-top: 1%;">
+							<span class="text-light fw-bold" th:text="${'Bienvenido '+ #authentication.principal.username}"></span>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-light" href="/">
+							<a class="nav-link text-light" th:href="@{/user/changekey}" title="Cambiar contraseña">
 								<ion-icon name="key-outline" style="font-size: 20px;"></ion-icon>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-light" th:href="@{/user/perfil}">
+							<a class="nav-link text-light" th:href="@{/user/perfil}" title="ver perfil de usuario">
 								<ion-icon name="person-outline" style="font-size: 20px;"></ion-icon>
 							</a>
 						</li>
 						<li class="nav-item">
 							<form th:action="@{/logout}" method="post" style="display: inline;">
 								<button type="submit" class="nav-link text-light"
-									style="background: none; border: none;">
+									style="background: none; border: none;" title="Cerrar sesión">
 									<ion-icon name="log-out-outline" style="font-size: 20px;"></ion-icon>
 								</button>
 							</form>
 						</li>
 						<li class="nav-item">
-							<img class="rounded-circle"	th:src="@{'/TallerWeb-Fotos/' + ${#authentication.principal.employeeFoto}}"	style="margin-top: 4px;width: 25px;height: 25px;">
+							<img title="Foto del usuario" class="rounded-circle"	th:src="@{'/TallerWeb-Fotos/' + ${#authentication.principal.employeeFoto}}"	style="margin-top: 4px;width: 25px;height: 25px;">
 						</li>
 					</ul>
 				</div>
@@ -164,8 +161,7 @@
 			<div id="message4" class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
 		</div>
 	</header>
-
-	<footer th:fragment="footer" class="container-fluid d-none d-sm-block" style="height: auto;margin-top: 10px;">
+	<footer th:fragment="footer" class="container-fluid d-none d-xxl-block" style="height: auto;margin-top: 10px;">
 		<div class="container" style="height: auto;">
 			<p align="center">
 				<img th:src="@{/images/iconlogo.png}" width="20" height="20" alt="Logo el informatico" />
@@ -181,7 +177,5 @@
 		<script th:src="@{/js/funciones.js}"></script>
 		<script th:src="@{/js/sweetalert.min.js}"></script>
 	</footer>
-
 </body>
-
 </html>

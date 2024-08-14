@@ -1,13 +1,18 @@
 package com.ibero.demo.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,11 +20,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import com.ibero.demo.dao.IUserDao;
 import com.ibero.demo.entity.CustomUserDetails;
 import com.ibero.demo.entity.Role;
 import com.ibero.demo.entity.UserEntity;
+import com.ibero.demo.util.EmailValuesDTO;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 @Service("iUserServiceImpl")
 public class IUserServiceImpl implements IUserService, UserDetailsService {
@@ -89,6 +100,8 @@ public class IUserServiceImpl implements IUserService, UserDetailsService {
 			}
 		}
 		//lanzar un email 
+		
+		
 		userDao.save(user);
 	}
 
@@ -112,12 +125,39 @@ public class IUserServiceImpl implements IUserService, UserDetailsService {
 		// Obtener la foto del empleado asociado al usuario
 	    String employeeFoto = user.getEmployee().getFoto();
 		
-		return new CustomUserDetails(user.getUserName(), user.getUserPassword(), user.getUserestado(),
+		return new CustomUserDetails(user, user.getUserName(), user.getUserPassword(), user.getUserestado(),
 	            true, true, true, authorities, employeeFoto);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public UserEntity findByUserName(String userName) {
 		return userDao.findByUserName(userName);
 	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public String getPasswordByUsername(String userName) {
+		UserEntity user = userDao.findByUserName(userName);
+		return user != null ? user.getUserPassword() : null;
+	}
+
+	
+	@Override
+	@Transactional(readOnly = true)
+	public boolean checkPassword(Integer id, String userPassword) {
+		UserEntity user = userDao.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+		// Comparar la contraseña ingresada con la contraseña cifrada almacenada
+        return passwordEncoder.matches(userPassword, user.getUserPassword());
+	}
+
+	@Transactional
+	@Override
+	public void updatePass(Integer id, String userPassword,boolean status) {
+		UserEntity user = userDao.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+		user.setTemporaryPassword(status);
+		user.setUserPassword(userPassword);
+		userDao.save(user);
+	}
+	
 }

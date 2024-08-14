@@ -1,6 +1,7 @@
 package com.ibero.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,8 +46,20 @@ public class IPeopleServiceImpl implements IPeopleService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Employee findByUserEntity(UserEntity userEntity) {
 		return peopleDao.findByUserEntity(userEntity);
 	}
 
+	@Override
+	@Transactional
+	public void updateFoto(Integer id, String foto) {
+		peopleDao.updateFoto(id, foto);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<Employee> findByEmailPeople(String emailPeople) {
+		return peopleDao.findByEmailPeople(emailPeople);
+	}
 	}

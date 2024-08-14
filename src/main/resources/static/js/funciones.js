@@ -1,3 +1,84 @@
+$(document).ready(function() {
+	var messagesHidden = false;
+	function hideShowContainers() {
+		if (messagesHidden) return;
+		var successMessage = $('#message1');
+		var errorMessage = $('#message2');
+		var warningMessage = $('#message3');
+		var infoMessage = $('#message4');
+
+		// Ocultar mensajes después de 5 segundos
+		setTimeout(function() {
+			if (successMessage.is(':visible')) {
+				successMessage.hide(3000, function() {
+					successMessage.addClass('hidden');
+				});
+			}
+			if (errorMessage.is(':visible')) {
+				errorMessage.hide(3000, function() {
+					errorMessage.addClass('hidden');
+				});
+			}
+			if (warningMessage.is(':visible')) {
+				warningMessage.fadeOut(3000, function() {
+					warningMessage.addClass('hidden');
+				});
+			}
+			if (infoMessage.is(':visible')) {
+				infoMessage.hide(3000, function() {
+					infoMessage.addClass('hidden');
+				});
+			}
+			messagesHidden = true;
+		}, 5000);
+
+	};
+	// Ejecutar la función para ocultar los mensajes
+	hideShowContainers();
+});
+
+function togglePasswordVisibility(passwordFieldId, toggleIcon) {
+	const passwordField = document.getElementById(passwordFieldId);
+	const isPasswordVisible = passwordField.type === 'text';
+
+	passwordField.type = isPasswordVisible ? 'password' : 'text';
+	toggleIcon.classList.toggle('fa-eye-slash', isPasswordVisible);
+	toggleIcon.classList.toggle('fa-eye', !isPasswordVisible);
+}
+
+function validateForm() {
+	const newPassword = document.getElementById('newPassword').value;
+	const repeatPassword = document.getElementById('repeatPassword').value;
+
+	const newPasswordError = document.getElementById('newPasswordError');
+	const repeatPasswordError = document.getElementById('repeatPasswordError');
+
+	// Limpiar mensajes de error
+	newPasswordError.textContent = '';
+	repeatPasswordError.textContent = '';
+
+	// Reglas de complejidad de la contraseña (puedes modificar estas reglas según tus necesidades)
+	const minLength = 8;
+	const hasUpperCase = /[A-Z]/.test(newPassword);
+	const hasLowerCase = /[a-z]/.test(newPassword);
+	const hasNumber = /[0-9]/.test(newPassword);
+	const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
+
+	let valid = true;
+
+	if (newPassword.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+		newPasswordError.textContent = 'La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una letra minúscula, un número y un carácter especial !@#$%^&*(),.?":{}|<>.';
+		valid = false;
+	}
+
+	if (newPassword !== repeatPassword) {
+		repeatPasswordError.textContent = 'Las contraseñas no coinciden.';
+		valid = false;
+	}
+
+	return valid;
+}
+
 function QuestionDeleteByIdPerson(id) {
 	console.log(id);
 	swal({
@@ -112,41 +193,14 @@ function QuestionSavePeople() {
 		});
 }
 
-$(document).ready(function() {
-	var messagesHidden = false;
-	function hideShowContainers() {
-		if (messagesHidden) return;
-		var successMessage = $('#message1');
-		var errorMessage = $('#message2');
-		var warningMessage = $('#message3');
-		var infoMessage = $('#message4');
-
-		// Ocultar mensajes después de 5 segundos
-		setTimeout(function() {
-			if (successMessage.is(':visible')) {
-				successMessage.hide(3000, function() {
-					successMessage.addClass('hidden');
-				});
-			}
-			if (errorMessage.is(':visible')) {
-				errorMessage.hide(3000, function() {
-					errorMessage.addClass('hidden');
-				});
-			}
-			if (warningMessage.is(':visible')) {
-				warningMessage.fadeOut(3000, function() {
-					warningMessage.addClass('hidden');
-				});
-			}
-			if (infoMessage.is(':visible')) {
-				infoMessage.hide(3000, function() {
-					infoMessage.addClass('hidden');
-				});
-			}
-			messagesHidden = true;
-		}, 5000);
-
+document.getElementById('formFile').addEventListener('change', function(event) {
+	const file = event.target.files[0];
+	if (file) {
+		const reader = new FileReader();
+		reader.onload = function(e) {
+			document.getElementById('imgAvatar').src = e.target.result;
+		}
+		reader.readAsDataURL(file);
 	}
-	// Ejecutar la función para ocultar los mensajes
-	hideShowContainers();
 });
+

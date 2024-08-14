@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="main/layout :: head">
+	<style>
+		.container {
+			margin-top: 50px;
+			max-width: 600px;
+			background-color: #f8f9fa;
+			padding: 30px;
+			border-radius: 10px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.btn-dark {
+			width: 100%;
+		}
+
+		.text-muted {
+			font-size: 0.7rem;
+		}
+	</style>
+</head>
+
+<body class="bg-light bg-gradient">
+	<header th:replace="main/layout :: header"></header>
+	<div class="container-fluid d-flex flex-column min-vh-100" id="pantll">
+		<div class="container" >
+			<main class="flex-grow-1 d-flex justify-content-center">
+			<div class="col-4">
+				<div class="icono">
+					<i class="fa-solid fa-key"></i>
+				</div>
+				<h3 class="text-center">Actualizar Contraseña</h3>
+				<form th:action="@{/user/changekey}" th:object="${user}" method="post" onsubmit="return validateForm()">
+					<div class="mb-3">
+						<label for="currentPassword" class="form-label">Contraseña Actual:</label>
+						<div class="input-group">
+							<input type="password" class="form-control" id="currentPassword"
+								placeholder="Contraseña Actual">
+							<span class="input-group-text"><i class="fa-solid fa-eye password-toggle"
+									onclick="togglePasswordVisibility('currentPassword', this)"></i>
+							</span>
+						</div>
+						<div id="currentPasswordError"></div>
+					</div>
+					<div class="mb-3">
+						<label for="newPassword" class="form-label">Nueva Contraseña:</label>
+						<div class="input-group">
+							<input type="password" name="userPassword" class="form-control" id="newPassword" placeholder="Nueva Contraseña">
+							<input type="hidden" name="id" th:value="${user.id}">
+							<span class="input-group-text">
+								<i class="fa-solid fa-eye password-toggle"
+									onclick="togglePasswordVisibility('newPassword', this)"></i>
+							</span>
+							<div class="form-text text-danger" id="newPasswordError"></div>
+						</div>
+						<div class="form-text text-danger" id="newPasswordError"></div>
+					</div>
+					<div class="mb-3">
+						<label for="repeatPassword" class="form-label">Repita Nueva Contraseña:</label>
+						<div class="input-group">
+							<input type="password" class="form-control" id="repeatPassword"
+								placeholder="Repita Nueva Contraseña">
+							<span class="input-group-text">
+								<i class="fa-solid fa-eye password-toggle"
+									onclick="togglePasswordVisibility('repeatPassword', this)"></i>
+							</span>
+						</div>
+						<div class="form-text text-danger" id="repeatPasswordError"></div>
+					</div>
+					<div class="text-center">
+						<button type="submit" class="btn btn-dark">Cambiar Contraseña</button>
+					</div>
+					<main class="flex-grow-1">
+					<div class="mt-3">
+						<ul class="text-muted fw-light">
+							<li>La nueva contraseña debe contener como mínimo 8 dígitos.</li>
+							<li>Por seguridad, debe usar al menos números y letras (mayúsculas y minúsculas).</li>
+							<li>Por seguridad, debe usar al menos un carácter especial: '!@#$%^&amp;*(),.?&quot;: {}|&lt;&gt;'.</li>
+							<li>El sistema no permitirá registrar una contraseña que anteriormente ya haya sido
+								utilizada.
+							</li>
+							<li>Despues de actualizar su contraseña cierre sesión y vuelta a ingresar</li>
+						</ul>
+					</div>
+					</main>
+				</form>
+			</div>
+			</main>
+		</div>
+	</div>
+	<script th:inline="javascript">
+		async function getPassword(username, currentPassword) {
+			const url = new URL('http://localhost:8090/user/password/' + username);
+			url.searchParams.append('currentPassword', currentPassword);
+			const fullUrl = url.href;
+			console.log(fullUrl);
+			try {
+				const response = await fetch(url, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+					}
+				});
+				const result = await response.text(); // Asumiendo que la respuesta es un texto simple
+				if (response.ok) {
+					return result; // Retorna la contraseña actual si la respuesta es correcta
+				} else {
+					return null; // Retorna null si hay un error
+				}
+			} catch (error) {
+				console.error('Error en la solicitud:', error);
+			}
+			return result;
+		}
+
+		async function checkPasswordInRealTime() {
+			var username = /*[[${#authentication.principal.username}]]*/ 'defaultUser';
+			const currentPassword = document.getElementById('currentPassword');
+			const errorElement = document.getElementById('currentPasswordError');
+			// Limpiar mensajes de error
+			errorElement.textContent = '';
+			currentPassword.addEventListener('input',async function () {
+				// Llama a getPassword
+			const Checkpassw = await getPassword(username, currentPassword.value);
+			console.log(Checkpassw);
+				if (Checkpassw) {
+					errorElement.textContent = 'La contraseña actual es correcta';
+					errorElement.style.color = 'green';
+				} else {
+					errorElement.textContent = 'La contraseña es incorrecta';
+					errorElement.style.color = 'red';
+				}
+			});
+		}
+		// Llama a la función para iniciar la verificación en tiempo real
+		checkPasswordInRealTime();
+
+	</script>
+	<footer th:replace="main/layout :: footer"></footer>
+</body>
+
+</html>

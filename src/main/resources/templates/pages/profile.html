@@ -12,23 +12,32 @@
 				<div class="container rounded bg-white mt-5 mb-5" style="margin-top: 24px !important;">
 					<h4 class="text-capitalize fw-bold" th:text="${titlepage}"></h4>
 					<div class="row">
-						<div class="col-md-3 border-right border border-warning"
+						<div class="col-md-3 border-right rounded border border-warning bg-dark bg-gradient"
 							style="margin-left: 15px;margin-right: 10px;width: 30%;">
-							<div class="d-flex flex-column align-items-center text-center p-3 py-5">
-								<!-- Muestra cuando la persona tiene foto -->
-								<img th:if="${employee.foto != null and #strings.length(employee.foto) > 0}"  class="img-thumbnail rounded float-left"
-									style="max-width: 80%;" th:src="@{'/TallerWeb-Fotos/'+${employee.foto}}"
-									th:alt="${employee.foto}" />
-								<!-- Si la persoan no tiene foto muestra una imagen por defecto -->
-								<img th:if="${employee.foto == null}"  class="img-thumbnail rounded float-left"
-									style="max-width: 90%;" th:src="@{/images/predeterminado.png}"
-									alt="Imganen predeterminado" />
-									
-								<span class="font-weight-bold" th:text="${employee.fullName}"></span>
-								<span class="text-black-50" th:text="${employee.emailPeople}"></span>
-							</div>
+							<form th:action="@{/peoples/updatePicture}" method="post" enctype="multipart/form-data">
+								<div class="d-flex flex-column align-items-center p-3 py-5">
+
+									<!-- Muestra cuando la persona tiene foto -->
+									<img id="imgAvatar"
+										th:if="${employee.foto != null and #strings.length(employee.foto) > 0}"
+										class="img-thumbnail rounded float-left" style="max-width: 80%;"
+										th:src="@{'/TallerWeb-Fotos/'+${employee.foto}}" th:alt="${employee.foto}" />
+
+									<!-- Si la persoan no tiene foto muestra una imagen por defecto -->
+									<img th:if="${employee.foto == null}" class="img-thumbnail rounded float-left"
+										style="max-width: 90%;" th:src="@{/images/predeterminado.png}"
+										alt="Imganen predeterminado" />
+									<div class="input-group mb-3" style="margin-top: 5px;">
+										<input class="form-control" name="file" type="file" id="formFile">
+										<input type="hidden" name="id" th:value="${employee.id}">
+										<button type="submit" class="btn btn-light">Actualizar</button>
+									</div>
+									<span class="text-light font-weight-bold" th:text="${employee.fullName}"></span>
+									<span class=" text-light font-weight-bold" th:text="${employee.emailPeople}"></span>
+								</div>
+							</form>
 						</div>
-						<div class="col-md-10 mx-auto border border-success" style="width: 66%;">
+						<div class="col-md-10 mx-auto rounded border border-success" style="width: 66%;">
 							<div class="p-3 py-5">
 
 								<div class="d-flex justify-content-between align-items-center mb-3"
@@ -42,9 +51,13 @@
 										<label>Nombre</label>
 										<input type="text" class="form-control" th:field="*{employee.name}" disabled>
 
-										<label>Doc. Identidad</label>
-										<input type="text" class="form-control" th:field="*{employee.identityPeople}"
+										<label>T. Documento</label>
+										<input type="text" class="form-control" th:field="*{employee.tipoDocumento}"
 											disabled>
+
+										<label>Género</label>
+										<input type="text" class="form-control" th:field="*{employee.genero}" disabled>
+
 									</div>
 									<!-- Columna 2 -->
 									<div class="col-md-4 mb-3">
@@ -52,9 +65,14 @@
 										<input type="text" class="form-control" th:field="*{employee.firstLastName}"
 											disabled>
 
-										<label>Fec. Nacimiento</label>
-										<input type="text" class="form-control" th:field="*{employee.happyDay}"
+										<label>N° Documento</label>
+										<input type="text" class="form-control" th:field="*{employee.identityPeople}"
 											disabled>
+
+										<label>Estado Civil</label>
+										<input type="text" class="form-control" th:field="*{employee.estadoCivil}"
+											disabled>
+
 									</div>
 									<!-- Columna 3 -->
 									<div class="col-md-4 mb-3">
@@ -62,47 +80,83 @@
 										<input type="text" class="form-control" th:field="*{employee.secondLastName}"
 											disabled>
 
-										<label>Cargo</label>
-										<input type="text" class="form-control" th:field="*{employee.cargo}"
-											placeholder="Soporte de Procesos" disabled>
+										<label>Fec. Nacimiento</label>
+										<input type="text" class="form-control" th:field="*{employee.happyDay}"
+											disabled>
+
+										<label>Correo E.</label>
+										<input type="text" class="form-control" th:field="*{employee.emailPeople}"
+											disabled>
+
+
 									</div>
 									<!-- Columna 1 - fila2 -->
 									<div class="d-flex justify-content-between align-items-center mb-3"
 										style="margin-bottom: 4px !important;">
-										<h4 class="text-right text-center" th:text="${'Cuenta de usuario'}"></h4>
+										<h4 class="text-right text-center"
+											th:text="${'Información de Contacto y Trabajo'}"></h4>
 									</div>
 									<div class="col-md-4 mb-3">
-										<label>Usuario</label>
-										<input type="text" class="form-control"
-											th:field="*{employee.userEntity.userName}" disabled>
+										<label>Tlfn. de Emergencia</label>
+										<input type="text" class="form-control" th:field="*{employee.phone.phonenumber}"
+											disabled>
+
+										<label>Cargo</label>
+										<input type="text" class="form-control" th:field="*{employee.cargo}"
+											placeholder="cargo ocupado en la empresa" disabled>
 
 									</div>
 									<div class="col-md-4 mb-3">
-										<label>Contraseña</label>
-										<input type="text" class="form-control"
-											th:field="*{employee.userEntity.userPassword}" disabled>
+										<label>Tlfn. de Contacto</label>
+										<input type="text" class="form-control" th:field="*{employee.phone.cellphone}"
+											disabled>
+
+										<label>Fch. Salida de la Empresa</label>
+										<input type="text" class="form-control" th:if="${employee.fechsalida != null}" th:field="*{employee.fechsalida}"	placeholder="Fecha de Salida de la Compañia" disabled>
+										<input th:if="${employee.fechsalida == null}" type="text" class="form-control" value="Sigue laborando" disabled>
 									</div>
 									<div class="col-md-4 mb-3">
-										<label>Estado</label>
-										<input th:if="${employee.userEntity.getUserestado() == true}" type="text"
-											class="form-control" value="Activo" disabled>
-										<input th:if="${employee.userEntity.getUserestado() == false}" type="text"
-											class="form-control" value="Inactivo" disabled>
+										<label>Fch. Ingreso a la Empresa</label>
+										<input type="text" class="form-control" th:field="*{employee.fechingreso}"
+											disabled>
+											<label>Estado</label>
+											<input th:if="${employee.userEntity == null}" type="text"
+												class="form-control" value="Aun no tiene cuenta" disabled>
+											<input th:if="${employee.userEntity != null and employee.userEntity.getUserestado() == true}" type="text"
+												class="form-control" value="Activo" disabled>
+											<input th:if="${employee.userEntity != null and employee.userEntity.getUserestado() == false}" type="text"
+												class="form-control" value="Inactivo" disabled>
+									</div>
+									<!-- Columna 1 - fila2 -->
+									<div class="d-flex justify-content-between align-items-center mb-3"
+										style="margin-bottom: 4px !important;">
+										<h4 class="text-right text-center" th:text="${'Domicilio'}"></h4>
+									</div>
+									<div class="col-md-4 mb-3">
+										<label>Residencia</label>
+										<input type="text" class="form-control"
+											th:field="*{employee.fullAddressWithEmployee}" readonly>
+
+									</div>
+									<div class="col-md-8 mb-3">
+										<label>Dirección</label>
+										<input type="text" class="form-control" th:field="*{employee.address.direccion}"
+											disabled>
+										<label>Referencia</label>
+										<input type="text" class="form-control"
+											th:field="*{employee.address.referencia}" disabled>
 									</div>
 								</div>
 								<div class="row mt-3">
 									<div class="col-md-12 text-center">
-										<a th:href="@{/peoples/listPeople}" class="btn btn-outline-success">
+										<a th:href="@{/}" class="btn btn-outline-success">
 											<ion-icon name="arrow-undo-outline"></ion-icon>Regresar</a>
 									</div>
-
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
-
 			</div>
 		</div>
 	</div>

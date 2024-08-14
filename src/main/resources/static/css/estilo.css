@@ -6,22 +6,34 @@ body {
 	flex-direction: column;
 }
 
+#pantll {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
 .hidden {
-    display: none !important;
+	display: none !important;
 }
 
 .labels {
-		font-size: 11px
-}
-	
-#pantll {
-	height: 100%;
-	width: 100%;
+	font-size: 11px
 }
 
-#btnStyle :hover{
-   color: #fff !important;
-   border-color: rgb(0, 64, 64) !important;
+.icono {
+	font-size: 50px;
+	color: #333;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+#btnStyle :hover {
+	color: #fff !important;
+	border-color: rgb(0, 64, 64) !important;
 }
 
 
@@ -47,50 +59,50 @@ button.centrado {
 }
 
 .small-table {
-		max-width: 30%;
-		/* Ajusta el ancho según tus necesidades */
-		font-size: 0.9rem;
-		/* Reduce el tamaño de la fuente */
-	}
+	max-width: 30%;
+	/* Ajusta el ancho según tus necesidades */
+	font-size: 0.9rem;
+	/* Reduce el tamaño de la fuente */
+}
 
 
-	.form-control:focus {
-		box-shadow: none;
-		border-color: #BA68C8
-	}
+.form-control:focus {
+	box-shadow: none;
+	border-color: #BA68C8
+}
 
-	.profile-button {
-		background: rgb(99, 39, 120);
-		box-shadow: none;
-		border: none
-	}
+.profile-button {
+	background: rgb(99, 39, 120);
+	box-shadow: none;
+	border: none
+}
 
-	.profile-button:hover {
-		background: #682773
-	}
+.profile-button:hover {
+	background: #682773
+}
 
-	.profile-button:focus {
-		background: #682773;
-		box-shadow: none
-	}
+.profile-button:focus {
+	background: #682773;
+	box-shadow: none
+}
 
-	.profile-button:active {
-		background: #682773;
-		box-shadow: none
-	}
+.profile-button:active {
+	background: #682773;
+	box-shadow: none
+}
 
-	.back:hover {
-		color: #682773;
-		cursor: pointer
-	}
+.back:hover {
+	color: #682773;
+	cursor: pointer
+}
 
-	.labels {
-		font-size: 11px
-	}
+.labels {
+	font-size: 11px
+}
 
-	.add-experience:hover {
-		background: #BA68C8;
-		color: #fff;
-		cursor: pointer;
-		border: solid 1px #BA68C8
-	}
+.add-experience:hover {
+	background: #BA68C8;
+	color: #fff;
+	cursor: pointer;
+	border: solid 1px #BA68C8
+}

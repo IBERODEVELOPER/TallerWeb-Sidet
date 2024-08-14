@@ -176,51 +176,7 @@
 			</div>
 		</div>
 	</div>
-	<footer th:replace="main/layout :: footer"></footer>
-	<script>
-		function validateForm() {
-			const newPassword = document.getElementById('newPassword').value;
-			const repeatPassword = document.getElementById('repeatPassword').value;
-
-			const newPasswordError = document.getElementById('newPasswordError');
-			const repeatPasswordError = document.getElementById('repeatPasswordError');
-
-			// Limpiar mensajes de error
-			newPasswordError.textContent = '';
-			repeatPasswordError.textContent = '';
-
-			// Reglas de complejidad de la contraseña (puedes modificar estas reglas según tus necesidades)
-			const minLength = 8;
-			const hasUpperCase = /[A-Z]/.test(newPassword);
-			const hasLowerCase = /[a-z]/.test(newPassword);
-			const hasNumber = /[0-9]/.test(newPassword);
-			const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
-
-			let valid = true;
-
-			if (newPassword.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-				newPasswordError.textContent = 'La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una letra minúscula, un número y un carácter especial !@#$%^&*(),.?":{}|<>.';
-				valid = false;
-			}
-
-			if (newPassword !== repeatPassword) {
-				repeatPasswordError.textContent = 'Las contraseñas no coinciden.';
-				valid = false;
-			}
-
-			return valid;
-		}
-
-		function togglePasswordVisibility(passwordFieldId, toggleIcon) {
-			const passwordField = document.getElementById(passwordFieldId);
-			const isPasswordVisible = passwordField.type === 'text';
-
-			passwordField.type = isPasswordVisible ? 'password' : 'text';
-			toggleIcon.classList.toggle('fa-eye-slash', isPasswordVisible);
-			toggleIcon.classList.toggle('fa-eye', !isPasswordVisible);
-		}
-
-	</script>
+	<footer th:replace="main/layout :: footer" class="d-md-none d-lg-block"></footer>
 </body>
 
 </html>

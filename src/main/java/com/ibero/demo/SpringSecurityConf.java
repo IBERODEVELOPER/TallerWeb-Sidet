@@ -10,7 +10,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+
 import com.ibero.demo.auth.handler.LoginSuccesHandler;
+import com.ibero.demo.auth.handler.TemporaryPasswordFilter;
 import com.ibero.demo.service.IUserServiceImpl;
 
 
@@ -29,11 +33,11 @@ public class SpringSecurityConf {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests((authz) -> authz.requestMatchers("/login", "/css/**", "/js/**", "/images/**","/error/**", "/peoples/listPeople").permitAll()
+		http
+		.addFilterBefore(new TemporaryPasswordFilter(), UsernamePasswordAuthenticationFilter.class)
+		.authorizeHttpRequests((authz) -> authz.requestMatchers("/login", "/css/**", "/js/**", "/images/**","/error/**","/send-email").permitAll()
 				/*.requestMatchers("/peoples/listPeople").hasAnyRole("USER")
-				.requestMatchers("/user/userReg").hasAnyRole("ADMIN")
-				.requestMatchers("/peoples/**").hasAnyRole("ADMIN")
-				.requestMatchers("/rol/**").hasAnyRole("ADMIN")*/
+				.requestMatchers("/user/userReg").hasAnyRole("ADMIN")*/
 				.anyRequest().authenticated())
 				.formLogin(login -> login
 						.successHandler(successHandler)
