@@ -1,3 +1,7 @@
+:root {
+	--primary-color: #3131cc;
+}
+
 html,
 body {
 	height: 100%;
@@ -38,7 +42,7 @@ main {
 
 
 #fondologin {
-	background-image: url('/images/background.jpg');
+	background-image: url('/images/fondo.png');
 	background-position: center;
 	/* Center the image */
 	background-repeat: no-repeat;
@@ -106,3 +110,66 @@ button.centrado {
 	cursor: pointer;
 	border: solid 1px #BA68C8
 }
+
+
+
+/* Login page*/
+.login-card{
+	width: 100%;
+	max-width: 500px;
+	position: relative;
+    z-index: 5;
+	
+}
+.login-card .card{
+	border-radius: 20px ;
+	border: none;
+	box-shadow: 17px 20px 0 0 rgba(0,0,0,.15);
+}
+.login-card .card-header{
+	border: none;
+}
+.login-card h3{
+	font-size: 20px;
+	color: var(--primary-color);
+}
+
+
+.login-card .input-group i{
+	padding: 4px;
+}
+.login-card .input-group-text:not(.password-eyes){
+	padding: 13px;
+	border-radius: 14px 0 0 14px;
+}
+.login-card .input-group-text.password-eyes{
+	padding: 13px;
+	border-radius: 0 14px 14px  0;
+}
+
+
+
+.login-card .form-control{
+	padding: 13px;
+	border-radius: 13px; 
+}
+
+.login-card  [type="submit"]{
+    padding: 12px 13px;
+	width: 200px;
+	border-radius: 13px;
+	font-size:18px;
+}
+#particles{
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: 50% 50%;
+	position: fixed;
+	top: 0px;
+	z-index:1;
+	left: 0;
+	bottom: 0;
+  }
+  
+  
