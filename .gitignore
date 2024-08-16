@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Compu Wil ###
+.gitignore
+src/main/resources/application.properties
