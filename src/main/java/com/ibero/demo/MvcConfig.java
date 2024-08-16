@@ -1,5 +1,7 @@
 package com.ibero.demo;
 
+import java.nio.file.Paths;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,7 +22,9 @@ public class MvcConfig implements WebMvcConfigurer{
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		WebMvcConfigurer.super.addResourceHandlers(registry);
-		registry.addResourceHandler("/TallerWeb-Fotos/**").addResourceLocations("file:/C:/Users/Ibero/Documents/Spring/Workspace/TallerWeb-Fotos/");
+		String resourcesPath = Paths.get("TallerWeb-Fotos").toAbsolutePath().toUri().toString();
+		registry.addResourceHandler("/TallerWeb-Fotos/**")
+		.addResourceLocations(resourcesPath);
 	}
 	
 	@Override

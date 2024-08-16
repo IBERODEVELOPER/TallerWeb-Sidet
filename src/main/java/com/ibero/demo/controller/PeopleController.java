@@ -1,5 +1,6 @@
 package com.ibero.demo.controller;
 
+import com.ibero.demo.entity.CustomUserDetails;
 import com.ibero.demo.entity.Employee;
 import com.ibero.demo.entity.UserEntity;
 import com.ibero.demo.service.IPeopleService;
@@ -35,6 +36,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -56,18 +58,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class PeopleController {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-	// obtenemos la ruta
-	private final static String UPLOADS_FOLDER = "C://Users//Ibero//Documents//Spring//Workspace//TallerWeb-Fotos/";
 
 	@Autowired
 	private IPeopleService peopleService;
-	
-	@Value("${spring.mail.username}")
-	private String mailFrom;
-	private static final String subject = "Credenciales de Acceso restablecido";
-	
-	@Autowired
-	private IUserService userService;
 
 	@GetMapping(value = "/events")
 	public String showEvents(Model model) {
@@ -110,38 +103,36 @@ public class PeopleController {
 		return "/pages/formPeople";
 	}
 
-	@Secured({"ROLE_USER","ROLE_ADMIN","ROLE_EDITOR","ROLE_EMPLOYEE","ROLE_SUPPORT"}) 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN", "ROLE_EDITOR", "ROLE_EMPLOYEE", "ROLE_SUPPORT" })
 	@PostMapping("/updatePicture")
-	public String updatePicture(@RequestParam("file") MultipartFile foto, @RequestParam("id") Integer id, RedirectAttributes flash) {
+	public String updatePicture(@RequestParam("file") MultipartFile foto, @RequestParam("id") Integer id,
+			RedirectAttributes flash) {
 		// obtenermos el empleado
 		Employee employee = peopleService.findOnePerson(id);
 		if (!foto.isEmpty()) {
-			
-			if (employee.getId() != null && employee.getId() > 0 && employee.getFoto() != null
-					&& employee.getFoto().length() > 0) {
-				// Construir la ruta completa con el nuevo nombre
-				Path rutaCompleta = Paths.get(UPLOADS_FOLDER + "//" + employee.getFoto());
-				// Obtenemos el archivo
-				File archivo = rutaCompleta.toFile();
-				if (archivo.exists() && archivo.canRead()) {
-					archivo.delete();
+			// Obtener el nombre del archivo original y la extensión
+			String originalFilename = foto.getOriginalFilename();
+			String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+			// Crear el nuevo nombre de archivo utilizando el nombre del empleado
+			String nuevoNombreArchivo = employee.getName().replace(" ", "_") + "_" + System.currentTimeMillis() + extension;
+			// ruta relativa
+			Path rootPath = Paths.get("TallerWeb-Fotos").resolve(nuevoNombreArchivo);
+			// ruta absoluta
+			Path rootAbsPath = rootPath.toAbsolutePath();
+			if (employee.getFoto() != null && !employee.getFoto().isEmpty()) {
+				Path pathFotoAnterior = Paths.get("TallerWeb-Fotos").resolve(employee.getFoto()).toAbsolutePath();
+	            File archivoFotoAnterior = pathFotoAnterior.toFile();
+				if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
+					archivoFotoAnterior.delete();
 				}
 			}
 			try {
-				// Obtener el nombre del archivo original y la extensión
-				String originalFilename = foto.getOriginalFilename();
-				String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-				// Crear el nuevo nombre de archivo utilizando el nombre del empleado
-				String nuevoNombreArchivo = employee.getName().replace(" ", "_") + extension;
-				// Construir la ruta completa con el nuevo nombre
-				Path rutaCompleta = Paths.get(UPLOADS_FOLDER + "//" + nuevoNombreArchivo);
 				byte[] bytes = foto.getBytes();
-				Files.write(rutaCompleta, bytes);
-				flash.addFlashAttribute("info", "Has subido correctamente '" + nuevoNombreArchivo + "'");
+				Files.write(rootPath, bytes);
+				flash.addFlashAttribute("success", "Has subido correctamente '" + nuevoNombreArchivo + "'");
+				flash.addFlashAttribute("mensage", "Al actualizar su foto cierre sesión para visualizar los cambios");
 				employee.setFoto(nuevoNombreArchivo);
-
-				logger.info("Archivo " + nuevoNombreArchivo + " Nombre Foto DB "+employee.getFoto());
-				peopleService.updateFoto(id,employee.getFoto());
+				peopleService.updateFoto(id, employee.getFoto());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -161,28 +152,27 @@ public class PeopleController {
 		}
 		// Procesar foto
 		if (!foto.isEmpty()) {
-
+			// Obtener el nombre del archivo original y la extensión
+			String originalFilename = foto.getOriginalFilename();
+			String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+			// Crear el nuevo nombre de archivo utilizando el nombre del empleado
+			String nuevoNombreArchivo = employee.getName().replace(" ", "_") + extension;
+			// ruta relativa
+			Path rootPath = Paths.get("TallerWeb-Fotos").resolve(nuevoNombreArchivo);
+			// ruta absoluta
+			Path rootAbsPath = rootPath.toAbsolutePath();
 			if (employee.getId() != null && employee.getId() > 0 && employee.getFoto() != null
 					&& employee.getFoto().length() > 0) {
-				// Construir la ruta completa con el nuevo nombre
-				Path rutaCompleta = Paths.get(UPLOADS_FOLDER + "//" + employee.getFoto());
 				// Obtenemos el archivo
-				File archivo = rutaCompleta.toFile();
+				File archivo = rootAbsPath.toFile();
 				if (archivo.exists() && archivo.canRead()) {
 					archivo.delete();
 				}
 			}
 
 			try {
-				// Obtener el nombre del archivo original y la extensión
-				String originalFilename = foto.getOriginalFilename();
-				String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-				// Crear el nuevo nombre de archivo utilizando el nombre del empleado
-				String nuevoNombreArchivo = employee.getName().replace(" ", "_") + extension;
-				// Construir la ruta completa con el nuevo nombre
-				Path rutaCompleta = Paths.get(UPLOADS_FOLDER + "//" + nuevoNombreArchivo);
 				byte[] bytes = foto.getBytes();
-				Files.write(rutaCompleta, bytes);
+				Files.write(rootAbsPath, bytes);
 				flash.addFlashAttribute("info", "Has subido correctamente '" + nuevoNombreArchivo + "'");
 				employee.setFoto(nuevoNombreArchivo);
 			} catch (IOException e) {
@@ -230,10 +220,12 @@ public class PeopleController {
 			// eliminamos al empleado segun su id.
 			peopleService.deleteIdPerson(id);
 			response.put("message", "¡Empleado " + employee.getName() + " eliminado con éxito!");
-			// Construir la ruta completa con el nuevo nombre
-			Path rutaCompleta = Paths.get(UPLOADS_FOLDER + "//" + employee.getFoto());
+			// ruta relativa
+			Path rootPath = Paths.get("TallerWeb-Fotos").resolve(employee.getFoto());
+			// ruta absoluta
+			Path rootAbsPath = rootPath.toAbsolutePath();
 			// Obtenemos el archivo
-			File archivo = rutaCompleta.toFile();
+			File archivo = rootAbsPath.toFile();
 			if (archivo.exists() && archivo.canRead()) {
 				if (archivo.delete()) {
 					response.put("info", "¡Foto " + employee.getFoto() + "eliminado con éxito!");
@@ -258,5 +250,5 @@ public class PeopleController {
 		Collection<? extends GrantedAuthority> authorities = aut.getAuthorities();
 		return authorities.contains(new SimpleGrantedAuthority(role));
 	}
-
+		
 }

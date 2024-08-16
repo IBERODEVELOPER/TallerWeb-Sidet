@@ -31,6 +31,7 @@ public class EmailService {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 	        Context context = new Context();
 	        Map<String, Object> model = new HashMap<>();
+	        model.put("employeename", dto.getEmployeename());
 	        model.put("userName", dto.getUserName());
 	        model.put("newPassword", dto.getNewuserpass());
 	        context.setVariables(model);
@@ -46,4 +47,27 @@ public class EmailService {
 		}
 		
 	} 
+	
+	public void sendEmailNewUser(EmailValuesDTO dto) {
+		MimeMessage message = mailSender.createMimeMessage();
+		try {
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	        Context context = new Context();
+	        Map<String, Object> model = new HashMap<>();
+	        model.put("employeename", dto.getEmployeename());
+	        model.put("userName", dto.getUserName());
+	        model.put("newPassword", dto.getNewuserpass());
+	        context.setVariables(model);
+	        String htmlText = templateEngine.process("emailnewuser", context);
+	        //para enviar el correo
+	        helper.setFrom(dto.getMailFrom());
+            helper.setTo(dto.getMailTo());
+            helper.setSubject(dto.getSubject());
+            helper.setText(htmlText, true);
+            mailSender.send(message);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

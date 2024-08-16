@@ -93,6 +93,9 @@ public class Employee implements Serializable {
 	@Email
 	@Column(length = 40)
 	private String emailPeople;
+	
+	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
+	private Schedule schedule;
 
 	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
 	private UserEntity userEntity;
@@ -105,7 +108,6 @@ public class Employee implements Serializable {
 
 	public Employee() {
 	}
-
 	// para manejar los dirección pais - Region y distrito
 	public String getFullAddressWithEmployee() {
 		return this.address.getPais() + " - " + this.address.getRegion() + " - " + this.address.getDistrito();
@@ -284,7 +286,14 @@ public class Employee implements Serializable {
 		this.fechsalida = fechsalida;
 	}
 
-
-
+	public Schedule getSchedule() {
+		return schedule;
+	}
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
+		if (schedule != null) {
+			schedule.setEmployee(this);
+        }
+	}
 	private static final long serialVersionUID = 1L;
 }

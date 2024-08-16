@@ -22,7 +22,7 @@ public class TemporaryPasswordFilter extends OncePerRequestFilter{
 			throws ServletException, IOException {
 		 // Verifica si es una solicitud para un recurso estático
         String path = request.getRequestURI();
-		if(path.startsWith("/css/") || path.startsWith("/js/") || path.startsWith("/images/")) {
+		if(path.startsWith("/css/") || path.startsWith("/js/") || path.startsWith("/images/") || path.startsWith("/TallerWeb-Fotos/")) {
 			filterChain.doFilter(request, response);
 			return;
 		}

@@ -79,6 +79,11 @@ function validateForm() {
 	return valid;
 }
 
+//actualizar la foto del usuario autentiocado
+function updateProfilePicture(newPhotoUrl) {
+    document.querySelector('.rounded-circle').src = newPhotoUrl;
+}
+
 function QuestionDeleteByIdPerson(id) {
 	console.log(id);
 	swal({

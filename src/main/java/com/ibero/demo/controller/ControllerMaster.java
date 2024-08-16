@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,7 +41,11 @@ public class ControllerMaster {
 	@Autowired
 	private EmailService emailservice;
 	
-	private static final String subject = "Cambio de Contraseña";
+	//configurar el emisor 
+	@Value("${spring.mail.username}")
+	private String mailFrom;
+	//asunto del email
+	private static final String subject = "Credencial Temporal de Acceso";
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -63,10 +68,9 @@ public class ControllerMaster {
 		return "/index";
 	}
 
-	@CrossOrigin(origins = "http://localhost:8090")
 	@PostMapping("/send-email") //
 	public String sendRestartPass(@RequestParam("mailTo") String mailTo, RedirectAttributes flash) {
-		logger.info("email :" + mailTo);
+		logger.info("mailTo :" + mailTo);
 		Optional<Employee> usuarioOpt = peopleService.findByEmailPeople(mailTo);
 		if (usuarioOpt.isPresent()) {
 			Employee empl = usuarioOpt.get();
@@ -80,16 +84,17 @@ public class ControllerMaster {
 			user.setUserPassword(passwordEncoder.encode(newPassword));
 			user.setTemporaryPassword(true);
 			userService.save(user);
-			//userService.updatePass(user.getId(), user.getUserPassword());
 			//Anotar el De Para Asunto del Correo
 			EmailValuesDTO dto = new EmailValuesDTO();
-			dto.setMailFrom(mailTo);//De
+			dto.setMailFrom(mailFrom);//De
 			dto.setMailTo(empl.getEmailPeople());//Para
 			dto.setSubject(subject);//Asunto
 			//Se necesita enviar el usuario propietario del correo
 			dto.setUserName(user.getUserName());
 			//Contraseña temporal 
 			dto.setNewuserpass(newPassword);
+			//para el nombre del empleado
+			dto.setEmployeename(empl.getFullName());
 			flash.addFlashAttribute("success", "Credenciales enviado a sus correo electronico");
 			// Envía la nueva contraseña al correo electrónico
 			logger.info("Credenciales enviado a sus correo electronico");

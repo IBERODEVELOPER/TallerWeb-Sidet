@@ -7,6 +7,7 @@ public class EmailValuesDTO {
     private String subject;//Asunto
     private String userName;//username del correo
     private String newuserpass;//nuevo password restablecido del sistema
+    private String employeename;
     
 	public String getMailFrom() {
 		return mailFrom;
@@ -38,5 +39,10 @@ public class EmailValuesDTO {
 	public void setNewuserpass(String newuserpass) {
 		this.newuserpass = newuserpass;
 	}
-    
+	public String getEmployeename() {
+		return employeename;
+	}
+	public void setEmployeename(String employeename) {
+		this.employeename = employeename;
+	}
 }

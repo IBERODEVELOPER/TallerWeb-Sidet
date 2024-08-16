@@ -1,6 +1,5 @@
 package com.ibero.demo.controller;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -30,8 +30,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ibero.demo.entity.Role;
 import com.ibero.demo.entity.Employee;
 import com.ibero.demo.entity.UserEntity;
+import com.ibero.demo.service.EmailService;
 import com.ibero.demo.service.IPeopleService;
 import com.ibero.demo.service.IUserService;
+import com.ibero.demo.util.EmailValuesDTO;
 
 import jakarta.validation.Valid;
 
@@ -47,8 +49,18 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
+	// configurar el emisor
+	@Value("${spring.mail.username}")
+	private String mailFrom;
+	// asunto del email
+	private static final String subject = "Alta de acceso al sistema";
+
+	@Autowired
+	private EmailService emailservice;
+	
 	@Autowired
 	private IPeopleService peopleService;
+
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping("/listUsers")
 	public String showUsers(Model model) {
@@ -86,7 +98,7 @@ public class UserController {
 				logger.info("Resultado : " + isPasswordValid);
 				String encodePass = passwordEncoder.encode(userPassword);
 				// Actualizar la contraseña y el estado de la contraseña temporal a false "0"
-				userService.updatePass(id, encodePass,false);
+				userService.updatePass(id, encodePass, false);
 				flash.addFlashAttribute("success", "Contraseña actualizada exitosamente.");
 			}
 		} catch (Exception e) {
@@ -180,8 +192,20 @@ public class UserController {
 
 		if (user.getId() == null) {
 			logger.info("Creando nuevo usuario");
-			flash.addFlashAttribute("success", "Usuario creado correctamente");
+			// Anotar el De Para Asunto del Correo
+			EmailValuesDTO dto = new EmailValuesDTO();
+			dto.setMailFrom(mailFrom);//DE
+			dto.setMailTo(user.getEmployee().getEmailPeople());//PARA
+			dto.setSubject(subject);//Asunto
+			dto.setEmployeename(user.getEmployee().getFullName());//Nombre del empleado
+			dto.setUserName(user.getUserName());
+			dto.setNewuserpass(user.getUserPassword());
+			//enviar al sevice
+			emailservice.sendEmailNewUser(dto);
+			//guardar el nuevo usuario
 			userService.saveUser(user);
+			flash.addFlashAttribute("success", "Usuario creado correctamente");
+			
 		} else {
 			logger.info("Actualizando datos de usuario");
 			flash.addFlashAttribute("success", "Usuario actualizado correctamente");
