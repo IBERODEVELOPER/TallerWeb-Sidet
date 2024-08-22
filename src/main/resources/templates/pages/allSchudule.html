@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="main/layout :: head"></head>
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container" id="pantll">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-body">
+						<H2 class="text-center" th:text="${titleform+ ' de '+ employee.fullName}"></H2>
+						<input type="hidden" name="id" th:value="${employee.id}" />
+						<table class="table table-bordered table-hover">
+							<thead class="table-dark text-center">
+								<tr>
+									<th scope="col">Días</th>
+									<th scope="col">Hora de Ingreso</th>
+									<th scope="col">Hora de Salida</th>
+									<th class="text-center" scope="col-auto">Horas</th>
+									<th sec:authorize="hasRole('ROLE_ADMIN')"><ion-icon
+											name="ellipsis-vertical-outline"></ion-icon></th>
+								</tr>
+							</thead>
+							<tbody class="table table-striped" th:each="schedule : ${schedules}">
+								<tr th:each="items : ${schedule.daySchedules}">
+									<th scope="row" th:text="${items.dayWeek}"></th>
+									<td th:text="${items.entryTime}"></td>
+									<td th:text="${items.leavWork}"></td>
+									<td class="text-center" th:text="${items.hoursWorked}"></td>
+									<td>
+									<!--  boton editar -->
+										<a sec:authorize="hasRole('ROLE_ADMIN')"
+											th:href="@{/dayschedule/editschudule/{id}(id=${items.id})}"
+											class="btn btn-outline-primary col-xs-4"
+											title="Editar por día"> <ion-icon name="create-outline"
+													style="font-size: 20px;"></ion-icon>
+										</a>
+									<!--  boton editar -->
+									<a sec:authorize="hasRole('ROLE_ADMIN')"
+											th:href="@{/dayschedule/deletediaby/{id}(id=${items.id})}"
+											class="btn btn-outline-danger col-xs-4"
+											title="Eliminar día del Horario"> 
+											<ion-icon name="trash-outline" style="font-size: 20px;"></ion-icon>
+									</a>
+									</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th colspan="3" class="text-right">Total de Horas Programados</th>
+									<th class="text-center" th:text="${totalHoursWorked}"
+										style="background-color: #e74c3c;"></th>
+								</tr>
+							</tfoot>
+						</table>
+						<div class="row justify-content-center">
+							<div class="col-sm-6 text-center mt-2">
+								<a th:href="@{/peoples/listPeople}"
+									class="btn btn-outline-success"> <ion-icon
+										name="arrow-undo-outline"></ion-icon>Lista de Empleados
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="main/layout :: footer" class="d-md-none d-lg-block"></footer>
+</body>
+
+</html>

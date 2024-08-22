@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="main/layout :: head"></head>
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container" id="pantll">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-body">
+						<h3 class="text-center fw-bold" th:text="${titleform}"></h3>
+						<form th:action="@{/schedule/schuduleweek/{emploID}(emploID=${emploID})}" th:object="${schedule}" method="post">
+							<input type="hidden" th:field="*{id}" />
+							<input type="hidden" name="emploID" th:value="${emploID}" />
+							<h5 class="fs-3" th:text="${FullName}"></h5>
+							<!-- Campos del horario -->
+							<table class="table table-bordered table-hover">
+								<thead class="table-dark text-center">
+									<tr>
+										<th class="col-xs-1 col-sm-2 col-md-1">Días</th>
+										<th class="col-2 col-sm-2 col-md-1">H. Ingreso</th>
+										<th class="col-2 col-sm-2 col-md-1">H. Salida</th>
+									</tr>
+								</thead>
+								<tbody class="table-striped">
+									<!-- Lunes -->
+						            <tr>
+						                <th scope="row">Lunes</th>
+						                <td><input type="text" th:field="*{daySchedules[0].entryTime}" class="form-control" placeholder="08:00"></td>
+						                <td><input type="text" th:field="*{daySchedules[0].leavWork}" class="form-control" placeholder="17:00"></td>
+						            </tr>
+						            <!-- Martes -->
+									<tr>
+						                <th scope="row">Martes</th>
+						                <td><input type="text" th:field="*{daySchedules[1].entryTime}" class="form-control" placeholder="08:00"></td>
+						                <td><input type="text" th:field="*{daySchedules[1].leavWork}" class="form-control" placeholder="17:00"></td>
+						            </tr>
+						            <!-- Miercoles -->
+						            <tr>
+						                <th scope="row">Miercoles</th>
+						                <td><input type="text" th:field="*{daySchedules[2].entryTime}" class="form-control" placeholder="08:00"></td>
+						                <td><input type="text" th:field="*{daySchedules[2].leavWork}" class="form-control" placeholder="17:00"></td>
+						            </tr>
+						            <!-- Jueves -->
+						            <tr>
+						                <th scope="row">Jueves</th>
+						                <td><input type="text" th:field="*{daySchedules[3].entryTime}" class="form-control" placeholder="08:00"></td>
+						                <td><input type="text" th:field="*{daySchedules[3].leavWork}" class="form-control" placeholder="17:00"></td>
+						            </tr>
+						            <!-- Viernes -->
+						            <tr>
+						                <th scope="row">Viernes </th>
+						                <td><input type="text" th:field="*{daySchedules[4].entryTime}" class="form-control" placeholder="08:00"></td>
+						                <td><input type="text" th:field="*{daySchedules[4].leavWork}" class="form-control" placeholder="17:00"></td>
+						            </tr>
+						            <!-- Sabado -->
+						            <tr>
+						                <th scope="row">Sabado</th>
+						                <td><input type="text" th:field="*{daySchedules[5].entryTime}" class="form-control" placeholder="08:00"></td>
+						                <td><input type="text" th:field="*{daySchedules[5].leavWork}" class="form-control" placeholder="17:00"></td>
+						            </tr>
+						            <!-- Domingo -->
+						            <tr>
+						                <th scope="row">Domingo</th>
+						                <td><input type="text" th:field="*{daySchedules[6].entryTime}" class="form-control" placeholder="08:00"></td>
+						                <td><input type="text" th:field="*{daySchedules[6].leavWork}" class="form-control" placeholder="17:00"></td>
+						            </tr>
+								</tbody>
+							</table>
+						<div class="row justify-content-center">
+							<div class="col-sm-4 text-center mt-2">
+								<button type="submit" class="btn btn-outline-info">
+									<ion-icon name="save-outline"></ion-icon>
+									Crear turno
+								</button>
+							</div>
+							<div class="col-sm-4 text-center mt-2">
+								<a th:href="@{/peoples/verschedule/{id}(id=${employeeId})}"
+									class="btn btn-outline-secondary"> <ion-icon
+										name="calendar-outline"></ion-icon> Regresar a horario
+								</a>
+							</div>
+
+							<div class="col-sm-4 text-center mt-2">
+								<a th:href="@{/peoples/listPeople}"
+									class="btn btn-outline-success"> <ion-icon
+										name="arrow-undo-outline"></ion-icon>Lista de Empleados
+								</a>
+							</div>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="main/layout :: footer" class="d-md-none d-lg-block"></footer>
+</body>
+
+</html>

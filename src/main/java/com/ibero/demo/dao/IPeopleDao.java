@@ -18,6 +18,11 @@ public interface IPeopleDao extends CrudRepository<Employee, Integer>{
 	
 	Optional<Employee> findByEmailPeople(String emailPeople);
 	
+	@Query("SELECT e FROM Employee e " +
+		       "LEFT JOIN FETCH e.schedule s " +
+		       "WHERE e.userEntity = :userEntity")
+	Employee findByUserEntityWithSchedules(@Param("userEntity") UserEntity userEntity);
+	
 	@Modifying
     @Query("UPDATE Employee e SET e.foto = :foto WHERE e.id = :id")
     public void updateFoto(@Param("id") Integer id, @Param("foto") String foto);

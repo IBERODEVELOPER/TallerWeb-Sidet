@@ -28,10 +28,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ibero.demo.entity.Role;
+import com.ibero.demo.entity.Schedule;
 import com.ibero.demo.entity.Employee;
 import com.ibero.demo.entity.UserEntity;
 import com.ibero.demo.service.EmailService;
 import com.ibero.demo.service.IPeopleService;
+import com.ibero.demo.service.IScheduleService;
 import com.ibero.demo.service.IUserService;
 import com.ibero.demo.util.EmailValuesDTO;
 
@@ -54,12 +56,12 @@ public class UserController {
 	private String mailFrom;
 	// asunto del email
 	private static final String subject = "Alta de acceso al sistema";
-
 	@Autowired
 	private EmailService emailservice;
-	
 	@Autowired
 	private IPeopleService peopleService;
+	@Autowired
+	private IScheduleService schuduleservice;
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping("/listUsers")
@@ -132,9 +134,14 @@ public class UserController {
 		// Recuperar los datos del usuario y del empleado relacionado desde el servicio
 		UserEntity user = userService.findByUserName(username);
 		Employee employee = peopleService.findByUserEntity(user);
+		// Recuperar el horario asociado al empleado
+	    //Schedule schedule = schuduleservice.findByEmployee(employee);
+	    // Obtenemos mediante el empleado su referencia con el horario
+	 	List<Schedule> schedules = employee.getSchedule();
 		// Pasar los datos al modelo
 		model.addAttribute("user", user);
 		model.addAttribute("employee", employee);
+		model.addAttribute("schedules", schedules);
 		return "/pages/profile";
 	}
 

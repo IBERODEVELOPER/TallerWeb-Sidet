@@ -36,7 +36,7 @@ public class SpringSecurityConf {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 		.addFilterBefore(new TemporaryPasswordFilter(), UsernamePasswordAuthenticationFilter.class)
-		.authorizeHttpRequests((authz) -> authz.requestMatchers("/login", "/css/**", "/js/**", "/images/**","/error/**","/send-email").permitAll()
+		.authorizeHttpRequests((authz) -> authz.requestMatchers("/login", "/css/**", "/js/**", "/images/**","/error/**","/outofturn","/send-email").permitAll()
 				/*.requestMatchers("/peoples/listPeople").hasAnyRole("USER")
 				.requestMatchers("/user/userReg").hasAnyRole("ADMIN")*/
 				.anyRequest().authenticated())

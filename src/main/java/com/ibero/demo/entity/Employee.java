@@ -1,11 +1,13 @@
 package com.ibero.demo.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -18,6 +20,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -94,8 +97,8 @@ public class Employee implements Serializable {
 	@Column(length = 40)
 	private String emailPeople;
 	
-	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
-	private Schedule schedule;
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<Schedule> schedule;
 
 	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
 	private UserEntity userEntity;
@@ -286,14 +289,13 @@ public class Employee implements Serializable {
 		this.fechsalida = fechsalida;
 	}
 
-	public Schedule getSchedule() {
+	public List<Schedule> getSchedule() {
 		return schedule;
 	}
-	public void setSchedule(Schedule schedule) {
+	
+	public void setSchedule(List<Schedule> schedule) {
 		this.schedule = schedule;
-		if (schedule != null) {
-			schedule.setEmployee(this);
-        }
 	}
+
 	private static final long serialVersionUID = 1L;
 }

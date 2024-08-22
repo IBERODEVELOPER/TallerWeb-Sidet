@@ -46,7 +46,7 @@ public class ControllerMaster {
 	private String mailFrom;
 	//asunto del email
 	private static final String subject = "Credencial Temporal de Acceso";
-
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -62,10 +62,20 @@ public class ControllerMaster {
 		return "/login";
 	}
 	
-	@GetMapping(value = "/")
+	@GetMapping({"/","index"})
 	public String showIndex(Model model) {
 		model.addAttribute("titlepage", "©Registrex");
 		return "/index";
+	}
+	
+	@GetMapping("/outofturn")
+	public String showoutofturn(Model model) {
+		StringBuilder mensaje = new StringBuilder("Sr(a). Empleado");
+		mensaje.append(" Usted se encuentra fuera del turno de trabajo");
+		mensaje.append(" o no se encuentra programado para su ingreso en estas horas.");
+		model.addAttribute("titlepage", "Fuera del horario de atención.");
+		model.addAttribute("mensajeoutofturn", mensaje.toString());
+		return "/outofturn";
 	}
 
 	@PostMapping("/send-email") //

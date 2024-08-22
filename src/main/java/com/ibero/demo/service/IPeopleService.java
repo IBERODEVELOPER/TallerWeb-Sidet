@@ -28,4 +28,7 @@ public interface IPeopleService {
 	
 	//Obtener el Email de la persona
 	public Optional<Employee> findByEmailPeople(String emailPeople);
+	
+	//carga de schudule consulta 
+	public Employee getEmployeeWithFullSchedule(UserEntity userEntity);
 }

@@ -2,10 +2,14 @@ package com.ibero.demo;
 
 import java.nio.file.Paths;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -14,7 +18,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer{
-
+	
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/error/error_403").setViewName("error_403");
 	}
@@ -54,5 +58,4 @@ public class MvcConfig implements WebMvcConfigurer{
         resolver.setCheckExistence(true);
         return resolver;
     }
-	
 }
