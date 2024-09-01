@@ -41,7 +41,7 @@
 					<div class="card-body text-dark">
 						<form class="container" th:action="@{/peoples/formPeople}" th:object="${employee}" method="post"
 							enctype="multipart/form-data">
-							<legend class="text-center" th:text="${titleform}"></legend>
+							<H2 class="text-center" th:text="${titleform}"></H2>
 							<!-- Foto -->
 							<div class="row justify-content-center mb-3">
 								<div class="col-lg-2 text-center" style="width: 50%;">
@@ -50,14 +50,13 @@
 											<img id="imgAvatar" th:src="@{/images/default.png}" width="150" height="150"
 												class="rounded-circle img-fluid">
 										</div>
-										<div class="input-group mb-3" style="margin-top: 5px;">
-											<input class="form-control" name="file" type="file" id="formFile">
-											<button th:if="${employee.getId() > 0}" type="button" class="btn btn-light">Actualizar</button>
-										</div>
+		                				<div class="input-group mb-3" style="margin-top: 5px;">
+											<input class="form-control" name="file" type="file" id="formFile"> 
+											<input type="hidden" name="id" th:value="${employee.id}">
+										</div>								
 									</div>
 								</div>
 							</div>
-
 							<!-- Campos del formulario -->
 							<div class="form-group row mb-3 xs-3">
 								<label class="col-sm-2 col-form-label">Nombres</label>
@@ -194,14 +193,14 @@
 								<label class="col-sm-2 col-form-label">N° Telefono</label>
 								<div class="col-sm-4">
 									<input type="text" th:field="*{phone.phonenumber}" class="form-control"
-										placeholder="+014516458" th:errorclass="'form-control alert-danger'" />
+										placeholder="+014516458" th:errorclass="'form-control alert-danger'" required/>
 									<div class="form-text text-danger" th:if="${#fields.hasErrors('phone.phonenumber')}"
 										th:errors="*{phone.phonenumber}"></div>
 								</div>
 								<label class="col-sm-2 col-form-label">N° Celular</label>
 								<div class="col-sm-4">
 									<input type="text" th:field="*{phone.cellphone}" class="form-control"
-										placeholder="+51943292759" th:errorclass="'form-control alert-danger'" />
+										placeholder="+51943292759" th:errorclass="'form-control alert-danger'" required/>
 									<div class="form-text text-danger" th:if="${#fields.hasErrors('phone.cellphone')}"
 										th:errors="*{phone.cellphone}"></div>
 								</div>
@@ -212,7 +211,7 @@
 								<label class="col-sm-2 col-form-label">Pais</label>
 								<div class="col-sm-2">
 									<select th:errorclass="'form-control alert-danger'" class="form-control"
-										th:field="*{address.pais}">
+										th:field="*{address.pais}" required>
 										<option value="" selected>Seleccione</option>
 										<option th:value="'Perú'" th:text="'Perú'"></option>
 									</select>
@@ -222,7 +221,7 @@
 								<label class="col-sm-2 col-form-label">Ciudad</label>
 								<div class="col-sm-2">
 									<select th:errorclass="'form-control alert-danger'" class="form-control"
-										th:field="*{address.region}">
+										th:field="*{address.region}" required>
 										<option value="" selected>Seleccione</option>
 										<option th:value="'Lima'" th:text="'Lima'"></option>
 										<option th:value="'Chiclayo'" th:text="'Chiclayo'"></option>
@@ -234,7 +233,7 @@
 								<label class="col-sm-2 col-form-label">Distrito</label>
 								<div class="col-sm-2">
 									<select th:errorclass="'form-control alert-danger'" class="form-control"
-										th:field="*{address.distrito}">
+										th:field="*{address.distrito}" required>
 										<option value="" selected>Seleccione</option>
 										<option th:value="'Lima metropolitana'" th:text="'Lima'"></option>
 										<option th:value="'Ate'" th:text="'Ate'"></option>
@@ -250,14 +249,14 @@
 								<label class="col-sm-2 col-form-label">Dirección</label>
 								<div class="col-sm-4">
 									<input type="text" th:field="*{address.direccion}" class="form-control"
-										placeholder="Ramón Esteban" th:errorclass="'form-control alert-danger'" />
+										placeholder="Ramón Esteban" th:errorclass="'form-control alert-danger'" required/>
 									<div class="form-text text-danger" th:if="${#fields.hasErrors('address.direccion')}"
 										th:errors="*{address.direccion}"></div>
 								</div>
 								<label class="col-sm-2 col-form-label">Referencia</label>
 								<div class="col-sm-4">
 									<input type="text" th:field="*{address.referencia}" class="form-control"
-										placeholder="Ramón Esteban" th:errorclass="'form-control alert-danger'" />
+										placeholder="Ramón Esteban" th:errorclass="'form-control alert-danger'" required/>
 									<div class="form-text text-danger"
 										th:if="${#fields.hasErrors('address.referencia')}"
 										th:errors="*{address.referencia}"></div>

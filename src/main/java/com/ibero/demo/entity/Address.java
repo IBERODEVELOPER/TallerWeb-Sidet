@@ -20,23 +20,23 @@ public class Address implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@NotEmpty
+	@NotEmpty(message = "La referencia no debe estar vacía")
 	@Column(name="pais", length = 20)
 	private String pais;
 	
-	@NotEmpty
+	@NotEmpty(message = "La region no debe estar vacía")
 	@Column(name="region", length = 20)
 	private String region;
 	
-	@NotEmpty
+	@NotEmpty(message = "La distrito no debe estar vacía")
 	@Column(name="distrito", length = 20)
 	private String distrito;
 	
-	@NotEmpty
+	@NotEmpty(message = "La direccion no debe estar vacía")
 	@Column(name="direccion", length = 200)
 	private String direccion;
 	
-	@NotEmpty
+	@NotEmpty(message = "La referencia no debe estar vacía")
 	@Column(name="referencia", length = 200)
 	private String referencia;
 	

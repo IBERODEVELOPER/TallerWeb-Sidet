@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="main/layout :: head">
+<style>
+hr {
+  height: 1px;
+  background-color: red;
+}
+</style>
+</head>
+
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container" id="pantll">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Justificar
+							Tardanzas</li>
+					</ol>
+				</nav>
+
+				<div class="card">
+					<div class="card-body">
+						<!-- Formulario de registro -->
+						<form th:action="@{/reports/changetarding}" th:object="${tardins}"
+							method="post">
+							<h2 class="text-center" th:text="${titleform}"></h2>
+							<hr style="background-color: #c43122;">
+							<input type="hidden" th:field="*{id}">
+							<input type="hidden" th:field="*{employee}">
+							<div class="form-group row mb-3 xs-3">
+								<!-- Dias -->
+								<label class="col-sm-1 col-form-label">Días</label>
+								<div class="col-sm-2">
+									<input type="text" th:field="*{day}" class="form-control"
+										placeholder="Ramón Esteban"
+										th:errorclass="'form-control alert-danger'" readonly />
+								</div>
+								<!-- Fecha -->
+								<label class="col-sm-1 col-form-label">Fecha</label>
+								<div class="col-sm-2">
+									<input type="text" th:field="*{date}"
+										class="text-center form-control"
+										th:errorclass="'form-control alert-danger'" readonly />
+								</div>
+								<!-- Entrada programa -->
+								<label class="col-sm-3 col-form-label">Entrada
+									Programada</label>
+								<div class="col-sm-2">
+									<input type="text" th:field="*{scheduledEntryTime}"
+										class="text-center form-control" placeholder="HH:MM:00"
+										th:errorclass="'form-control alert-danger'" readonly />
+								</div>
+							</div>
+							<div class="form-group row mb-3 xs-3">
+								<label class="col-form-label" style="width: 18% !important;">Entrada
+									Marcado</label>
+								<div class="col-sm-1" style="width: 12% !important;">
+									<input type="text" th:field="*{actualEntryTime}"
+										class="text-center form-control"
+										th:errorclass="'form-control alert-danger'" readonly />
+								</div>
+								<label class="col-sm-2 col-xs-2 col-form-label" >Tardanza</label>
+								<div class="col-sm-2">
+									<input type="text" th:field="*{tardinessMinutes}"
+										class="text-center form-control" placeholder="HH:MM:00"
+										th:errorclass="'form-control alert-danger'" />
+									<div class="form-text text-danger"
+										th:if="${#fields.hasErrors('tardinessMinutes')}"
+										th:errors="*{tardinessMinutes}"></div>
+								</div>
+							</div>
+							<div class="form-group row mb-3 xs-3">
+								<label class="col-form-label" style="width: 18% !important;">Justificación</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" th:field="*{justifytard}" rows="3"
+										th:placeholder="${tardins.justifytard == null || tardins.justifytard.isEmpty()} ? 'Texto de Justificación' : ''"></textarea>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="row col-sm-5 mt-end"
+									style="margin-left: 20px; margin-right: 20px;">
+									<input type="submit" value="Guardar Justificación"
+										class="btn btn-outline-info" />
+								</div>
+								<div class="row col-sm-6">
+									<a th:href="@{/reports/asistence_general}" class="btn btn-outline-success"> 
+										<ion-icon name="arrow-undo-outline"></ion-icon>Reporte de Asistencia G.
+									</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="main/layout :: footer" class="d-md-none d-lg-block"></footer>
+</body>
+
+</html>

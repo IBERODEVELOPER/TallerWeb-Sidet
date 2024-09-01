@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" style="color-scheme: light;"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="main/layout :: head"></head>
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container-fluid" id="pantll">
+		<div class="container">
+			<div class="row">
+				<h1 class="text-info" th:text="${titlepage}"></h1>
+				<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Reporte
+							de asistencia general</li>
+					</ol>
+				</nav>
+				<!-- Filtro y botones -->
+				<form class="row g-2 mb-4" th:action="@{/reports/seachby}"
+					method="get">
+					<div class="col-8 col-sm-4">
+						<input class="form-control" type="search" name="documentNumber"
+							placeholder="Buscar empleado por N° de Documento"
+							aria-label="Search">
+					</div>
+					<div class="col-4 col-sm-2">
+						<button class="btn btn-outline-success w-100" type="submit">
+							<ion-icon name="search-outline"></ion-icon>
+							Search
+						</button>
+					</div>
+					<div class="col-4 col-sm-3">
+						<!-- Botón PDF -->
+						<a 	th:href="@{'/reports/seachbydpf?documentNumber=' + ${documentNumber} + '&format=pdf'}"
+							class="btn btn-outline-danger fw-bold"> 
+							<ion-icon name="document-outline"></ion-icon> PDF
+						</a>
+
+						<button class="btn btn-outline-success fw-bold ms-2" type="button">
+							<ion-icon name="document-text-outline"></ion-icon>
+							Excel
+						</button>
+					</div>
+				</form>
+				<table class="table table-bordered table-hover table-striped">
+					<thead class="table-dark text-center">
+						<tr>
+							<th class="col-2">Nombre Completo</th>
+							<th class="col-1">N° Documento</th>
+							<th class="col-1">Día</th>
+							<th class="col-1">Fecha</th>
+							<th class="col-1">I.P<sup>*</sup></th>
+							<th class="col-sm-1">H. Ingreso <sup>**</sup></th>
+							<th class="col-1">Tardanza</th>
+							<th class="col-sm-2">Justificación</th>
+							<th class="col-auto" sec:authorize="hasRole('ROLE_ADMIN')"><ion-icon
+									name="ellipsis-vertical-outline"></ion-icon></th>
+						</tr>
+					</thead>
+					<tbody th:if="${tardins != null}" th:each="item: ${tardins}">
+						<tr>
+							<th scope="row" th:text="${item.employee.fullName}"></th>
+							<td th:text="${item.employee.identityPeople}"></td>
+							<td th:text="${item.day}"></td>
+							<td th:text="${item.date}"></td>
+							<td th:text="${item.scheduledEntryTime}"></td>
+							<td th:text="${item.actualEntryTime}"></td>
+							<td class="text-center" th:text="${item.tardinessMinutes}"
+								th:classappend="${item.tardinessMinutes} > 0 ? 'text-white bg-danger' : 'bg-success'"></td>
+							<td th:text="${item.justifytard}"
+								th:classappend="${item.justifytard != null} and ${item.justifytard != ''} ? 'text-white bg-success' : 'bg-warning'"></td>
+							<td class="text-center" sec:authorize="hasRole('ROLE_ADMIN')">
+								<!-- Editar tardanza --> <a
+								sec:authorize="hasRole('ROLE_ADMIN')"
+								th:href="@{/reports/changetarding/} + ${item.id}"
+								class="btn btn-outline-info col-xs-4 tooltip-custom"
+								title="Editar Tardanza"> <ion-icon name="create-outline"
+										style="font-size: 20px;"></ion-icon></a> <!-- Eliminar registro -->
+								<a sec:authorize="hasRole('ROLE_ADMIN')"
+								th:href="@{/reports/deleteBy/} + ${item.id}" title="Eliminar"
+								class="btn btn-outline-danger col-xs-4"> <ion-icon
+										name="trash-outline" style="font-size: 20px;"></ion-icon></a>
+							</td>
+						</tr>
+					</tbody>
+					<!-- Muestra si no hay ningun valor -->
+					<tbody th:if="${tardins == null}">
+						<tr>
+							<td colspan="8" class="text-center">No se encontraron
+								registros de tardanza para este empleado.</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="row">
+					<span class="form-text">(*) Ingreso programado segun el
+						horario del empleado | (**) Hora de ingreso registrado en el
+						sistema</span>
+				</div>
+				<!-- Paginador -->
+				<nav th:replace="~{paginator-nav :: paginator}"></nav>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="main/layout :: footer"></footer>
+</body>
+
+</html>

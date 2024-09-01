@@ -4,7 +4,6 @@ import com.ibero.demo.entity.DaySchedule;
 import com.ibero.demo.entity.Employee;
 import com.ibero.demo.entity.Schedule;
 import com.ibero.demo.service.IPeopleService;
-import com.ibero.demo.util.DaysWeek;
 
 import jakarta.validation.Valid;
 
@@ -17,23 +16,17 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.ibero.demo.util.PageRender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,21 +45,28 @@ public class PeopleController {
 	@Autowired
 	private IPeopleService peopleService;
 
+	// ruta externa
+	private String rootC = "C://TallerWeb-Fotos";
+
 	@GetMapping(value = "/events")
 	public String showEvents(Model model) {
 		model.addAttribute("titlepage", "©Registrex");
 		return "/pages/showevents";
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping(value = "/listPeople")
-	public String ListPeople(Model model) {
+	public String ListPeople(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+		Pageable pageRequest = PageRequest.of(page, 10);
+		Page<Employee> employee = peopleService.findAllPeople(pageRequest);
+		PageRender<Employee> pageRender = new PageRender<Employee>("/peoples/listPeople", employee);
 		model.addAttribute("titlepage", "Empleados registrados en el sistema");
-		model.addAttribute("employee", peopleService.findAllPeople());
+		model.addAttribute("employee", employee);
+		model.addAttribute("page", pageRender);
 		return "/pages/allPeople";
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping(value = "/verdata/{id}")
 	public String verDatosCompleto(@PathVariable(value = "id") int id, Model model, RedirectAttributes flash) {
 		Employee employee = null;
@@ -76,9 +76,23 @@ public class PeopleController {
 			flash.addFlashAttribute("error", "El ID del cliente no puede ser 0");
 			return "redirect:/peoples/listPeople";
 		}
-
+		if (employee == null) {
+			flash.addFlashAttribute("error", "El ID del cliente no existe en la BBDD");
+			return "redirect:/peoples/listPeople";
+		}
+		// Obtenemos mediante el empleado su referencia con el horario
+		List<Schedule> schedules = employee.getSchedule();
+		// Calcular la suma total de horas trabajadas
+		int totalHoursWorked = 0;
+		for (Schedule schedule : schedules) {
+			for (DaySchedule daySchedule : schedule.getDaySchedules()) {
+				totalHoursWorked += daySchedule.getHoursWorked();
+			}
+		}
 		model.addAttribute("titlepage", "Ficha de datos");
 		model.addAttribute("employee", employee);
+		model.addAttribute("schedules", schedules);
+		model.addAttribute("totalHoursWorked", totalHoursWorked);
 		return "/pages/profile";
 	}
 
@@ -107,11 +121,11 @@ public class PeopleController {
 			String nuevoNombreArchivo = employee.getName().replace(" ", "_") + "_" + System.currentTimeMillis()
 					+ extension;
 			// ruta relativa
-			Path rootPath = Paths.get("TallerWeb-Fotos").resolve(nuevoNombreArchivo);
+			Path rootPath = Paths.get(rootC).resolve(nuevoNombreArchivo);
 			// ruta absoluta
 			Path rootAbsPath = rootPath.toAbsolutePath();
 			if (employee.getFoto() != null && !employee.getFoto().isEmpty()) {
-				Path pathFotoAnterior = Paths.get("TallerWeb-Fotos").resolve(employee.getFoto()).toAbsolutePath();
+				Path pathFotoAnterior = Paths.get(rootC).resolve(employee.getFoto()).toAbsolutePath();
 				File archivoFotoAnterior = pathFotoAnterior.toFile();
 				if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
 					archivoFotoAnterior.delete();
@@ -126,6 +140,7 @@ public class PeopleController {
 				peopleService.updateFoto(id, employee.getFoto());
 			} catch (IOException e) {
 				e.printStackTrace();
+				flash.addFlashAttribute("error", "Sucedio un error al intentar actualizar " + e);
 			}
 		}
 		return "redirect:/user/perfil";
@@ -133,7 +148,7 @@ public class PeopleController {
 
 	@Secured("ROLE_ADMIN")
 	@PostMapping(value = "/formPeople")
-	public String processForm(@Valid Employee employee, BindingResult result, Model model,
+	public String processForm(@Valid Employee employee,BindingResult result, Model model,
 			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
 
 		if (result.hasErrors()) {
@@ -149,7 +164,7 @@ public class PeopleController {
 			// Crear el nuevo nombre de archivo utilizando el nombre del empleado
 			String nuevoNombreArchivo = employee.getName().replace(" ", "_") + extension;
 			// ruta relativa
-			Path rootPath = Paths.get("TallerWeb-Fotos").resolve(nuevoNombreArchivo);
+			Path rootPath = Paths.get(rootC).resolve(nuevoNombreArchivo);
 			// ruta absoluta
 			Path rootAbsPath = rootPath.toAbsolutePath();
 			if (employee.getId() != null && employee.getId() > 0 && employee.getFoto() != null
@@ -184,6 +199,7 @@ public class PeopleController {
 		return "redirect:/peoples/listPeople";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping(value = "/formPeople/{id}")
 	public String editForm(@PathVariable(value = "id") int id, Map<String, Object> model, RedirectAttributes flash) {
 		if (id <= 0) {
@@ -201,6 +217,7 @@ public class PeopleController {
 		return "/pages/formPeople";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping(value = "/verschedule/{id}")
 	public String showFormSchudule(@PathVariable("id") Integer id, Model model, RedirectAttributes flash) {
 		if (id <= 0) {
@@ -215,12 +232,12 @@ public class PeopleController {
 		// Obtenemos mediante el empleado su referencia con el horario
 		List<Schedule> schedules = employee.getSchedule();
 		// Calcular la suma total de horas trabajadas
-        int totalHoursWorked = 0;
-        for (Schedule schedule : schedules) {
-        	for (DaySchedule daySchedule : schedule.getDaySchedules()) {
-        		totalHoursWorked += daySchedule.getHoursWorked();
+		int totalHoursWorked = 0;
+		for (Schedule schedule : schedules) {
+			for (DaySchedule daySchedule : schedule.getDaySchedules()) {
+				totalHoursWorked += daySchedule.getHoursWorked();
 			}
-        }
+		}
 		model.addAttribute("titleform", "Horario");
 		model.addAttribute("employee", employee);
 		model.addAttribute("schedules", schedules);
@@ -255,18 +272,4 @@ public class PeopleController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 	}
-
-	private boolean hasRole(String role) {
-		SecurityContext context = SecurityContextHolder.getContext();
-		if (context == null) {
-			return false;
-		}
-		Authentication aut = context.getAuthentication();
-		if (aut == null) {
-			return false;
-		}
-		Collection<? extends GrantedAuthority> authorities = aut.getAuthorities();
-		return authorities.contains(new SimpleGrantedAuthority(role));
-	}
-
 }

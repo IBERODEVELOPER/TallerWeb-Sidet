@@ -1,159 +1,159 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-	<head th:replace="main/layout :: head"></head>
-	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-	<style>
-		.hidden {
-			display: none !important;
-		}
+<head th:replace="main/layout :: head"></head>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+	rel="stylesheet">
+<style>
+.hidden {
+	display: none !important;
+}
 
-		.chart-container {
-			position: relative;
-			width: 80%;
-			max-width: 500px;
-			margin: auto;
-		}
+.chart-container {
+	position: relative;
+	width: 80%;
+	max-width: 500px;
+	margin: auto;
+}
 
-		.chart {
-			width: 100%;
-			height: auto;
-		}
+.chart {
+	width: 100%;
+	height: auto;
+}
 
-		.small-input {
-			max-width: 150px;
-			/* Ajusta este valor según tus necesidades */
-		}
+.small-input {
+	max-width: 150px;
+	/* Ajusta este valor según tus necesidades */
+}
 
-		.small-label {
-			font-size: 0.9em;
-			/* Ajusta este valor según tus necesidades */
-		}
+.small-label {
+	font-size: 0.9em;
+	/* Ajusta este valor según tus necesidades */
+}
 
-		ul li a {
-			color: aliceblue;
-		}
+ul li a {
+	color: aliceblue;
+}
 
-		.text-primary-custom {
-			color: white;
-		}
+.text-primary-custom {
+	color: white;
+}
 
-		.navbar-brand {
-			color: aliceblue;
-		}
+.navbar-brand {
+	color: aliceblue;
+}
 
-		.navbar-expand-lg {
-			background-color: dodgerblue;
-		}
+.navbar-expand-lg {
+	background-color: dodgerblue;
+}
 
-		.card-header {
-			position: relative;
-		}
+.card-header {
+	position: relative;
+}
 
-		.toggle-btn {
-			cursor: pointer;
-			font-size: 1.5rem;
-			position: absolute;
-			right: 0;
-			top: 50%;
-			transform: translateY(-50%);
-		}
+.toggle-btn {
+	cursor: pointer;
+	font-size: 1.5rem;
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+}
 
-		.card-body {
-			display: flex;
-			flex-direction: column;
-		}
+.card-body {
+	display: flex;
+	flex-direction: column;
+}
 
-		.header-row {
-			display: flex;
-			align-items: center;
-			gap: 15px;
-			/* Espacio entre los elementos */
-		}
+.header-row {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	/* Espacio entre los elementos */
+}
 
-		.info-icons {
-			display: flex;
-			gap: 20px;
-			/* Espacio entre los íconos */
-			align-items: center;
-			justify-content: space-around;
-		}
+.info-icons {
+	display: flex;
+	gap: 20px;
+	/* Espacio entre los íconos */
+	align-items: center;
+	justify-content: space-around;
+}
 
-		.info-icons div {
-			text-align: center;
-		}
+.info-icons div {
+	text-align: center;
+}
 
-		.small-label {
-			margin-bottom: 0;
-		}
+.small-label {
+	margin-bottom: 0;
+}
 
-		.small-input {
-			max-width: 150px;
-			/* Ajusta el tamaño máximo del input si es necesario */
-		}
+.small-input {
+	max-width: 150px;
+	/* Ajusta el tamaño máximo del input si es necesario */
+}
 
-		/*<!--aqui el modificado-->*/
-		.out {
-			text-align: center;
-		}
+/*<!--aqui el modificado-->*/
+.out {
+	text-align: center;
+}
 
-		.small-input {
-			max-width: 150px;
-			/* Ajusta este valor según tus necesidades */
-		}
+.small-input {
+	max-width: 150px;
+	/* Ajusta este valor según tus necesidades */
+}
 
-		.small-label {
-			font-size: 0.9em;
-			/* Ajusta este valor según tus necesidades */
-		}
+.small-label {
+	font-size: 0.9em;
+	/* Ajusta este valor según tus necesidades */
+}
 
-		ul li a {
-			color: aliceblue;
-		}
+ul li a {
+	color: aliceblue;
+}
 
-		.text-primary-custom {
-			color: white;
-		}
+.text-primary-custom {
+	color: white;
+}
 
-		.navbar-brand {
-			color: aliceblue;
-		}
+.navbar-brand {
+	color: aliceblue;
+}
 
-		.navbar-expand-lg {
-			background-color: dodgerblue;
-		}
+.navbar-expand-lg {
+	background-color: dodgerblue;
+}
 
-		.container2 {
+.container2 {
+	display: flex;
+	margin-bottom: 1em;
+}
 
-			display: flex;
+.item {
+	flex: auto;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding: 10px;
+	height: 500px;
+}
 
-			margin-bottom: 1em;
-		}
+.card2 {
+	box-shadow: 0 0 0 1px teal;
+	display: flex;
+	margin-bottom: 1em;
+	height: 200px;
+}
 
-		.item {
-			flex: auto;
-			padding-top: 1em;
-			padding-bottom: 1em;
-			padding: 10px;
-			height: 500px;
-		}
-
-		.card2 {
-			box-shadow: 0 0 0 1px teal;
-			display: flex;
-			margin-bottom: 1em;
-			height: 200px;
-		}
-
-		.cardpersonalizada {
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-			display: flex;
-			margin-bottom: 1em;
-			height: 450px;
-
-		}
-	</style>
+.cardpersonalizada {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	display: flex;
+	margin-bottom: 1em;
+	height: 450px;
+}
+</style>
 </head>
 
 <body>
@@ -162,23 +162,18 @@
 	<div class="container mt-4" id="pantll">
 
 		<div class="card">
-			<div class="card-header">
-				<h5 class="mb-0"><i class="fas fa-tasks" style="color: rgb(0, 0, 0);"></i> Evento en Progreso:
-					<strong>ACTIVIDADES ADMINISTRATIVAS</strong>
-				</h5>
-				<span class="toggle-btn" data-bs-toggle="collapse" data-bs-target="#collapseForm" aria-expanded="false"
-					aria-controls="collapseForm" style="margin-right: 10px;">
-					<i class="fas fa-chevron-down" style="color: cadetblue;"></i>
-				</span>
-			</div>
+
+
+
 			<div id="collapseForm" class="collapse">
 				<div class="card-body">
 					<form>
 						<div class="form-group row">
-							<label for="subtipoEvento" class="col-form-label col-sm-2">Subtipo de evento:</label>
+							<label for="subtipoEvento" class="col-form-label col-sm-2">Subtipo
+								de evento:</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="subtipoEvento" value="Sesiones de Feedback"
-									readonly>
+								<input type="text" class="form-control" id="subtipoEvento"
+									value="Sesiones de Feedback" readonly>
 							</div>
 						</div>
 						<div class="form-group" style="margin-bottom: 10px;">
@@ -199,13 +194,19 @@
 							<i class="fas fa-stopwatch"></i> Minutos acumulados
 						</h4>
 						<div class="d-flex align-items-center gap-1">
-							<label for="fecha" class="small-label mb-0">Fecha:</label>
-							<input type="date" class="form-control small-input" id="fecha" value="2023-07-21">
+							<label for="fecha" class="small-label mb-0">Fecha:</label> <input
+								type="date" class="form-control small-input" id="fecha"
+								value="2023-07-21">
 						</div>
-						<div class="info-icons mt-3 justify-content-around" style="width: 60% ;">
+						<div class="info-icons mt-3 justify-content-around"
+							style="width: 60%;">
+							<!-- Tardanza -->
 							<div>
 								<i class="fas fa-clock fa-lg"></i>
-								<p class="mb-0">0</p>
+								<p class="mb-0">
+									<!-- Muestra los minutos de tardanza -->
+									<span th:text="${tardinessMinutes}">0</span>
+								</p>
 							</div>
 							<div>
 								<i class="fas fa-coffee fa-lg"></i>
@@ -238,7 +239,9 @@
 			<div class="item mt-4 col-md-4">
 				<div class="card cardpersonalizada mt-4 col-md-20">
 					<div class="card-header">
-						<h5><i class="fas fa-tasks"></i> Indicadores 21-07-2024</h5>
+						<h5>
+							<i class="fas fa-tasks"></i> Indicadores 21-07-2024
+						</h5>
 					</div>
 					<div class="card-body">
 						<div class="out">
@@ -252,17 +255,22 @@
 			<div class="item mt-4 col-md-4">
 				<div class="card cardpersonalizada mt-4 col-md-20">
 					<div class="card-header">
-						<h5> <i class="fas fa-chart-pie"></i> Indicadores por Fecha</h5>
+						<h5>
+							<i class="fas fa-chart-pie"></i> Indicadores por Fecha
+						</h5>
 					</div>
-					<div class="card-body" style="align-items: center;justify-content: center;text-align: center;">
+					<div class="card-body"
+						style="align-items: center; justify-content: center; text-align: center;">
 						<div class="form-row">
 							<div class="form-group d-flex justify-content-center">
-								<label for="fechaInicio" class="small-label">Fecha de Inicio:</label>
-								<input type="date" class="form-control small-input" id="fechaInicio" value="2023-07-01">
+								<label for="fechaInicio" class="small-label">Fecha de
+									Inicio:</label> <input type="date" class="form-control small-input"
+									id="fechaInicio" value="2023-07-01">
 							</div>
 							<div class="form-group d-flex justify-content-center">
 								<label for="fechaFin" class="small-label">Fecha de Fin:</label>
-								<input type="date" class="form-control small-input" id="fechaFin" value="2023-07-21">
+								<input type="date" class="form-control small-input"
+									id="fechaFin" value="2023-07-21">
 							</div>
 							<div class="out">
 								<div class="chart-container">
@@ -278,11 +286,14 @@
 			<div class="item mt-4 col-md-4">
 				<div class="card cardpersonalizada mt-4">
 					<div class="card-header">
-						<h5><i class="fas fa-chart-line"></i> Progreso Mensual</h5>
+						<h5>
+							<i class="fas fa-chart-line"></i> Progreso Mensual
+						</h5>
 					</div>
 					<div class="card-body">
-						<div class="chart-container" style="height:300px;">
-							<canvas id="monthlyProgressChart" style="font-size:300px;" class="chart"></canvas>
+						<div class="chart-container" style="height: 300px;">
+							<canvas id="monthlyProgressChart" style="font-size: 300px;"
+								class="chart"></canvas>
 						</div>
 					</div>
 				</div>
@@ -290,8 +301,10 @@
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script>
@@ -301,24 +314,28 @@
 			const ocupacion = 30;
 			const efectividad = 40;
 
-			const ctx = document.getElementById('indicatorChart').getContext('2d');
+			const ctx = document.getElementById('indicatorChart').getContext(
+					'2d');
 			new Chart(ctx, {
-				type: 'polarArea',
-				data: {
-					labels: ['Productividad', 'Adherencia', 'Ocupación', 'Efectividad'],
-					datasets: [{
-						label: 'Indicadores',
-						data: [productividad, adherencia, ocupacion, efectividad],
-						backgroundColor: ['#a3e1d4', '#dedede', '#9CC3DA', '#f5b7b1']
-					}]
+				type : 'polarArea',
+				data : {
+					labels : [ 'Productividad', 'Adherencia', 'Ocupación',
+							'Efectividad' ],
+					datasets : [ {
+						label : 'Indicadores',
+						data : [ productividad, adherencia, ocupacion,
+								efectividad ],
+						backgroundColor : [ '#a3e1d4', '#dedede', '#9CC3DA',
+								'#f5b7b1' ]
+					} ]
 				},
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					scales: {
-						r: {
-							beginAtZero: true,
-							max: 100
+				options : {
+					responsive : true,
+					maintainAspectRatio : false,
+					scales : {
+						r : {
+							beginAtZero : true,
+							max : 100
 						}
 					}
 				}
@@ -326,56 +343,54 @@
 		}
 
 		function initializeMonthlyProgressChart() {
-			const ctx = document.getElementById('monthlyProgressChart').getContext('2d');
+			const ctx = document.getElementById('monthlyProgressChart')
+					.getContext('2d');
 			new Chart(ctx, {
-				type: 'line',
-				data: {
-					labels: ['8/2022', '9/2022', '10/2022', '11/2022', '12/2022', '1/2023', '2/2023', '3/2023', '4/2023', '5/2023', '6/2023', '7/2023'],
-					datasets: [
-						{
-							label: 'Productividad',
-							data: [0, 0, 0, 0, 25, 30, 35, 40, 45, 50, 55, 60],
-							borderColor: '#ff6f61',
-							backgroundColor: 'rgba(255, 111, 97, 0.2)',
-							fill: true
-						},
-						{
-							label: 'Adherencia',
-							data: [0, 0, 0, 0, 30, 35, 40, 45, 50, 55, 60, 65],
-							borderColor: '#6b5b95',
-							backgroundColor: 'rgba(107, 91, 149, 0.2)',
-							fill: true
-						},
-						{
-							label: 'Ocupación',
-							data: [0, 0, 0, 0, 40, 45, 50, 55, 60, 65, 70, 75],
-							borderColor: '#88d8b0',
-							backgroundColor: 'rgba(136, 216, 176, 0.2)',
-							fill: true
-						},
-						{
-							label: 'Efectividad',
-							data: [0, 0, 0, 0, 50, 55, 60, 65, 70, 75, 80, 85],
-							borderColor: '#f8c291',
-							backgroundColor: 'rgba(248, 194, 145, 0.2)',
-							fill: true
-						}
-					]
+				type : 'line',
+				data : {
+					labels : [ '8/2022', '9/2022', '10/2022', '11/2022',
+							'12/2022', '1/2023', '2/2023', '3/2023', '4/2023',
+							'5/2023', '6/2023', '7/2023' ],
+					datasets : [ {
+						label : 'Productividad',
+						data : [ 0, 0, 0, 0, 25, 30, 35, 40, 45, 50, 55, 60 ],
+						borderColor : '#ff6f61',
+						backgroundColor : 'rgba(255, 111, 97, 0.2)',
+						fill : true
+					}, {
+						label : 'Adherencia',
+						data : [ 0, 0, 0, 0, 30, 35, 40, 45, 50, 55, 60, 65 ],
+						borderColor : '#6b5b95',
+						backgroundColor : 'rgba(107, 91, 149, 0.2)',
+						fill : true
+					}, {
+						label : 'Ocupación',
+						data : [ 0, 0, 0, 0, 40, 45, 50, 55, 60, 65, 70, 75 ],
+						borderColor : '#88d8b0',
+						backgroundColor : 'rgba(136, 216, 176, 0.2)',
+						fill : true
+					}, {
+						label : 'Efectividad',
+						data : [ 0, 0, 0, 0, 50, 55, 60, 65, 70, 75, 80, 85 ],
+						borderColor : '#f8c291',
+						backgroundColor : 'rgba(248, 194, 145, 0.2)',
+						fill : true
+					} ]
 				},
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					scales: {
-						x: {
-							title: {
-								display: true,
-								text: 'Meses'
+				options : {
+					responsive : true,
+					maintainAspectRatio : false,
+					scales : {
+						x : {
+							title : {
+								display : true,
+								text : 'Meses'
 							}
 						},
-						y: {
-							title: {
-								display: true,
-								text: 'Valor'
+						y : {
+							title : {
+								display : true,
+								text : 'Valor'
 							}
 						}
 					}
@@ -388,40 +403,44 @@
 			const ocupacion = 30;
 			const efectividad = 40;
 
-			const ctx = document.getElementById('measurementChart').getContext('2d');
+			const ctx = document.getElementById('measurementChart').getContext(
+					'2d');
 			new Chart(ctx, {
-				type: 'bar',
-				data: {
-					labels: ['Productividad', 'Adherencia', 'Ocupación', 'Efectividad'],
-					datasets: [{
-						label: 'Indicadores',
-						data: [productividad, adherencia, ocupacion, efectividad],
-						backgroundColor: ['#a3e1d4', '#dedede', '#9CC3DA', '#f5b7b1']
-					}]
+				type : 'bar',
+				data : {
+					labels : [ 'Productividad', 'Adherencia', 'Ocupación',
+							'Efectividad' ],
+					datasets : [ {
+						label : 'Indicadores',
+						data : [ productividad, adherencia, ocupacion,
+								efectividad ],
+						backgroundColor : [ '#a3e1d4', '#dedede', '#9CC3DA',
+								'#f5b7b1' ]
+					} ]
 				},
-				options: {
-					responsive: true,
-					maintainAspectRatio: true,
-					scales: {
-						x: {
-							title: {
-								display: true,
-								text: 'Indicadores'
+				options : {
+					responsive : true,
+					maintainAspectRatio : true,
+					scales : {
+						x : {
+							title : {
+								display : true,
+								text : 'Indicadores'
 							}
 						},
-						y: {
-							title: {
-								display: true,
-								text: 'Valor'
+						y : {
+							title : {
+								display : true,
+								text : 'Valor'
 							},
-							beginAtZero: true
+							beginAtZero : true
 						}
 					}
 				}
 			});
 		}
 
-		document.addEventListener('DOMContentLoaded', function () {
+		document.addEventListener('DOMContentLoaded', function() {
 			updateChart();
 			initializeMonthlyProgressChart();
 			initializeMeasurementChart();

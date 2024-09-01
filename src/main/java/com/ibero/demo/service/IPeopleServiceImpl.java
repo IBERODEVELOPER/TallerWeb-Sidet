@@ -4,16 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.Hibernate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ibero.demo.dao.IPeopleDao;
 import com.ibero.demo.entity.Employee;
-import com.ibero.demo.entity.Role;
 import com.ibero.demo.entity.Schedule;
 import com.ibero.demo.entity.UserEntity;
 
@@ -73,5 +71,23 @@ public class IPeopleServiceImpl implements IPeopleService {
 			Hibernate.initialize(schedule.getDaySchedules());
 		}
 		return employee;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Employee> findAllPeople(Pageable page) {
+		return peopleDao.findAll(page);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Employee> findAllPeopleWithTardinessRecordsAndRoles(Pageable pageable) {
+		return peopleDao.findAllPeopleWithTardinessRecordsAndRoles(pageable);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Employee findByIdentityPeople(String identityPeople) {
+		return peopleDao.findByIdentityPeople(identityPeople);
 	}
 }

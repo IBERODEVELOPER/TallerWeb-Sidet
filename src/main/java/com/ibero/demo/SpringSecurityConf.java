@@ -15,7 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 
 import com.ibero.demo.auth.handler.LoginSuccesHandler;
-import com.ibero.demo.auth.handler.TemporaryPasswordFilter;
+import com.ibero.demo.interceptors.TemporaryPasswordFilter;
+import com.ibero.demo.interceptors.TurnOffEmployeeFilter;
 import com.ibero.demo.service.IUserServiceImpl;
 
 
@@ -32,20 +33,22 @@ public class SpringSecurityConf {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	@Autowired
+    private TurnOffEmployeeFilter turnOffEmployeeFilter;
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 		.addFilterBefore(new TemporaryPasswordFilter(), UsernamePasswordAuthenticationFilter.class)
-		.authorizeHttpRequests((authz) -> authz.requestMatchers("/login", "/css/**", "/js/**", "/images/**","/error/**","/outofturn","/send-email").permitAll()
-				/*.requestMatchers("/peoples/listPeople").hasAnyRole("USER")
-				.requestMatchers("/user/userReg").hasAnyRole("ADMIN")*/
+		.addFilterBefore(turnOffEmployeeFilter, UsernamePasswordAuthenticationFilter.class)
+		.authorizeHttpRequests((authz) -> authz.requestMatchers("/login", "/css/**", "/js/**", "/images/**","/error/**","/send-email").permitAll()
 				.anyRequest().authenticated())
 				.formLogin(login -> login
 						.successHandler(successHandler)
 						.loginPage("/login") 
 						.permitAll())
 				.logout(logout -> logout.permitAll());
-
+				
 		return http.build();
 	}
 

@@ -2,25 +2,25 @@ package com.ibero.demo.controller;
 
 import java.security.Principal;
 import java.security.SecureRandom;
-import java.util.Base64;
+import java.time.LocalDate;
 import java.util.Optional;
-
+import org.springframework.security.core.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ibero.demo.dao.TardinessRecordDao;
+import com.ibero.demo.entity.CustomUserDetails;
 import com.ibero.demo.entity.Employee;
+import com.ibero.demo.entity.TardinessRecord;
 import com.ibero.demo.entity.UserEntity;
 import com.ibero.demo.service.EmailService;
 import com.ibero.demo.service.IPeopleService;
@@ -40,6 +40,9 @@ public class ControllerMaster {
 
 	@Autowired
 	private EmailService emailservice;
+	
+	@Autowired
+    private TardinessRecordDao tardinesrecords;
 	
 	//configurar el emisor 
 	@Value("${spring.mail.username}")
@@ -63,7 +66,16 @@ public class ControllerMaster {
 	}
 	
 	@GetMapping({"/","index"})
-	public String showIndex(Model model) {
+	public String showIndex(Model model, Authentication authentication) {
+		CustomUserDetails usercustom = (CustomUserDetails) authentication.getPrincipal();
+	     UserEntity usere = usercustom.getUserEntity();
+	  // Buscar el empleado
+	    Employee employee = peopleService.getEmployeeWithFullSchedule(usere);
+	    // Obtener el registro de tardanza del día actual
+        Optional<TardinessRecord> tardinessRecordOpt = tardinesrecords.findByEmployeeAndDate(employee, LocalDate.now());
+        Long tardinessMinutes = tardinessRecordOpt.map(TardinessRecord::getTardinessMinutes).orElse(0L);
+        // Pasar los minutos de tardanza al modelo
+        model.addAttribute("tardinessMinutes", tardinessMinutes);
 		model.addAttribute("titlepage", "©Registrex");
 		return "/index";
 	}

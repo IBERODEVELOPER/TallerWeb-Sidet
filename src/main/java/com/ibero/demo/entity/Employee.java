@@ -19,6 +19,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -99,6 +100,9 @@ public class Employee implements Serializable {
 	
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	private List<Schedule> schedule;
+	
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<TardinessRecord> tardinessRecords = new ArrayList<>();
 
 	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
 	private UserEntity userEntity;
@@ -295,6 +299,13 @@ public class Employee implements Serializable {
 	
 	public void setSchedule(List<Schedule> schedule) {
 		this.schedule = schedule;
+	}
+	
+	public List<TardinessRecord> getTardinessRecords() {
+		return tardinessRecords;
+	}
+	public void setTardinessRecords(List<TardinessRecord> tardinessRecords) {
+		this.tardinessRecords = tardinessRecords;
 	}
 
 	private static final long serialVersionUID = 1L;

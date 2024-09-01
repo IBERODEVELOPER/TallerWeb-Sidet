@@ -13,11 +13,6 @@ public class TallerWebApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		/*String password = "12345";
-		for(int i=0;i<2;i++){
-			String bcrypPassword = passwordEncoder.encode(password);
-			System.out.println(""+bcrypPassword);
-			}*/
 	}
 
 }

@@ -20,11 +20,12 @@
 					<div class="row">
 						<!-- Columna de la Foto y Formulario de actualización -->
 						<div class="col-md-3 border-right"
-							style="margin-left: 15px; margin-right: 10px; width: 30%;min-height: auto;">
+							style="margin-left: 15px; margin-right: 10px; width: 30%; min-height: auto;">
 
 							<form th:action="@{/peoples/updatePicture}" method="post"
 								enctype="multipart/form-data">
-								<div class="d-flex flex-column align-items-center p-3 py-5 rounded bg-dark bg-gradient">
+								<div
+									class="d-flex flex-column align-items-center p-3 py-5 rounded bg-dark bg-gradient">
 
 									<!-- Muestra cuando la persona tiene foto -->
 									<img id="imgAvatar"
@@ -126,6 +127,7 @@
 										th:if="${employee.fechsalida != null}"
 										th:field="*{employee.fechsalida}"
 										placeholder="Fecha de Salida de la Compañia" disabled>
+
 									<input th:if="${employee.fechsalida == null}" type="text"
 										class="form-control" value="Sigue laborando" disabled>
 								</div>
@@ -167,7 +169,7 @@
 								<div class="col-md-6 mx-auto">
 									<h4 class="text-right text-center" th:text="${'Horario'}"></h4>
 									<table class="table table-bordered">
-										<thead class="table-dark text-center"> 
+										<thead class="table-dark text-center">
 											<tr>
 												<th>Día</th>
 												<th>Hora de Entrada</th>
@@ -175,7 +177,13 @@
 												<th>Horas Trabajadas</th>
 											</tr>
 										</thead>
-										<tbody th:each="schedule : ${schedules}">
+										<tbody th:if="${#lists.isEmpty(schedules)}">
+											<tr>
+												<td colspan="4" class="text-center">No tiene horarios
+													asignados</td>
+											</tr>
+										</tbody>
+										<tbody th:if="${!#lists.isEmpty(schedules)}" th:each="schedule : ${schedules}">
 											<!-- Itera sobre la lista de horarios del empleado -->
 											<tr th:each="items : ${schedule.daySchedules}">
 												<th scope="row" th:text="${items.dayWeek}"></th>

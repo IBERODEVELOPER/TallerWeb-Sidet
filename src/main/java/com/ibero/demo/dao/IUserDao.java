@@ -4,12 +4,13 @@ package com.ibero.demo.dao;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 
 import com.ibero.demo.entity.UserEntity;
 
-public interface IUserDao extends CrudRepository<UserEntity, Integer> {
+public interface IUserDao extends CrudRepository<UserEntity, Integer>,PagingAndSortingRepository<UserEntity, Integer> {
 	
     public UserEntity findByUserName(String userName);
     

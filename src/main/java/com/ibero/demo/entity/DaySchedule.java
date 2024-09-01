@@ -55,7 +55,7 @@ public class DaySchedule {
 			calculateHoursWorked();
 		}
 		
-		private void calculateHoursWorked() {
+		public void calculateHoursWorked() {
 		    if (this.entryTime != null && this.leavWork != null) {
 		    	// Formato para hora en 24 horas
 		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");

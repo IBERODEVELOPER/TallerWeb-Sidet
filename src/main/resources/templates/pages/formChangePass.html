@@ -92,7 +92,7 @@
 	</div>
 	<script th:inline="javascript">
 		async function getPassword(username, currentPassword) {
-			const url = new URL('http://localhost:8090/user/password/' + username);
+			const url = new URL('http://20.197.224.167:8080/user/password/' + username);
 			url.searchParams.append('currentPassword', currentPassword);
 			const fullUrl = url.href;
 			console.log(fullUrl);

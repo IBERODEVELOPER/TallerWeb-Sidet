@@ -1,7 +1,6 @@
 package com.ibero.demo.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +25,7 @@ import jakarta.validation.Valid;
 @SessionAttributes("dayschedule")
 public class DayScheduleController {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private IDayScheduleService dayservice;
 
@@ -59,6 +58,9 @@ public class DayScheduleController {
 			flash.addFlashAttribute("error", "Sucedio un error al intentar guardar los cambios");
 			return "redirect:/dayschedule/editschudule/" + daySchedule.getId();
 		}
+		// Calcular horas trabajadas antes de guardar
+	    daySchedule.calculateHoursWorked();
+	    //guardar dayschedule
 		dayservice.savesdaySchedule(daySchedule);
 		flash.addFlashAttribute("success", "Datos actualizados correctamente");
 		return "redirect:/peoples/verschedule/" + daySchedule.getSchedule().getEmployee().getId();

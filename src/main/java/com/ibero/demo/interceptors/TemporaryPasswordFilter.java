@@ -1,4 +1,4 @@
-package com.ibero.demo.auth.handler;
+package com.ibero.demo.interceptors;
 
 import java.io.IOException;
 

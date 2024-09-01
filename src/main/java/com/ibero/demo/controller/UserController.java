@@ -13,6 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -36,6 +39,7 @@ import com.ibero.demo.service.IPeopleService;
 import com.ibero.demo.service.IScheduleService;
 import com.ibero.demo.service.IUserService;
 import com.ibero.demo.util.EmailValuesDTO;
+import com.ibero.demo.util.PageRender;
 
 import jakarta.validation.Valid;
 
@@ -50,6 +54,9 @@ public class UserController {
 
 	@Autowired
 	private IUserService userService;
+	
+	//ruta externa
+	private String rootC = "C://TallerWeb-Fotos";
 
 	// configurar el emisor
 	@Value("${spring.mail.username}")
@@ -63,15 +70,19 @@ public class UserController {
 	@Autowired
 	private IScheduleService schuduleservice;
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@Secured({"ROLE_ADMIN" })
 	@GetMapping("/listUsers")
-	public String showUsers(Model model) {
+	public String showUsers(@RequestParam(name = "page",defaultValue = "0") int page,Model model) {
+		Pageable pageRequest = PageRequest.of(page, 10);
+		Page<UserEntity> userentity = userService.findAllUsers(pageRequest);
+		PageRender<UserEntity> pageRender = new PageRender<UserEntity>("/user/listUsers", userentity);
 		model.addAttribute("titlepage", "Lista de usuarios");
-		model.addAttribute("user", userService.findAllUsers());
-		return "/pages/allUsers"; // Nombre de tu archivo HTML de registro
+		model.addAttribute("user", userentity);
+		model.addAttribute("page", pageRender);
+		return "/pages/allUsers";
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@Secured({ "ROLE_USER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE"})
 	@GetMapping("/changekey")
 	public String changePassword(Model model) {
 		// Obtener el usuario autenticado
@@ -85,7 +96,7 @@ public class UserController {
 		return "/pages/formChangePass"; // Nombre de tu archivo HTML de registro
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@Secured({ "ROLE_USER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE"})
 	@PostMapping("/changekey")
 	public String processFormchangePassword(@RequestParam("id") Integer id,
 			@RequestParam("userPassword") String userPassword, Model model, RedirectAttributes flash) {
@@ -112,8 +123,8 @@ public class UserController {
 		return "redirect:/user/changekey";// return "redirect:/user/perfil";
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
-	@CrossOrigin(origins = "http://localhost:8090")
+	@Secured({ "ROLE_USER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE"})
+	@CrossOrigin(origins = "http://20.197.224.167:8080")
 	@GetMapping(value = "/password/{username}")
 	public ResponseEntity<String> getPassword(@PathVariable String username, @RequestParam String currentPassword) {
 		String password = userService.getPasswordByUsername(username);
@@ -125,7 +136,7 @@ public class UserController {
 		}
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@Secured({ "ROLE_USER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE"})
 	@GetMapping("/perfil")
 	public String showProfile(Model model) {
 		// Obtener el usuario autenticado
@@ -145,7 +156,7 @@ public class UserController {
 		return "/pages/profile";
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping("/formUser")
 	public String showFormUser(Model model) {
 		UserEntity user = new UserEntity();
@@ -173,7 +184,7 @@ public class UserController {
 		return "/pages/formUser"; // Nombre de tu archivo HTML de registro
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@Secured({ "ROLE_ADMIN" })
 	@PostMapping(value = "/formUser")
 	public String processForm(@Valid UserEntity user, BindingResult result, Model model, RedirectAttributes flash,
 			@RequestParam(value = "Authority", required = false) String[] roleNames) {
@@ -221,7 +232,7 @@ public class UserController {
 		return "redirect:/user/listUsers";
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping(value = "/formUser/{id}")
 	public String ListPeopleconcredenciales(@PathVariable(value = "id") int id, Model model, RedirectAttributes flash) {
 		UserEntity user = userService.findOneUser(id);

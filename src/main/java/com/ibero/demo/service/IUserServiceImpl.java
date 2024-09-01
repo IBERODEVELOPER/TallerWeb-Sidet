@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.GrantedAuthority;
@@ -158,6 +160,12 @@ public class IUserServiceImpl implements IUserService, UserDetailsService {
 		user.setTemporaryPassword(status);
 		user.setUserPassword(userPassword);
 		userDao.save(user);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<UserEntity> findAllUsers(Pageable page) {
+		return userDao.findAll(page);
 	}
 	
 }

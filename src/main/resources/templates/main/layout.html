@@ -55,7 +55,7 @@
 							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
 						</li>
 
-						<li class="nav-item dropdown">
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Empleados
@@ -69,7 +69,7 @@
 							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
 						</li>
 
-						<li class="nav-item dropdown">
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Usuarios
@@ -82,11 +82,20 @@
 						<li class="nav-item dropdown" >
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Asistencia
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" th:href="@{/reports/asistence_general}">Asistencia y Tardanzas</a></li>
+							</ul>
+						</li>
+						<li class="nav-item dropdown" >
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
+								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Reportes
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/role/list}">Gestión por Día</a></li>
-								<li><a class="dropdown-item" th:href="@{/role/formrol}">Gestiones del Mes</a></li>
+								<li><a class="dropdown-item" th:href="@{/reports/general_report}">General</a></li>
+								<li><a class="dropdown-item" th:href="@{/reports/reports_export}">Exportar</a></li>
 							</ul>
 						</li>
 						<li class="nav-item dropdown" style="margin-right: 7% !important;margin-left: 7%;margin-top: 1%;">
@@ -168,6 +177,19 @@
 			</div>
 			<!-- mensaje info -->
 			<div id="message4" class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
+			
+			<!--Actividad
+			<div class="card-header">
+				<h5 class="mb-0"><i class="fas fa-tasks" style="color: rgb(0, 0, 0);"></i> Evento en Progreso:
+					<strong>ACTIVIDADES ADMINISTRATIVAS</strong>
+				</h5>
+				<span class="toggle-btn" data-bs-toggle="collapse" data-bs-target="#collapseForm" aria-expanded="false"
+					aria-controls="collapseForm" style="margin-right: 10px;">
+					<div id="timer">00:00:00</div>
+					<i class="fas fa-chevron-down" style="color: cadetblue;"></i>
+				</span>
+			</div>
+			-->
 		</div>
 	</header>
 	<footer th:fragment="footer" class="container-fluid d-none d-xxl-block" style="height: auto;margin-top: 10px;">
@@ -177,6 +199,39 @@
 				Derechos reservados copyright © CONTACTEMP
 			</p>
 		</div>
+		<script type="text/javascript">
+		/* function startTimer() {
+	        let hours = 0;
+	        let minutes = 0;
+	        let seconds = 0;
+
+	        const timerElement = document.getElementById('timer');
+
+	        setInterval(() => {
+	            seconds++;
+
+	            if (seconds === 60) {
+	                seconds = 0;
+	                minutes++;
+
+	                if (minutes === 60) {
+	                    minutes = 0;
+	                    hours++;
+	                }
+	            }
+
+	            let formattedTime = 
+	                (hours < 10 ? "0" + hours : hours) + ":" + 
+	                (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+	                (seconds < 10 ? "0" + seconds : seconds);
+
+	            timerElement.textContent = formattedTime;
+	        }, 1000);
+	    }
+
+	    // Iniciar el temporizador
+	    startTimer(); */
+		</script>
 		<!-- Ionicons Script -->
 		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 		<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

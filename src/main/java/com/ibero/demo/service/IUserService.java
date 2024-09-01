@@ -3,8 +3,11 @@ package com.ibero.demo.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
+import com.ibero.demo.entity.Employee;
 import com.ibero.demo.entity.Role;
 import com.ibero.demo.entity.UserEntity;
 import com.ibero.demo.util.EmailValuesDTO;
@@ -13,6 +16,9 @@ public interface IUserService {
 	
 	/*Metodo para listar todos los usuarios*/
 	public List<UserEntity> findAllUsers();
+	
+	/*Metodo para listar las Personas registrado en el Sistema*/
+	public Page<UserEntity> findAllUsers(Pageable page);
 	
 	/*Metodo para guardar los datos del formulario Persona*/
 	public UserEntity save(UserEntity userEntity);
