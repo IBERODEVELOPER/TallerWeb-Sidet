@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" style="color-scheme: light;" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="main/layout :: head"></head>
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container-fluid" id="pantll">
+		<div class="container">
+			<div class="row">
+            <!-- Menú lateral -->
+            <div class="col-md-2 sidebar">
+                <a href="#"><i class="fas fa-home"></i> General</a>
+                <a href="#"><i class="fas fa-box"></i> Producto</a>
+            </div>
+
+            <div class="col-md-10">
+                <div>INBOX</div>
+                <div class="col-md-3">
+                    <label for="proceso" class="form-label">Proceso</label>
+                    <select class="form-select" id="proceso">
+                        <option selected>Selecciona...</option>
+                        <option value="RED">RED</option>
+                        <option value="SISTEMAS">SISTEMAS</option>
+                        <option value="SOFTWARE">SOFTWARE</option>
+                        <option value="HARDWARE">HARDWARE</option>
+                        <option value="OTRAS CONFIGURACIONES">OTRAS CONFIGURACIONES</option>
+                    </select>
+                </div>
+                <!-- Pestañas de navegación -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="casos-tab" data-bs-toggle="tab" href="#casos" role="tab" aria-controls="casos" aria-selected="true">Casos (0)</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="tareas-tab" data-bs-toggle="tab" href="#tareas" role="tab" aria-controls="tareas" aria-selected="false">Tareas (0)</a>
+                    </li>
+                    <li class="nav-item ms-auto">
+        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#crearCasoModal"><i class="fas fa-plus"></i> Crear Caso</button>
+   			 </li>
+   			 
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+                    <!-- Tab Casos -->
+                    <div class="tab-pane fade show active" id="casos" role="tabpanel" aria-labelledby="casos-tab">
+
+                        <div class="d-flex">
+                            <div class="search-bar my-3">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Buscar por caso">
+                            </div>
+                            <button class="btn"><i class="fas fa-filter"></i> Filtro</button>
+                            <button class="btn btn-outline-secondary"><i class="fas fa-sync-alt"></i> Actualizar</button>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID CASO</th>
+                                        <th scope="col">PROCESO</th>
+                                        <th scope="col">ASUNTO</th>
+                                        <th scope="col">DESCRIPCIÓN</th>
+                                        <th scope="col">PRIORIDAD</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5" class="text-center">No hay casos disponibles</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab Tareas -->
+                    <div class="tab-pane fade" id="tareas" role="tabpanel" aria-labelledby="tareas-tab">
+                        <!-- Contenido para tareas -->
+                        <p>No hay tareas disponibles</p>
+                    </div>
+                </div>
+
+                <!-- Botón para crear un caso -->
+                <div class="text-end mt-3">
+                   <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#crearCasoModal"><i class="fas fa-plus"></i> Crear Caso</button>
+                </div>
+            </div>
+        </div>
+		</div>
+	</div>
+	<div class="modal fade" id="crearCasoModal" tabindex="-1" aria-labelledby="crearCasoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="crearCasoModalLabel">Crear Caso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="wizard">
+                        <!-- Paso 1 -->
+                        <div class="step" id="step1">
+                            <h5>Paso 1: Información General</h5>
+                            <div class="mb-3">
+                                <label for="proceso" class="form-label">Proceso</label>
+                                <select class="form-select" id="procesoModal">
+                                    <option selected>Selecciona...</option>
+                                    <option value="RED">RED</option>
+                                    <option value="SISTEMAS">SISTEMAS</option>
+                                    <option value="SOFTWARE">SOFTWARE</option>
+                                    <option value="HARDWARE">HARDWARE</option>
+                                    <option value="OTRAS CONFIGURACIONES">OTRAS CONFIGURACIONES</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" id="nextToStep2">Siguiente</button>
+                        </div>
+                        <!-- Paso 2 -->
+                        <div class="step d-none" id="step2">
+                            <h5>Paso 2: Descripción del Caso</h5>
+                            <div class="mb-3">
+                                <label for="asunto" class="form-label">Asunto</label>
+                                <input type="text" class="form-control" id="asunto" placeholder="Ingresa el asunto">
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcion" rows="3"></textarea>
+                            </div>
+                            <button class="btn btn-primary" id="prevToStep1">Anterior</button>
+                            <button class="btn btn-primary" id="nextToStep3">Siguiente</button>
+                        </div>
+                        <!-- Paso 3 -->
+                        <div class="step d-none" id="step3">
+                            <h5>Paso 3: Confirmación</h5>
+                            <p>Por favor, revisa la información antes de crear el caso.</p>
+                            <ul>
+                                <li><strong>Proceso:</strong> <span id="confirmProceso"></span></li>
+                                <li><strong>Asunto:</strong> <span id="confirmAsunto"></span></li>
+                                <li><strong>Descripción:</strong> <span id="confirmDescripcion"></span></li>
+                            </ul>
+                            <button class="btn btn-primary" id="prevToStep2">Anterior</button>
+                            <button class="btn btn-success">Crear Caso</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('nextToStep2').addEventListener('click', function () {
+            document.getElementById('step1').classList.add('d-none');
+            document.getElementById('step2').classList.remove('d-none');
+        });
+
+        document.getElementById('prevToStep1').addEventListener('click', function () {
+            document.getElementById('step2').classList.add('d-none');
+            document.getElementById('step1').classList.remove('d-none');
+        });
+
+        document.getElementById('nextToStep3').addEventListener('click', function () {
+            // Tomar valores de los campos y asignarlos para confirmación
+            document.getElementById('confirmProceso').textContent = document.getElementById('procesoModal').value;
+            document.getElementById('confirmAsunto').textContent = document.getElementById('asunto').value;
+            document.getElementById('confirmDescripcion').textContent = document.getElementById('descripcion').value;
+
+            document.getElementById('step2').classList.add('d-none');
+            document.getElementById('step3').classList.remove('d-none');
+        });
+
+        document.getElementById('prevToStep2').addEventListener('click', function () {
+            document.getElementById('step3').classList.add('d-none');
+            document.getElementById('step2').classList.remove('d-none');
+        });
+        
+    </script>
+	<footer th:replace="main/layout :: footer"></footer>
+</body>
+
+</html>

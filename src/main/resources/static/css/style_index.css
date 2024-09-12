@@ -1,0 +1,86 @@
+.hidden {
+    display: none !important;
+}
+
+.chart-container {
+    position: relative;
+    width: 80%;
+    max-width: 500px;
+    margin: auto;
+}
+
+.chart {
+    width: 100%;
+    height: auto;
+}
+
+.small-input {
+    max-width: 150px;
+    /* Ajusta este valor según tus necesidades */
+}
+
+.small-label {
+    font-size: 0.9em;
+    /* Ajusta este valor según tus necesidades */
+}
+
+ul li a {
+    color: aliceblue;
+}
+
+.text-primary-custom {
+    color: white;
+}
+
+.navbar-brand {
+    color: aliceblue;
+}
+
+.navbar-expand-lg {
+    background-color: dodgerblue;
+}
+
+.card-header {
+    position: relative;
+}
+
+.toggle-btn {
+    cursor: pointer;
+    font-size: 1.5rem;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    /* Espacio entre los elementos */
+}
+
+.info-icons {
+    display: flex;
+    gap: 20px;
+    /* Espacio entre los íconos */
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container2 {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.cardpersonalizada {
+    /* Personaliza según sea necesario */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}

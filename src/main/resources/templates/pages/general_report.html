@@ -1,14 +1,92 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" style="color-scheme: light;" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" data-theme="light" 
+style="color-scheme: light;" 
+xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="main/layout :: head"></head>
 <body>
 	<header th:replace="main/layout :: header"></header>
 	<div class="container-fluid" id="pantll">
 		<div class="container">
-			
+			<h1 class="text-info">Eventos en progreso <strong class="text-success">En linea</strong>
+			<span style="display:inline-block; width:10px; height:10px; background-color:red; border-radius:50%; margin-left:10px;"></span>
+			</h1>
+			<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/index}">Inicio</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Eventos en progreso en tiempo real</li>
+					</ol>
+			</nav>
+    		<table class="table table-hover table-striped">
+					<thead class="table-dark" style="border-radius: 15px; overflow: hidden;">
+						<tr class="text-center">
+							<th><ion-icon name="ellipsis-vertical-outline"></ion-icon></th>
+							<th>Usuario</th>
+							<th>Evento</th>
+							<th>E. Iniciado</th>
+						</tr>
+					</thead>
+					<tbody id="eventTableBody">	
+					</tbody>
+				</table>
 		</div>
 	</div>
+	 <script>
+ // Conexión con SockJS
+ var socket = new SockJS('/eventprogress');
+var stompClient = Stomp.over(socket);
+
+stompClient.connect({}, function(frame) {
+    console.log('Conectado al WebSocket: ' + frame);
+
+    // Suscripción al canal donde se publican los eventos
+    stompClient.subscribe('/topic/events', function(event) {
+        const eventData = JSON.parse(event.body);  // Accede al body del mensaje
+
+        // Crea una nueva fila (tr)
+        const newRow = document.createElement('tr');
+
+        // Crea la primera celda con el círculo
+        const statusCell = document.createElement('td');
+        const statusIndicator = document.createElement('span');
+        statusIndicator.style.display = "inline-block";
+        statusIndicator.style.width = "10px";
+        statusIndicator.style.height = "10px";
+        statusIndicator.style.backgroundColor = "green"; // Cambia el color a verde para "en línea"
+        statusIndicator.style.borderRadius = "50%";
+        statusIndicator.style.marginLeft = "10px";
+        statusCell.appendChild(statusIndicator);
+
+        // Crea la celda de usuario
+        const userCell = document.createElement('td');
+        userCell.textContent = eventData.username;
+
+        // Crea la celda de evento
+        const eventCell = document.createElement('td');
+        eventCell.textContent = eventData.eventName;
+
+        // Crea la celda de tiempo de inicio
+        const startTimeCell = document.createElement('td');
+        startTimeCell.textContent = eventData.startTime;
+
+        // Añadir todas las celdas a la fila
+        newRow.appendChild(statusCell);
+        newRow.appendChild(userCell);
+        newRow.appendChild(eventCell);
+        newRow.appendChild(startTimeCell);
+
+        // Añadir la nueva fila al tbody
+        document.getElementById('eventTableBody').appendChild(newRow);
+    });
+}, function(error) {
+    console.error('Error al conectar a WebSocket', error);
+});
+
+socket.onclose = function(event) {
+    console.log("Desconectado del WebSocket");
+};
+
+ </script>
 	<footer th:replace="main/layout :: footer"></footer>
 </body>
 

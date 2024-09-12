@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" style="color-scheme: light;" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="main/layout :: head"></head>
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container-fluid" id="pantll">
+		<div class="container">
+			<div class="row">
+				<h1 class="text-info" th:text="${titlepage}"></h1>
+				<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/index}">Inicio</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Lista de Clientes</li>
+					</ol>
+				</nav>
+				<table class="table table-bordered table-hover table-striped">
+					<thead class="table-dark text-center">
+						<tr>
+							<th class="col-sm-2">Nombre Completo</th>
+							<th class="col-sm-2">N° RUC</th>
+							<th class="col-sm-2">Razon Social</th>
+							<th class="col-sm-1" sec:authorize="hasRole('ROLE_ADMIN')">
+								<ion-icon name="ellipsis-vertical-outline"></ion-icon>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item: ${customers}">
+							<td th:text="${item.nameComplete}"></td>
+							<td class="text-center" th:text="${item.RUC}"></td>
+							<td class="text-center" th:text="${item.razonsocial}"></td>
+							<td class="text-center" sec:authorize="hasRole('ROLE_ADMIN')">
+									<!-- Editar empleado -->
+								<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/customer/formCustomer/} + ${item.id}"
+									class="btn btn-outline-primary col-xs-4" title="Editar">
+									<ion-icon name="create-outline" style="font-size: 20px;"></ion-icon></a>
+									<!-- Eliminar empleado -->
+								<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/customer/deleteCustomerById/} + ${item.id}"
+									title="Eliminar"
+									class="btn btn-outline-danger col-xs-4">
+									<ion-icon name="trash-outline" style="font-size: 20px;"></ion-icon></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- Paginador -->
+				<nav th:replace="~{paginator-nav :: paginator}"></nav>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="main/layout :: footer"></footer>
+</body>
+
+</html>

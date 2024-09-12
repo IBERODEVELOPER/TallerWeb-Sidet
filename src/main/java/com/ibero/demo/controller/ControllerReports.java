@@ -30,7 +30,9 @@ import com.ibero.demo.entity.TardinessRecord;
 import com.ibero.demo.service.IPeopleService;
 import com.ibero.demo.service.TardinessRecordService;
 import com.ibero.demo.util.PageRender;
+import com.ibero.demo.view.xlsx.ReporteAsistenciaXlsxView;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Controller
@@ -46,50 +48,78 @@ public class ControllerReports {
 	@Autowired
 	private IPeopleService peopleService;
 
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE"})
 	@GetMapping(value = "/general_report")
 	public String showStadistics(Model model) {
 		model.addAttribute("titlepage", "©Registrex");
 		return "/pages/general_report";
 	}
 
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE"})
 	@GetMapping(value = "/reports_export")
 	public String showReportsExp(Model model) {
 		model.addAttribute("titlepage", "©Registrex");
 		return "/pages/reports_exports";
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_EMPLOYEE"})
 	@GetMapping(value = "/asistence_general")
-	public String showReportsAsi(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
-		Pageable pageRequest = PageRequest.of(page, 10);
+	public String showReportsAsi(@RequestParam(name = "page", defaultValue = "0") int page
+			, Model model, HttpServletRequest request) {
+		Pageable pageRequest = PageRequest.of(page, 8);
+		//Para manejar la url
+		String currentUri = request.getRequestURI();
+	    boolean isReportPage = "/reports/asistence_general".equals(currentUri);
+	    // Obtiene la paginación de los registros
 		Page<TardinessRecord> tardins = tardinesservice.findAllTardingreport(pageRequest);
+		// Calcula el total de registros
+	    long totalRecords = tardins.getTotalElements();
+	    // Prepara la paginación para la vista
 		PageRender<TardinessRecord> pageRender = new PageRender<TardinessRecord>("/reports/asistence_general", tardins);
+		// Agrega atributos al modelo para ser utilizados en la vista
 		model.addAttribute("titlepage", "Reporte de Asistencia con tardanzas");
 		model.addAttribute("tardins", tardins);
 		model.addAttribute("page", pageRender);
+		model.addAttribute("totalRecords", totalRecords);
+		model.addAttribute("isReportPage", isReportPage);
 		return "/pages/go_works";
 	}
 
 	// buscar empleado por su dni
-
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_EMPLOYEE"})
 	@GetMapping(value = "/seachby")
 	public String findEmployeeByDocumento(
 			@RequestParam(name = "documentNumber", required = false) String documentNumber,
+			@RequestParam(name = "month", required = false) Integer month,
 			@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
 
 		if (documentNumber != null && !documentNumber.isEmpty()) {
 			Employee employee = peopleService.findByIdentityPeople(documentNumber);
 			if (employee != null) {
-				logger.info("Empleado: " + employee.getName() + " N°: " + employee.getIdentityPeople());
-				Pageable pageRequest = PageRequest.of(page, 10);
-				Page<TardinessRecord> tardinessRecords = tardinesservice.findTardinessByEmployee(employee, pageRequest);
-				PageRender<TardinessRecord> pageRender = new PageRender<>(
-						"/reports/seachby?documentNumber=" + documentNumber, tardinessRecords);
-				model.addAttribute("tardins", tardinessRecords);
-				// Añadimos los registros de tardanza al modelo
-				model.addAttribute("page", pageRender);// mandamos la pagina
-				model.addAttribute("documentNumber", documentNumber);// mandamos la pagina
+				Pageable pageRequest = PageRequest.of(page, 8);
+				Page<TardinessRecord> tardinessRecords;
+				PageRender<TardinessRecord> pageRender;
+				//Para mostrar el total de los registros
+				long totalRecords=0;
+				if (month != null) {
+	                tardinessRecords = tardinesservice.findTardinessByEmployeeAndMonth(employee, month, pageRequest);
+	             // Calcula el total de registros
+	        	 totalRecords = tardinessRecords.getTotalElements();
+	        	 // Prepara la paginación para la vista
+	                pageRender = new PageRender<>("/reports/seachby?documentNumber=" + documentNumber + "&month=" + month, tardinessRecords);
+	            } else {
+	                tardinessRecords = tardinesservice.findTardinessByEmployee(employee, pageRequest);
+	             // Calcula el total de registros
+	                totalRecords = tardinessRecords.getTotalElements();
+	             // Prepara la paginación para la vista
+	                pageRender = new PageRender<>("/reports/seachby?documentNumber=" + documentNumber, tardinessRecords);
+	            }
+				// Agrega atributos al modelo para ser utilizados en la vista
+	            model.addAttribute("tardins", tardinessRecords);
+	            model.addAttribute("page", pageRender);
+	            model.addAttribute("documentNumber", documentNumber);
+	            model.addAttribute("selectedMonth", month);
+	            model.addAttribute("totalRecords", totalRecords);
 			} else {
 				logger.info("No se encontró un empleado con el documento: " + documentNumber);
 				model.addAttribute("tardins", new ArrayList<>());
@@ -103,27 +133,83 @@ public class ControllerReports {
 		return "/pages/go_works"; // Redirige a la página de asistencia general
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_EMPLOYEE"})
 	@GetMapping(value = "/seachbydpf", produces = "application/pdf")
 	public ModelAndView exportPDF(@RequestParam(name = "documentNumber", required = false) String documentNumber,
+								  @RequestParam(name = "month", required = false) String monthStr,
 	                              @RequestParam(name = "page", defaultValue = "0") int page,
 	                              Model model) {
 	    ModelAndView modelAndView = new ModelAndView("/pages/go_works");
-
+	    Integer month = null;
+	    if (monthStr != null && !monthStr.isEmpty() && !"null".equals(monthStr)) {
+	        try {
+	            month = Integer.parseInt(monthStr);
+	        } catch (NumberFormatException e) {
+	            // Manejar el error de formato si es necesario
+	        }
+	    }
 	    if (documentNumber != null && !documentNumber.isEmpty()) {
 	        Employee employee = peopleService.findByIdentityPeople(documentNumber);
 	        if (employee != null) {
-	        	// Aquí obtenemos todos los registros de tardanza sin paginación
-	            List<TardinessRecord> allTardinessRecords = tardinesservice.findByEmployee(employee);
+	        	List<TardinessRecord> allTardinessRecords;
+	        	if (month != null && month > 0) {
+	        		//obtenemos todos los registros de tardanza con el mes
+		            allTardinessRecords = tardinesservice.findTardinessByEmployeeAndMonth(employee, month);
+	        	}else {
+	        		//obtenemos todos los registros de tardanza sin el mes
+	        		allTardinessRecords = tardinesservice.findByEmployee(employee);
+	        	}
 	            // Pasamos todos los registros al modelo
 	            model.addAttribute("tardins", allTardinessRecords); 
 	        }
 	    }
 	    return modelAndView;
 	}
+	//Reporte General XLSX
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_EMPLOYEE"})
+	@GetMapping(value = "/asistence_generalxlsx", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	public ModelAndView exportExcelGen(Model model) {
+		ModelAndView modelAndView = new ModelAndView(new ReporteAsistenciaXlsxView());
+		model.addAttribute("tardins", tardinesservice.findAllReports());
+		return modelAndView;
+	}
+	//Reporte EXCEL por número de documento y/o mes
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_EMPLOYEE"})
+	@GetMapping(value = "/seachbyexcel", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	public ModelAndView exportExcel(@RequestParam(name = "documentNumber", required = false) String documentNumber,
+									@RequestParam(name = "month", required = false) String monthStr,
+	                                @RequestParam(name = "page", defaultValue = "0") int page,
+	                                Model model) {
 
+	    ModelAndView modelAndView = new ModelAndView(new ReporteAsistenciaXlsxView());
+	    Integer month = null;
+	    if (monthStr != null && !monthStr.isEmpty() && !"null".equals(monthStr)) {
+	        try {
+	            month = Integer.parseInt(monthStr);
+	        } catch (NumberFormatException e) {
+	            // Manejar el error de formato si es necesario
+	        }
+	    }
+	    if (documentNumber != null && !documentNumber.isEmpty()) {
+	        Employee employee = peopleService.findByIdentityPeople(documentNumber);
+	        if (employee != null) {
+	        	List<TardinessRecord> allTardinessRecords;
+	        	if (month != null && month > 0) {
+	        		//obtenemos todos los registros de tardanza con el mes
+		            allTardinessRecords = tardinesservice.findTardinessByEmployeeAndMonth(employee, month);
+	        	}else {
+	        		//obtenemos todos los registros de tardanza sin el mes
+	        		allTardinessRecords = tardinesservice.findByEmployee(employee);
+	        	}
+	            // Pasar los registros al modelo
+	            model.addAttribute("tardins", allTardinessRecords);
+	        }
+	    }
 
-	@Secured({ "ROLE_ADMIN" })
+	    return modelAndView;
+	}
+
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN"})
 	@GetMapping(value = "/changetarding/{id}")
 	public String showReportsAsi(@PathVariable(value = "id") Integer id, Model model, RedirectAttributes flash) {
 		TardinessRecord tardins = null;
@@ -140,7 +226,7 @@ public class ControllerReports {
 		return "/pages/formtardiness";
 	}
 
-	@Secured("ROLE_ADMIN")
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN"})
 	@PostMapping(value = "/changetarding")
 	public String processForm(@Valid TardinessRecord tarding, BindingResult result, Model model,
 			RedirectAttributes flash, SessionStatus status) {
@@ -161,7 +247,8 @@ public class ControllerReports {
 		status.setComplete();
 		return "redirect:/reports/asistence_general";
 	}
-
+	
+	@Secured({"ROLE_ADMIN"})
 	@GetMapping(value = "/deleteBy/{id}")
 	public String eliminarCliente(@PathVariable(value = "id") Integer id, RedirectAttributes flash) {
 		TardinessRecord tardins = null;

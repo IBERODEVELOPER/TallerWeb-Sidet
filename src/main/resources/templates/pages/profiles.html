@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="main/layout :: head">
+<!-- FontAwesome para el icono de ojito -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container-fluid" id="pantll">
+		<div class="container">
+			<div class="row card shadow"
+				style="margin-left: 48px; margin-right: 48px; margin-top: 40px; margin-bottom: 40px; padding-left: 0px; padding-right: 0px; padding-left: 10px; padding-right: 10px">
+				<div class="container rounded bg-white mt-5 mb-5"
+					style="margin-top: 24px !important;">
+					<h4 class="text-capitalize fw-bold" th:text="${titlepage}"></h4>
+					<div class="row">
+						<!-- Columna de la Foto y Formulario de actualización -->
+						<div class="col-md-3 border-right"
+							style="margin-left: 15px; margin-right: 10px; width: 30%; min-height: auto;">
+							<form th:action="@{/peoples/updatePicture}" method="post" enctype="multipart/form-data">
+								<div class="d-flex flex-column align-items-center p-3 py-5 rounded bg-dark bg-gradient">
+									<!-- Muestra cuando la persona tiene foto -->
+									<img id="imgAvatar"
+										th:if="${employee.foto != null and #strings.length(employee.foto) > 0}"
+										class="img-thumbnail rounded float-left"
+										style="max-width: 80%;"
+										th:src="@{'/TallerWeb-Fotos/'+${employee.foto}}"
+										th:alt="${employee.foto}" />
+
+									<!-- Si la persoan no tiene foto muestra una imagen por defecto -->
+									<img id="imgAvatar" th:if="${employee.foto == null}"
+										class="img-thumbnail rounded float-left"
+										style="max-width: 90%;" th:src="@{/images/predeterminado.png}"
+										alt="Imganen predeterminado" />
+										
+									<div class="input-group mb-3" style="margin-top: 5px;">
+										<input class="form-control" name="file" type="file"
+											id="formFile"> <input type="hidden" name="id"
+											th:value="${employee.id}">
+										<button type="submit" class="btn btn-light">Actualizar</button>
+									</div>
+									<span class="text-light font-weight-bold"
+										th:text="${employee.fullName}"></span> <span
+										class=" text-light font-weight-bold"
+										th:text="${employee.emailPeople}"></span>
+
+									<!-- Mensajes -->
+									<div id="message3" th:if="${mensage != null}"
+										class="alert alert-warning d-flex align-items-center"
+										role="alert">
+										<svg class="bi flex-shrink-0 me-2" width="24" height="24"
+											role="img" aria-label="mensage:">
+												<use xlink:href="#exclamation-triangle-fill" />
+											</svg>
+										<div th:text="${mensage}"></div>
+									</div>
+
+								</div>
+							</form>
+						</div>
+						<!-- Columna de Información Personal y Horario -->
+						<div class="col-md-8 mx-auto">
+							<div
+								class="d-flex justify-content-between align-items-center mb-3">
+								<h4 class="text-right text-center"
+									th:text="${'Información personal'}"></h4>
+							</div>
+							<div class="row">
+								<!-- Columna 1 -->
+								<div class="col-md-4 mb-3">
+									<label>Nombre</label> <input type="text" class="form-control"
+										th:field="*{employee.name}" disabled> <label>T.
+										Documento</label> <input type="text" class="form-control"
+										th:field="*{employee.tipoDocumento}" disabled> <label>Género</label>
+									<input type="text" class="form-control"
+										th:field="*{employee.genero}" disabled>
+								</div>
+								<!-- Columna 2 -->
+								<div class="col-md-4 mb-3">
+									<label>Ap. Paterno</label> <input type="text"
+										class="form-control" th:field="*{employee.firstLastName}"
+										disabled> <label>N° Documento</label> <input
+										type="text" class="form-control"
+										th:field="*{employee.identityPeople}" disabled> <label>Estado
+										Civil</label> <input type="text" class="form-control"
+										th:field="*{employee.estadoCivil}" disabled>
+								</div>
+								<!-- Columna 3 -->
+								<div class="col-md-4 mb-3">
+									<label>Ap. Materno</label> <input type="text"
+										class="form-control" th:field="*{employee.secondLastName}"
+										disabled> <label>Fec. Nacimiento</label> <input
+										type="text" class="form-control"
+										th:field="*{employee.happyDay}" disabled> <label>Correo
+										E.</label> <input type="text" class="form-control"
+										th:field="*{employee.emailPeople}" disabled>
+
+
+								</div>
+								<!-- Columna 1 - fila2 -->
+								<div
+									class="d-flex justify-content-between align-items-center mb-3"
+									style="margin-bottom: 4px !important;">
+									<h4 class="text-right text-center"
+										th:text="${'Información de Contacto y Trabajo'}"></h4>
+								</div>
+								<div class="col-md-4 mb-3">
+									<label>Tlfn. de Emergencia</label> <input type="text"
+										class="form-control" th:field="*{employee.phone.phonenumber}"
+										disabled> <label>Cargo</label> <input type="text"
+										class="form-control" th:field="*{employee.cargo}"
+										placeholder="cargo ocupado en la empresa" disabled>
+
+								</div>
+								<div class="col-md-4 mb-3">
+								
+									<label>Tlfn. de Contacto</label> 
+									<input type="text"
+										class="form-control" th:field="*{employee.phone.cellphone}"
+										disabled>
+										
+									<label>Fch. Ingreso a la Empresa</label> <input type="text"
+										class="form-control" th:field="*{employee.fechingreso}"
+										disabled> 
+								</div>
+								<div class="col-md-4 mb-3">
+									<label>Estado</label> 
+									<input
+										th:if="${employee.userEntity == null}" type="text"
+										class="form-control" value="Aun no tiene cuenta" disabled>
+										
+									<input
+										th:if="${employee.userEntity != null and employee.userEntity.getUserestado() == true}"
+										type="text" class="form-control" value="Activo" disabled> 
+										
+										<input
+										th:if="${employee.userEntity != null and employee.userEntity.getUserestado() == false}"
+										type="text" class="form-control" value="Inactivo" disabled>
+								</div>
+								<!-- Columna 1 - fila2 -->
+								<div
+									class="d-flex justify-content-between align-items-center mb-3"
+									style="margin-bottom: 4px !important;">
+									<h4 class="text-right text-center" th:text="${'Domicilio'}"></h4>
+								</div>
+								<div class="col-md-4 mb-3">
+									<label>Residencia</label> <input type="text"
+										class="form-control"
+										th:field="*{employee.fullAddressWithEmployee}" readonly>
+
+								</div>
+								<div class="col-md-8 mb-3">
+									<label>Dirección</label> <input type="text"
+										class="form-control" th:field="*{employee.address.direccion}"
+										disabled> <label>Referencia</label> <input type="text"
+										class="form-control" th:field="*{employee.address.referencia}"
+										disabled>
+								</div>
+							</div>
+							<!-- Información de Contacto y Trabajo -->
+							<div class="row justify-content-between">
+								<div class="col-md-6 mx-auto">
+									<h4 class="text-right text-center" th:text="${'Horario'}"></h4>
+									<table class="table table-bordered">
+										<thead class="table-dark text-center">
+											<tr>
+												<th>Día</th>
+												<th>Hora de Entrada</th>
+												<th>Hora de Salida</th>
+												<th>Horas Trabajadas</th>
+											</tr>
+										</thead>
+										<tbody th:if="${#lists.isEmpty(schedules)}">
+											<tr>
+												<td colspan="4" class="text-center">No tiene horarios
+													asignados</td>
+											</tr>
+										</tbody>
+										<tbody th:if="${!#lists.isEmpty(schedules)}" th:each="schedule : ${schedules}">
+											<!-- Itera sobre la lista de horarios del empleado -->
+											<tr th:each="items : ${schedule.daySchedules}">
+												<th scope="row" th:text="${items.dayWeek}"></th>
+												<td th:text="${items.entryTime}"></td>
+												<td th:text="${items.leavWork}"></td>
+												<td th:text="${items.hoursWorked}"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Ver foto previa -->
+	<script type="text/javascript">
+	document.getElementById('formFile').addEventListener('change', function(event) {
+		const file = event.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				document.getElementById('imgAvatar').src = e.target.result;
+			}
+			reader.readAsDataURL(file);
+		}
+	});
+	</script>
+	<footer th:replace=" main/layout ::footer"></footer>
+</body>
+</html>

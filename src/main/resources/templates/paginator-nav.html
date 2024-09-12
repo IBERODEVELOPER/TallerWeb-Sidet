@@ -25,6 +25,10 @@
 				<span class="page-link" th:if="${page.last}">Último</span>
 				<a class="page-link" th:if="${not page.last}" th:href="@{${page.url}(page=${page.totalPaginas-1})}">Último</a>
 			</li>
+			<!-- Agregar el span dentro de un li -->
+		    <li class="page-item disabled">
+            <span class="page-link">Total de Registros: <span th:text="${totalRecords}"></span></span>
+        	</li>
 		</ul>
 	</nav>
 

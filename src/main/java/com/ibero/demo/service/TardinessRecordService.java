@@ -15,6 +15,8 @@ public interface TardinessRecordService {
 	
 	/*Metodo para guardar los datos del formulario Persona*/
 	public void saveTarding(TardinessRecord tardingrecord);
+	/*Metodo para listar todos los registros de asistencia*/
+	public List<TardinessRecord> findAllReports();
 	/*Metodo para listar las Personas registrado en el Sistema*/
 	public Page<TardinessRecord> findAllTardingreport(Pageable page);
 	//metodo para guardar la tardanza del empleado segun el día y su hora de ingreso programado
@@ -29,4 +31,8 @@ public interface TardinessRecordService {
 	Page<TardinessRecord> findTardinessByEmployee(Employee employee, Pageable pageable);
 	// Definimos el método para buscar por empleado
     List<TardinessRecord> findByEmployee(Employee employee);
+    // Definimos el método para buscar por empleado y mes
+    List<TardinessRecord> findTardinessByEmployeeAndMonth(Employee employee,int month);
+    //busqueda del empleado y mes
+    public Page<TardinessRecord> findTardinessByEmployeeAndMonth(Employee employee, int month, Pageable pageable);
 }

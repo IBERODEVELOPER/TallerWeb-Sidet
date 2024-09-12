@@ -21,12 +21,8 @@
 						<!-- Columna de la Foto y Formulario de actualización -->
 						<div class="col-md-3 border-right"
 							style="margin-left: 15px; margin-right: 10px; width: 30%; min-height: auto;">
-
-							<form th:action="@{/peoples/updatePicture}" method="post"
-								enctype="multipart/form-data">
-								<div
-									class="d-flex flex-column align-items-center p-3 py-5 rounded bg-dark bg-gradient">
-
+							<form th:action="@{/user/updatePhoto}" method="post" enctype="multipart/form-data">
+								<div class="d-flex flex-column align-items-center p-3 py-5 rounded bg-dark bg-gradient">
 									<!-- Muestra cuando la persona tiene foto -->
 									<img id="imgAvatar"
 										th:if="${employee.foto != null and #strings.length(employee.foto) > 0}"
@@ -120,21 +116,17 @@
 
 								</div>
 								<div class="col-md-4 mb-3">
-									<label>Tlfn. de Contacto</label> <input type="text"
-										class="form-control" th:field="*{employee.phone.cellphone}"
-										disabled> <label>Fch. Salida de la Empresa</label> <input
-										type="text" class="form-control"
-										th:if="${employee.fechsalida != null}"
-										th:field="*{employee.fechsalida}"
-										placeholder="Fecha de Salida de la Compañia" disabled>
-
-									<input th:if="${employee.fechsalida == null}" type="text"
-										class="form-control" value="Sigue laborando" disabled>
-								</div>
-								<div class="col-md-4 mb-3">
+									<label>Tlfn. de Contacto</label> 
+									<input type="text" class="form-control" th:field="*{employee.phone.cellphone}"
+										disabled> 
+									
 									<label>Fch. Ingreso a la Empresa</label> <input type="text"
 										class="form-control" th:field="*{employee.fechingreso}"
-										disabled> <label>Estado</label> <input
+										disabled>
+										
+								</div>
+								<div class="col-md-4 mb-3">
+									 <label>Estado</label> <input
 										th:if="${employee.userEntity == null}" type="text"
 										class="form-control" value="Aun no tiene cuenta" disabled>
 									<input
@@ -202,6 +194,19 @@
 			</div>
 		</div>
 	</div>
+	<!-- Ver foto previa -->
+	<script type="text/javascript">
+	document.getElementById('formFile').addEventListener('change', function(event) {
+		const file = event.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				document.getElementById('imgAvatar').src = e.target.result;
+			}
+			reader.readAsDataURL(file);
+		}
+	});
+	</script>
 	<footer th:replace=" main/layout ::footer"></footer>
 </body>
 </html>

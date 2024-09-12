@@ -198,14 +198,42 @@ function QuestionSavePeople() {
 		});
 }
 
-document.getElementById('formFile').addEventListener('change', function(event) {
-	const file = event.target.files[0];
-	if (file) {
-		const reader = new FileReader();
-		reader.onload = function(e) {
-			document.getElementById('imgAvatar').src = e.target.result;
-		}
-		reader.readAsDataURL(file);
-	}
-});
 
+
+//Carga los datos del formulario eventos
+function loadEventData(eventId) {
+    fetch(`/event/eventEditBy/${eventId}`)
+        .then(response => response.json())  // Asegúrate de que el controlador devuelva un JSON
+        .then(data => {
+            // Cargar los datos en los campos del formulario del modal
+            document.getElementById('eventId').value = data.id;
+            document.getElementById('eventName').value = data.nameEvent;
+			document.getElementById('eventTipe').value = data.tipoEvento;
+            // Cargar otros campos si es necesario
+        })
+        .catch(error => {
+            console.error('Error al cargar los datos del evento:', error);
+        });
+}
+//procesa los datos del formulario en el modal
+function submitEventForm() {
+    const form = document.getElementById('editEventForm');
+    const formData = new FormData(form);
+
+    fetch(`/event/formevent`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            // Cerrar el modal y posiblemente actualizar la lista de eventos
+			$('#editEventModal').modal('hide');
+            window.location.reload(); // Recargar la página para ver los cambios
+        } else {
+            alert('Error al actualizar el evento');
+        }
+    })
+    .catch(error => {
+        console.error('Error al enviar el formulario:', error);
+    });
+}

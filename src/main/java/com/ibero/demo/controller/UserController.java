@@ -1,5 +1,10 @@
 package com.ibero.demo.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +33,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ibero.demo.entity.Role;
@@ -46,18 +52,12 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
 	@Autowired
 	private IUserService userService;
-	
 	//ruta externa
 	private String rootC = "C://TallerWeb-Fotos";
-
 	// configurar el emisor
 	@Value("${spring.mail.username}")
 	private String mailFrom;
@@ -67,22 +67,23 @@ public class UserController {
 	private EmailService emailservice;
 	@Autowired
 	private IPeopleService peopleService;
-	@Autowired
-	private IScheduleService schuduleservice;
 
-	@Secured({"ROLE_ADMIN" })
+	@Secured({"ROLE_ADMIN","ROLE_MANAGER"})
 	@GetMapping("/listUsers")
 	public String showUsers(@RequestParam(name = "page",defaultValue = "0") int page,Model model) {
-		Pageable pageRequest = PageRequest.of(page, 10);
+		Pageable pageRequest = PageRequest.of(page, 8);
 		Page<UserEntity> userentity = userService.findAllUsers(pageRequest);
 		PageRender<UserEntity> pageRender = new PageRender<UserEntity>("/user/listUsers", userentity);
+		// Calcula el total de registros
+	    long totalRecords = userentity.getTotalElements();
 		model.addAttribute("titlepage", "Lista de usuarios");
 		model.addAttribute("user", userentity);
 		model.addAttribute("page", pageRender);
+		model.addAttribute("totalRecords", totalRecords);
 		return "/pages/allUsers";
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE"})
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE","ROLE_CUSTOMER"})
 	@GetMapping("/changekey")
 	public String changePassword(Model model) {
 		// Obtener el usuario autenticado
@@ -92,38 +93,32 @@ public class UserController {
 		UserEntity user = userService.findByUserName(username);
 		model.addAttribute("titlepage", "Cambiar contraseña");
 		model.addAttribute("user", new UserEntity(user.getId()));
-		logger.info("id : " + user.getId());
 		return "/pages/formChangePass"; // Nombre de tu archivo HTML de registro
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE"})
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE","ROLE_CUSTOMER"})
 	@PostMapping("/changekey")
 	public String processFormchangePassword(@RequestParam("id") Integer id,
 			@RequestParam("userPassword") String userPassword, Model model, RedirectAttributes flash) {
 		try {
 			boolean isPasswordValid = userService.checkPassword(id, userPassword);
-
 			if (isPasswordValid) {
 				flash.addFlashAttribute("error", "La contraseña nueva no tiene que ser igual que la anterior");
-				logger.info("Resultado : " + isPasswordValid);
 				return "redirect:/user/changekey";
 			} else {
-				logger.info("Resultado : " + isPasswordValid);
 				String encodePass = passwordEncoder.encode(userPassword);
 				// Actualizar la contraseña y el estado de la contraseña temporal a false "0"
 				userService.updatePass(id, encodePass, false);
 				flash.addFlashAttribute("success", "Contraseña actualizada exitosamente.");
 			}
 		} catch (Exception e) {
-			logger.error("Error actualizando la contraseña", e);
 			flash.addFlashAttribute("error", "Hubo un problema al actualizar la contraseña. Inténtalo de nuevo.");
 			return "redirect:/user/changekey";
 		}
-
-		return "redirect:/user/changekey";// return "redirect:/user/perfil";
+		return "redirect:/user/changekey";
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE"})
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE","ROLE_CUSTOMER"})
 	@CrossOrigin(origins = "http://20.197.224.167:8080")
 	@GetMapping(value = "/password/{username}")
 	public ResponseEntity<String> getPassword(@PathVariable String username, @RequestParam String currentPassword) {
@@ -136,8 +131,8 @@ public class UserController {
 		}
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE"})
-	@GetMapping("/perfil")
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE","ROLE_CUSTOMER"})
+	@GetMapping("/profileuser")
 	public String showProfile(Model model) {
 		// Obtener el usuario autenticado
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -153,10 +148,51 @@ public class UserController {
 		model.addAttribute("user", user);
 		model.addAttribute("employee", employee);
 		model.addAttribute("schedules", schedules);
-		return "/pages/profile";
+		return "/pages/profileuser";
+	}
+	
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE","ROLE_CUSTOMER"})
+	@PostMapping("/updatePhoto")
+	public String updatePicture(@RequestParam("file") MultipartFile foto, @RequestParam("id") Integer id,
+			RedirectAttributes flash) {
+		// obtenermos el empleado
+		Employee employee = peopleService.findOnePerson(id);
+		if (!foto.isEmpty()) {
+			// Obtener el nombre del archivo original y la extensión
+			String originalFilename = foto.getOriginalFilename();
+			String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+			// Crear el nuevo nombre de archivo utilizando el nombre del empleado
+			String nuevoNombreArchivo = employee.getName().replace(" ", "_") + "_" + System.currentTimeMillis()
+					+ extension;
+			// ruta relativa
+			Path rootPath = Paths.get(rootC).resolve(nuevoNombreArchivo);
+			// ruta absoluta
+			Path rootAbsPath = rootPath.toAbsolutePath();
+			if (employee.getFoto() != null && !employee.getFoto().isEmpty()) {
+				Path pathFotoAnterior = Paths.get(rootC).resolve(employee.getFoto()).toAbsolutePath();
+				File archivoFotoAnterior = pathFotoAnterior.toFile();
+				if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
+					archivoFotoAnterior.delete();
+				}
+			}
+			try {
+				byte[] bytes = foto.getBytes();
+				Files.write(rootPath, bytes);
+				flash.addFlashAttribute("success", "Has subido correctamente '" + nuevoNombreArchivo + "'");
+				flash.addFlashAttribute("mensage", "Al actualizar su foto cierre sesión para visualizar los cambios");
+				employee.setFoto(nuevoNombreArchivo);
+				peopleService.updateFoto(id, employee.getFoto());
+			} catch (IOException e) {
+				e.printStackTrace();
+				flash.addFlashAttribute("error", "Sucedio un error al intentar actualizar " + e);
+			}
+		}else {
+			flash.addFlashAttribute("error", "No hay ninguna foto seleccionado");
+		}
+		return "redirect:/user/profileuser";
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({"ROLE_ADMIN","ROLE_MANAGER"})
 	@GetMapping("/formUser")
 	public String showFormUser(Model model) {
 		UserEntity user = new UserEntity();
@@ -184,12 +220,11 @@ public class UserController {
 		return "/pages/formUser"; // Nombre de tu archivo HTML de registro
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({"ROLE_ADMIN","ROLE_MANAGER"})
 	@PostMapping(value = "/formUser")
 	public String processForm(@Valid UserEntity user, BindingResult result, Model model, RedirectAttributes flash,
 			@RequestParam(value = "Authority", required = false) String[] roleNames) {
 		if (result.hasErrors()) {
-			logger.info("Sucedio un error hasErrors()");
 			model.addAttribute("titlepage", "Creación de usuarios");
 			model.addAttribute("people", peopleService.findAllPeople());
 			model.addAttribute("user", user);
@@ -200,16 +235,13 @@ public class UserController {
 		if (roleNames != null) {
 			List<Role> roles = new ArrayList<>();
 			for (String roleName : roleNames) {
-				logger.info("Role " + roleName);
 				roles.add(new Role(roleName));
 			}
 			user.setRoles(roles);
 		} else {
 			user.setRoles(new ArrayList<>()); // O manejar el caso de no tener roles seleccionados
 		}
-
 		if (user.getId() == null) {
-			logger.info("Creando nuevo usuario");
 			// Anotar el De Para Asunto del Correo
 			EmailValuesDTO dto = new EmailValuesDTO();
 			dto.setMailFrom(mailFrom);//DE
@@ -223,16 +255,14 @@ public class UserController {
 			//guardar el nuevo usuario
 			userService.saveUser(user);
 			flash.addFlashAttribute("success", "Usuario creado correctamente");
-			
 		} else {
-			logger.info("Actualizando datos de usuario");
 			flash.addFlashAttribute("success", "Usuario actualizado correctamente");
 			userService.updateUser(user.getId(), user.getUserPassword(), user.getUserestado(), user.getRoles());
 		}
 		return "redirect:/user/listUsers";
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({"ROLE_ADMIN","ROLE_MANAGER"})
 	@GetMapping(value = "/formUser/{id}")
 	public String ListPeopleconcredenciales(@PathVariable(value = "id") int id, Model model, RedirectAttributes flash) {
 		UserEntity user = userService.findOneUser(id);

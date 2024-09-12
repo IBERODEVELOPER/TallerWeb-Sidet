@@ -35,11 +35,14 @@ public class TardinessRecordServiceImpl implements TardinessRecordService{
 		tardrec.setDay(diaEnum);
 		tardrec.setScheduledEntryTime(horaEntrada);
 		tardrec.setActualEntryTime(horaActual);
-		tardrec.setTardinessMinutes(Duration.between(horaEntrada, horaActual).toMinutes());
+		// Calcular minutos de tardanza y asegurarse de que no sea negativo
+	    long tardinessMinutes = Duration.between(horaEntrada, horaActual).toMinutes();
+	    if (tardinessMinutes < 0) {
+	        tardinessMinutes = 0; // Si es negativo, asignar 0
+	    }
+		tardrec.setTardinessMinutes(tardinessMinutes);
 		tardrec.setDate(LocalDate.now());//registrar la hora actual
 		rectardao.save(tardrec);
-		// Log para confirmar el registro
-        logger.info("Tardanza registrada para el empleado: " + employee.getName() + ", Día: " + diaEnum + ", Minutos de tardanza: " +tardrec.getTardinessMinutes());
 	}
 
 	@Override
@@ -82,6 +85,24 @@ public class TardinessRecordServiceImpl implements TardinessRecordService{
 	@Transactional(readOnly = true)
 	public List<TardinessRecord> findByEmployee(Employee employee) {
 		return rectardao.findByEmployee(employee);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<TardinessRecord> findTardinessByEmployeeAndMonth(Employee employee, int month, Pageable pageable) {
+		return rectardao.findByEmployeeAndMonth(employee, month, pageable);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<TardinessRecord> findTardinessByEmployeeAndMonth(Employee employee, int month) {
+		return rectardao.findByEmployeeAndMonthL(employee, month);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<TardinessRecord> findAllReports() {
+		return (List<TardinessRecord>) rectardao.findAll();
 	}
 
 }

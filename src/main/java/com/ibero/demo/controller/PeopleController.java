@@ -16,10 +16,14 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.ibero.demo.util.PageRender;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -27,6 +31,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,31 +51,30 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @SessionAttributes("employee")
 public class PeopleController {
 
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private IPeopleService peopleService;
 
 	// ruta externa
 	private String rootC = "C://TallerWeb-Fotos";
 
-	@GetMapping(value = "/events")
-	public String showEvents(Model model) {
-		model.addAttribute("titlepage", "©Registrex");
-		return "/pages/showevents";
-	}
-
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
 	@GetMapping(value = "/listPeople")
 	public String ListPeople(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
-		Pageable pageRequest = PageRequest.of(page, 10);
+		Pageable pageRequest = PageRequest.of(page, 8);
 		Page<Employee> employee = peopleService.findAllPeople(pageRequest);
+		// Calcula el total de registros
+	    long totalRecords = employee.getTotalElements();
 		PageRender<Employee> pageRender = new PageRender<Employee>("/peoples/listPeople", employee);
 		model.addAttribute("titlepage", "Empleados registrados en el sistema");
 		model.addAttribute("employee", employee);
 		model.addAttribute("page", pageRender);
+		model.addAttribute("totalRecords", totalRecords);
 		return "/pages/allPeople";
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
 	@GetMapping(value = "/verdata/{id}")
 	public String verDatosCompleto(@PathVariable(value = "id") int id, Model model, RedirectAttributes flash) {
 		Employee employee = null;
@@ -93,10 +101,10 @@ public class PeopleController {
 		model.addAttribute("employee", employee);
 		model.addAttribute("schedules", schedules);
 		model.addAttribute("totalHoursWorked", totalHoursWorked);
-		return "/pages/profile";
+		return "/pages/profiles";
 	}
 
-	@Secured("ROLE_ADMIN")
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
 	@GetMapping(value = "/formPeople")
 	public String showForm(Map<String, Object> model) {
 		Employee employee = new Employee();
@@ -107,10 +115,11 @@ public class PeopleController {
 		return "/pages/formPeople";
 	}
 
-	@Secured({ "ROLE_USER", "ROLE_ADMIN", "ROLE_EDITOR", "ROLE_EMPLOYEE", "ROLE_SUPPORT" })
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
 	@PostMapping("/updatePicture")
 	public String updatePicture(@RequestParam("file") MultipartFile foto, @RequestParam("id") Integer id,
 			RedirectAttributes flash) {
+		logger.info("Valor obtenido: "+foto.getName());
 		// obtenermos el empleado
 		Employee employee = peopleService.findOnePerson(id);
 		if (!foto.isEmpty()) {
@@ -142,11 +151,13 @@ public class PeopleController {
 				e.printStackTrace();
 				flash.addFlashAttribute("error", "Sucedio un error al intentar actualizar " + e);
 			}
+		}else {
+			flash.addFlashAttribute("error", "No hay ninguna foto seleccionado");
 		}
-		return "redirect:/user/perfil";
+		return "redirect:/peoples/verdata/"+id;
 	}
 
-	@Secured("ROLE_ADMIN")
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
 	@PostMapping(value = "/formPeople")
 	public String processForm(@Valid Employee employee,BindingResult result, Model model,
 			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
@@ -199,7 +210,7 @@ public class PeopleController {
 		return "redirect:/peoples/listPeople";
 	}
 
-	@Secured("ROLE_ADMIN")
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
 	@GetMapping(value = "/formPeople/{id}")
 	public String editForm(@PathVariable(value = "id") int id, Map<String, Object> model, RedirectAttributes flash) {
 		if (id <= 0) {
@@ -217,7 +228,7 @@ public class PeopleController {
 		return "/pages/formPeople";
 	}
 
-	@Secured("ROLE_ADMIN")
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
 	@GetMapping(value = "/verschedule/{id}")
 	public String showFormSchudule(@PathVariable("id") Integer id, Model model, RedirectAttributes flash) {
 		if (id <= 0) {
@@ -272,4 +283,5 @@ public class PeopleController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 	}
+	
 }

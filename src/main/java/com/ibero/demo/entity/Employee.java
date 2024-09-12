@@ -61,12 +61,6 @@ public class Employee implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fechingreso;
-	
-	//Salida de la empresa
-	@Column(name = "salida")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date fechsalida;
 
 	@NotNull
 	@Min(18)
@@ -285,14 +279,6 @@ public class Employee implements Serializable {
 		this.foto = foto;
 	}
 	
-	public Date getFechsalida() {
-		return fechsalida;
-	}
-
-	public void setFechsalida(Date fechsalida) {
-		this.fechsalida = fechsalida;
-	}
-
 	public List<Schedule> getSchedule() {
 		return schedule;
 	}

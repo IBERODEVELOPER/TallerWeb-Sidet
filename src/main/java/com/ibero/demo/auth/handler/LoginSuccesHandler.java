@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -68,8 +69,7 @@ public class LoginSuccesHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 			try {
 				// Valido el rol del usuario
-				if (hasRole("ROLE_ADMIN")) {
-					logger.info("Entro al if ROLE_aDMIN");
+				if (hasRole("ROLE_ADMIN") || hasRole("ROLE_CUSTOMER") ||hasRole("ROLE_MANAGER")) {
 					if (session.getAttribute("asistenciaRegistrada") == null) {
 						Employee employee = employeeService.getEmployeeWithFullSchedule(userentity);
 						if (employee != null) {
@@ -83,7 +83,7 @@ public class LoginSuccesHandler extends SimpleUrlAuthenticationSuccessHandler {
 					if (userentity.isTemporaryPassword()) {
 						response.sendRedirect(request.getContextPath() + "/user/changekey");
 					} else {
-						response.sendRedirect(request.getContextPath() + "/");
+						response.sendRedirect(request.getContextPath() + "/index");
 					}
 				} else if (hasRole("ROLE_EMPLOYEE") || hasRole("ROLE_SUPPORT")) {
 					// Si es empleado o soporte, se valida el horario.
@@ -92,7 +92,7 @@ public class LoginSuccesHandler extends SimpleUrlAuthenticationSuccessHandler {
 						if (userentity.isTemporaryPassword()) {
 							response.sendRedirect(request.getContextPath() + "/user/changekey");
 						} else {
-							response.sendRedirect(request.getContextPath() + "/");
+							response.sendRedirect(request.getContextPath() + "/index");
 						}
 					} else {
 						logger.info("Entro al else de fuera de turno");
@@ -135,7 +135,6 @@ public class LoginSuccesHandler extends SimpleUrlAuthenticationSuccessHandler {
 						LocalTime horaSalida = LocalTime.parse(daySchedule.getLeavWork(), formatter);
 						if (horaActualTime.isAfter(horaEntrada.minusMinutes(margenToleranciaMinutos))
 								&& horaActualTime.isBefore(horaSalida)) {
-
 							if (horaActualTime.isAfter(horaEntradaConTolerancia)) {
 								LocalDate today = LocalDate.now();
 								if (!tardinesservice.existsByEmployeeAndDate(employee, today)) {

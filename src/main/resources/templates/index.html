@@ -1,239 +1,109 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-<head th:replace="main/layout :: head"></head>
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-	rel="stylesheet">
-<style>
-.hidden {
-	display: none !important;
-}
-
-.chart-container {
-	position: relative;
-	width: 80%;
-	max-width: 500px;
-	margin: auto;
-}
-
-.chart {
-	width: 100%;
-	height: auto;
-}
-
-.small-input {
-	max-width: 150px;
-	/* Ajusta este valor según tus necesidades */
-}
-
-.small-label {
-	font-size: 0.9em;
-	/* Ajusta este valor según tus necesidades */
-}
-
-ul li a {
-	color: aliceblue;
-}
-
-.text-primary-custom {
-	color: white;
-}
-
-.navbar-brand {
-	color: aliceblue;
-}
-
-.navbar-expand-lg {
-	background-color: dodgerblue;
-}
-
-.card-header {
-	position: relative;
-}
-
-.toggle-btn {
-	cursor: pointer;
-	font-size: 1.5rem;
-	position: absolute;
-	right: 0;
-	top: 50%;
-	transform: translateY(-50%);
-}
-
-.card-body {
-	display: flex;
-	flex-direction: column;
-}
-
-.header-row {
-	display: flex;
-	align-items: center;
-	gap: 15px;
-	/* Espacio entre los elementos */
-}
-
-.info-icons {
-	display: flex;
-	gap: 20px;
-	/* Espacio entre los íconos */
-	align-items: center;
-	justify-content: space-around;
-}
-
-.info-icons div {
-	text-align: center;
-}
-
-.small-label {
-	margin-bottom: 0;
-}
-
-.small-input {
-	max-width: 150px;
-	/* Ajusta el tamaño máximo del input si es necesario */
-}
-
-/*<!--aqui el modificado-->*/
-.out {
-	text-align: center;
-}
-
-.small-input {
-	max-width: 150px;
-	/* Ajusta este valor según tus necesidades */
-}
-
-.small-label {
-	font-size: 0.9em;
-	/* Ajusta este valor según tus necesidades */
-}
-
-ul li a {
-	color: aliceblue;
-}
-
-.text-primary-custom {
-	color: white;
-}
-
-.navbar-brand {
-	color: aliceblue;
-}
-
-.navbar-expand-lg {
-	background-color: dodgerblue;
-}
-
-.container2 {
-	display: flex;
-	margin-bottom: 1em;
-}
-
-.item {
-	flex: auto;
-	padding-top: 1em;
-	padding-bottom: 1em;
-	padding: 10px;
-	height: 500px;
-}
-
-.card2 {
-	box-shadow: 0 0 0 1px teal;
-	display: flex;
-	margin-bottom: 1em;
-	height: 200px;
-}
-
-.cardpersonalizada {
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-	display: flex;
-	margin-bottom: 1em;
-	height: 450px;
-}
-</style>
+<head th:replace="~{main/layout :: head}">
 </head>
 
 <body>
-	<header th:replace="main/layout :: header"></header>
+	<header th:replace="~{main/layout :: header}"></header>
 
 	<div class="container mt-4" id="pantll">
-
-		<div class="card">
-
-
-
-			<div id="collapseForm" class="collapse">
-				<div class="card-body">
-					<form>
-						<div class="form-group row">
-							<label for="subtipoEvento" class="col-form-label col-sm-2">Subtipo
-								de evento:</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="subtipoEvento"
-									value="Sesiones de Feedback" readonly>
+		<!-- Administrativa -->
+		<div id="administrativa" th:if="${eventName != null}">
+			<div class="card">
+				<div
+					class="card-header d-flex align-items-center justify-content-between">
+					<h5 class="mb-0 d-flex align-items-center">
+						<i class="fas fa-tasks me-2" style="color: rgb(0, 0, 0);">
+						</i> Evento en Progreso: 
+						<strong class="ms-2" id="TipoEvento" th:text="${selectedTipoEvento}"></strong>
+					</h5>
+					<div class="d-flex align-items-center">
+						<!-- Start desde el controlador -->
+						<input type="hidden" id="startTime" th:value="${startTime}"> 
+						<input type="hidden" id="eventId" th:value="${activityId}"> 
+						<div id="timer" style="margin-right: 20px;">00:00:00</div>
+						<span class="toggle-btn" data-bs-toggle="collapse"
+							data-bs-target="#collapseForm" aria-expanded="false"
+							aria-controls="collapseForm"
+							style="cursor: pointer; margin-left: 10px; margin-right: 10px;">
+							<i class="fas fa-chevron-down" style="color: cadetblue;"></i>
+						</span>
+					</div>
+				</div>
+				<div id="collapseForm" class="collapse">
+					<div class="card-body">
+						<form>
+							<div class="form-group row">
+								<label for="subtipoEvento" class="col-form-label col-sm-2">Subtipo
+									de evento:</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="subtipoEvento" 	th:value="${eventName}" readonly>
+								</div>
 							</div>
-						</div>
-						<div class="form-group" style="margin-bottom: 10px;">
-							<label for="detalleEvento">Detalle:</label>
-							<textarea class="form-control" id="detalleEvento" rows="3"></textarea>
-						</div>
-						<button type="button" class="btn bg-dark text-light fw-bold">Finalizar</button>
-					</form>
+							<div class="form-group" style="margin-bottom: 10px;">
+								<label for="detalleEvento">Detalle:</label>
+								<textarea class="form-control" id="detalleEvento" rows="3"></textarea>
+							</div>
+							<button type="button"
+								class="btn bg-dark text-light fw-bold btn-finalizar">Finalizar</button>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
+		<!-- Fin administrativa -->
+
 		<!--Eventos del dia-->
 		<div class="card mt-4">
 			<div class="card">
 				<div class="card-body">
-					<div class="header-row">
+					<div class="header-row d-flex justify-content-between align-items-center">
 						<h4 class="col-3">
 							<i class="fas fa-stopwatch"></i> Minutos acumulados
-						</h4>
-						<div class="d-flex align-items-center gap-1">
-							<label for="fecha" class="small-label mb-0">Fecha:</label> <input
-								type="date" class="form-control small-input" id="fecha"
-								value="2023-07-21">
+						</h4> 
+						<div class="col-3 d-flex align-items-center">
+							<label for="fecha" class="small-label mb-0 me-2" style="font-size: 1.5rem;">Fecha:</label> 
+							<input type="date" class="form-control" id="fecha" value="2023-07-21" style="width: 10rem;">
 						</div>
-						<div class="info-icons mt-3 justify-content-around"
-							style="width: 60%;">
-							<!-- Tardanza -->
-							<div>
-								<i class="fas fa-clock fa-lg"></i>
-								<p class="mb-0">
-									<!-- Muestra los minutos de tardanza -->
-									<span th:text="${tardinessMinutes}">0</span>
-								</p>
-							</div>
-							<div>
-								<i class="fas fa-coffee fa-lg"></i>
-								<p class="mb-0">0</p>
-							</div>
-							<div>
-								<i class="fas fa-utensils fa-lg"></i>
-								<p class="mb-0">0</p>
-							</div>
-							<div>
-								<i class="fas fa-users fa-lg"></i>
-								<p class="mb-0">0</p>
-							</div>
-							<div>
-								<i class="fas fa-tools fa-lg"></i>
-								<p class="mb-0">0</p>
-							</div>
-							<div>
-								<i class="fas fa-restroom fa-lg"></i>
-								<p class="mb-0">0</p>
-							</div>
+						<!-- Tardanza -->
+						<div class="text-center">
+							<i class="fas fa-clock fa-lg"></i>
+							<p class="mb-0">
+								<span
+									th:text="${tardinessMinutes != null ? tardinessMinutes : 0}">0</span>
+							</p>
+						</div>
+						<!-- Coffee Break -->
+						<div class="text-center">
+							<i class="fas fa-coffee fa-lg"></i>
+							<p class="mb-0">0</p>
+						</div>
+						<!-- Almuerzo -->
+						<div class="text-center">
+							<i class="fas fa-utensils fa-lg"></i>
+							<p class="mb-0">0</p>
+						</div>
+						<!-- Tiempo de Reuniones -->
+						<div class="text-center">
+							<i class="fas fa-users fa-lg"></i>
+							<p class="mb-0">0</p>
+						</div>
+						<!-- Problemas Tecnicos -->
+						<div class="text-center">
+							<i class="fas fa-tools fa-lg"></i>
+							<p class="mb-0">0</p>
+						</div>
+						<!-- Baño -->
+						<div class="text-center">
+							<i class="fas fa-restroom fa-lg"></i>
+							<p class="mb-0">0</p>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
+
 
 		<div class="container2 d-flex justify-content-around">
 			<div class="item mt-4 col-md-4">
@@ -300,153 +170,14 @@ ul li a {
 			</div>
 		</div>
 	</div>
+
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script>
-		function updateChart() {
-			const productividad = 10;
-			const adherencia = 20;
-			const ocupacion = 30;
-			const efectividad = 40;
-
-			const ctx = document.getElementById('indicatorChart').getContext(
-					'2d');
-			new Chart(ctx, {
-				type : 'polarArea',
-				data : {
-					labels : [ 'Productividad', 'Adherencia', 'Ocupación',
-							'Efectividad' ],
-					datasets : [ {
-						label : 'Indicadores',
-						data : [ productividad, adherencia, ocupacion,
-								efectividad ],
-						backgroundColor : [ '#a3e1d4', '#dedede', '#9CC3DA',
-								'#f5b7b1' ]
-					} ]
-				},
-				options : {
-					responsive : true,
-					maintainAspectRatio : false,
-					scales : {
-						r : {
-							beginAtZero : true,
-							max : 100
-						}
-					}
-				}
-			});
-		}
-
-		function initializeMonthlyProgressChart() {
-			const ctx = document.getElementById('monthlyProgressChart')
-					.getContext('2d');
-			new Chart(ctx, {
-				type : 'line',
-				data : {
-					labels : [ '8/2022', '9/2022', '10/2022', '11/2022',
-							'12/2022', '1/2023', '2/2023', '3/2023', '4/2023',
-							'5/2023', '6/2023', '7/2023' ],
-					datasets : [ {
-						label : 'Productividad',
-						data : [ 0, 0, 0, 0, 25, 30, 35, 40, 45, 50, 55, 60 ],
-						borderColor : '#ff6f61',
-						backgroundColor : 'rgba(255, 111, 97, 0.2)',
-						fill : true
-					}, {
-						label : 'Adherencia',
-						data : [ 0, 0, 0, 0, 30, 35, 40, 45, 50, 55, 60, 65 ],
-						borderColor : '#6b5b95',
-						backgroundColor : 'rgba(107, 91, 149, 0.2)',
-						fill : true
-					}, {
-						label : 'Ocupación',
-						data : [ 0, 0, 0, 0, 40, 45, 50, 55, 60, 65, 70, 75 ],
-						borderColor : '#88d8b0',
-						backgroundColor : 'rgba(136, 216, 176, 0.2)',
-						fill : true
-					}, {
-						label : 'Efectividad',
-						data : [ 0, 0, 0, 0, 50, 55, 60, 65, 70, 75, 80, 85 ],
-						borderColor : '#f8c291',
-						backgroundColor : 'rgba(248, 194, 145, 0.2)',
-						fill : true
-					} ]
-				},
-				options : {
-					responsive : true,
-					maintainAspectRatio : false,
-					scales : {
-						x : {
-							title : {
-								display : true,
-								text : 'Meses'
-							}
-						},
-						y : {
-							title : {
-								display : true,
-								text : 'Valor'
-							}
-						}
-					}
-				}
-			});
-		}
-		function initializeMeasurementChart() {
-			const productividad = 10;
-			const adherencia = 20;
-			const ocupacion = 30;
-			const efectividad = 40;
-
-			const ctx = document.getElementById('measurementChart').getContext(
-					'2d');
-			new Chart(ctx, {
-				type : 'bar',
-				data : {
-					labels : [ 'Productividad', 'Adherencia', 'Ocupación',
-							'Efectividad' ],
-					datasets : [ {
-						label : 'Indicadores',
-						data : [ productividad, adherencia, ocupacion,
-								efectividad ],
-						backgroundColor : [ '#a3e1d4', '#dedede', '#9CC3DA',
-								'#f5b7b1' ]
-					} ]
-				},
-				options : {
-					responsive : true,
-					maintainAspectRatio : true,
-					scales : {
-						x : {
-							title : {
-								display : true,
-								text : 'Indicadores'
-							}
-						},
-						y : {
-							title : {
-								display : true,
-								text : 'Valor'
-							},
-							beginAtZero : true
-						}
-					}
-				}
-			});
-		}
-
-		document.addEventListener('DOMContentLoaded', function() {
-			updateChart();
-			initializeMonthlyProgressChart();
-			initializeMeasurementChart();
-		});
-	</script>
-	<footer th:replace="main/layout :: footer"></footer>
+	<script th:src="@{/js/scriptsindex.js}"></script>
+	<footer th:replace="~{main/layout :: footer}"></footer>
 </body>
 
 </html>

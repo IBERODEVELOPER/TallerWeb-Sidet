@@ -17,30 +17,78 @@
 					</ol>
 				</nav>
 				<!-- Filtro y botones -->
-				<form class="row g-2 mb-4" th:action="@{/reports/seachby}"
-					method="get">
+				<form class="row g-2 mb-4 d-flex align-items-center"
+					th:action="@{/reports/seachby}" method="get">
+					<!-- Select del Mes -->
+					<div class="col-auto">
+						<select name="month" class="form-select"
+							aria-label="Default select example">
+							<option value="" selected>Seleccione...</option>
+							<option value="1" th:selected="${selectedMonth == 1}">Enero</option>
+							<option value="2" th:selected="${selectedMonth == 2}">Febrero</option>
+							<option value="3" th:selected="${selectedMonth == 3}">Marzo</option>
+							<option value="4" th:selected="${selectedMonth == 4}">Abril</option>
+							<option value="5" th:selected="${selectedMonth == 5}">Mayo</option>
+							<option value="6" th:selected="${selectedMonth == 6}">Junio</option>
+							<option value="7" th:selected="${selectedMonth == 7}">Julio</option>
+							<option value="8" th:selected="${selectedMonth == 8}">Agosto</option>
+							<option value="9" th:selected="${selectedMonth == 9}">Setiembre</option>
+							<option value="10" th:selected="${selectedMonth == 10}">Octubre</option>
+							<option value="11" th:selected="${selectedMonth == 11}">Noviembre</option>
+							<option value="12" th:selected="${selectedMonth == 12}">Diciembre</option>
+						</select>
+
+					</div>
+					<!-- Input -->
 					<div class="col-8 col-sm-4">
 						<input class="form-control" type="search" name="documentNumber"
 							placeholder="Buscar empleado por N° de Documento"
 							aria-label="Search">
 					</div>
-					<div class="col-4 col-sm-2">
+					<!-- Boton BUSCAR-->
+					<div class="col-auto">
 						<button class="btn btn-outline-success w-100" type="submit">
 							<ion-icon name="search-outline"></ion-icon>
 							Search
 						</button>
 					</div>
-					<div class="col-4 col-sm-3">
-						<!-- Botón PDF -->
-						<a 	th:href="@{'/reports/seachbydpf?documentNumber=' + ${documentNumber} + '&format=pdf'}"
-							class="btn btn-outline-danger fw-bold"> 
-							<ion-icon name="document-outline"></ion-icon> PDF
-						</a>
 
-						<button class="btn btn-outline-success fw-bold ms-2" type="button">
-							<ion-icon name="document-text-outline"></ion-icon>
-							Excel
-						</button>
+					<div class="col-auto">
+						<!-- Boton EXPORT EXCEL GENERAL-->
+						<div th:if="${isReportPage}">
+						    <a th:href="@{'/reports/asistence_generalxlsx'}"
+						       class="btn btn-outline-success fw-bold ms-2">
+						        <ion-icon name="document-text-outline"></ion-icon> Reporte General Excel
+						    </a>
+						</div>
+						<!-- Boton EXPORT PDF SIN EL MES -->
+						<a
+							th:if="${documentNumber != null and (selectedMonth == null or selectedMonth == '')}"
+							th:href="@{'/reports/seachbydpf?documentNumber='+${documentNumber}+'&format=pdf'}"
+							class="btn btn-outline-danger fw-bold"> <ion-icon
+								name="document-outline"></ion-icon> PDF
+						</a>
+						<!-- Boton EXPORT PDF CON EL MES -->
+						<a
+							th:if="${selectedMonth != null and selectedMonth != '' and documentNumber != null}"
+							th:href="@{'/reports/seachbydpf?documentNumber='+${documentNumber}+'&month='+${selectedMonth}+'&format=pdf'}"
+							class="btn btn-outline-danger fw-bold"> <ion-icon
+								name="document-outline"></ion-icon> PDF
+						</a>
+						<!-- Boton EXPORT EXCEL SIN EL MES-->
+						<a
+							th:if="${documentNumber != null and (selectedMonth == null or selectedMonth == '')}"
+							th:href="@{'/reports/seachbyexcel?documentNumber=' + ${documentNumber}}"
+							class="btn btn-outline-success fw-bold ms-2"> <ion-icon
+								name="document-text-outline"></ion-icon> Excel
+						</a>
+						<!-- Boton EXPORT EXCEL CON EL MES-->
+						<a
+							th:if="${selectedMonth != null and selectedMonth != '' and documentNumber != null}"
+							th:href="@{'/reports/seachbyexcel?documentNumber=' + ${documentNumber}+'&month='+${selectedMonth}}"
+							class="btn btn-outline-success fw-bold ms-2"> <ion-icon
+								name="document-text-outline"></ion-icon> Excel
+						</a>
 					</div>
 				</form>
 				<table class="table table-bordered table-hover table-striped">
@@ -85,7 +133,7 @@
 						</tr>
 					</tbody>
 					<!-- Muestra si no hay ningun valor -->
-					<tbody th:if="${tardins == null}">
+					<tbody th:if="${tardins.totalElements == 0}">
 						<tr>
 							<td colspan="8" class="text-center">No se encontraron
 								registros de tardanza para este empleado.</td>

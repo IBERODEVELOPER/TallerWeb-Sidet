@@ -104,13 +104,39 @@
 								<label class="col-sm-4 col-form-label">Roles</label>
 								<div class="col-sm-8 rounded shadow-sm">
 									<div class="row">
+										<!-- Cliente -->
 										<div class="col-4">
 											<div class="form-check">
 												<input class="form-check-input" name="Authority" type="checkbox"
-													value="ROLE_USER" id="usuario">
-												<label class="form-check-label" for="usuario">Usuario</label>
+													value="ROLE_CUSTOMER" id="cliente">
+												<label class="form-check-label" for="cliente">Cliente</label>
 											</div>
 										</div>
+										<!-- Empleado Administrativo -->
+										<div class="col-4">
+											<div class="form-check">
+												<input class="form-check-input" name="Authority" type="checkbox"
+													value="ROLE_EMPLOYEE" id="empleado">
+												<label class="form-check-label" for="empleado">Administrativo</label>
+											</div>
+										</div>
+										<!-- Soporte -->
+										<div class="col-4">
+											<div class="form-check">
+												<input class="form-check-input" name="Authority" type="checkbox"
+													value="ROLE_SUPPORT" id="soporte">
+												<label class="form-check-label" for="soporte">Soporte</label>
+											</div>
+										</div>
+										<!-- Manager -->
+										<div class="col-4">
+											<div class="form-check">
+												<input class="form-check-input" name="Authority" type="checkbox"
+													value="ROLE_MANAGER" id="manager">
+												<label class="form-check-label" for="manager">Manager</label>
+											</div>
+										</div>
+										<!-- Administrador -->
 										<div class="col-4">
 											<div class="form-check">
 												<input class="form-check-input" name="Authority" type="checkbox"
@@ -119,48 +145,7 @@
 													for="administrador">Administrador</label>
 											</div>
 										</div>
-										<div class="col-4">
-											<div class="form-check">
-												<input class="form-check-input" name="Authority" type="checkbox"
-													value="ROLE_SUPER_ADMIN" id="superadmin">
-												<label class="form-check-label" for="superadmin">S. Admin</label>
-											</div>
-										</div>
-										<div class="col-4">
-											<div class="form-check">
-												<input class="form-check-input" name="Authority" type="checkbox"
-													value="ROLE_EDITOR" id="editor">
-												<label class="form-check-label" for="editor">Editor</label>
-											</div>
-										</div>
-										<div class="col-4">
-											<div class="form-check">
-												<input class="form-check-input" name="Authority" type="checkbox"
-													value="ROLE_CUSTOMER" id="cliente">
-												<label class="form-check-label" for="cliente">Cliente</label>
-											</div>
-										</div>
-										<div class="col-4">
-											<div class="form-check">
-												<input class="form-check-input" name="Authority" type="checkbox"
-													value="ROLE_MANAGER" id="manager">
-												<label class="form-check-label" for="manager">Manager</label>
-											</div>
-										</div>
-										<div class="col-4">
-											<div class="form-check">
-												<input class="form-check-input" name="Authority" type="checkbox"
-													value="ROLE_EMPLOYEE" id="empleado">
-												<label class="form-check-label" for="empleado">Empleado</label>
-											</div>
-										</div>
-										<div class="col-4">
-											<div class="form-check">
-												<input class="form-check-input" name="Authority" type="checkbox"
-													value="ROLE_SUPPORT" id="soporte">
-												<label class="form-check-label" for="soporte">Soporte</label>
-											</div>
-										</div>
+										
 									</div>
 								</div>
 							</div>

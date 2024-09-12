@@ -7,6 +7,9 @@
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 	<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}">
 	<link rel="stylesheet" th:href="@{/css/estilo.css}">
+	<!-- WebSocket -->
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.4.0/dist/sockjs.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 	<!-- FontAwesome para el icono de ojito -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<!-- Titulo de la Página -->
@@ -20,7 +23,7 @@
 		<nav class="navbar navbar-expand-md navbar-light border-4 border-bottom border-warning"
 			style="background-color: cadetblue;">
 			<div class="container" sec:authorize="isAuthenticated()">
-				<a th:href="@{/}" class="navbar-brand"
+				<a th:href="@{/index}" class="navbar-brand"
 					style="color: rgb(255, 255, 255);"><b><sup>©</sup>CONTACTEMP</b></a>
 				<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menunav">
 					<span class="navbar-toggler-icon"></span>
@@ -28,7 +31,7 @@
 				<div id="menunav" class="collapse navbar-collapse" style="width: 100%;">
 					<ul class="navbar-nav ms-3" style="width: 100%;">
 						<li class="nav-item">
-							<a class="nav-link text-light fw-bold" th:href="@{/}">Inicio</a>
+							<a class="nav-link text-light fw-bold" th:href="@{/index}">Inicio</a>
 						</li>
 
 						<li class="nav-item dropdown">
@@ -37,11 +40,10 @@
 								Gestión
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Agregar operación</a></li>
-								<li><a class="dropdown-item" th:href="@{/peoples/formPeople}">Bandeja de Tickets</a>
+								<li><a class="dropdown-item" th:href="@{/efforts}">Agregar operación</a></li>
+								<li><a class="dropdown-item" th:href="@{/incidents}">Bandeja de Tickets</a>
 								</li>
 							</ul>
-							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
 						</li>
 
 						<li class="nav-item dropdown">
@@ -50,11 +52,12 @@
 								Eventos
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/peoples/events}">Nuevo evento</a></li>
+								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/event/formevent}">Nuevo y/o Listar</a></li>
+								<li><a class="dropdown-item" th:href="@{/events}">Marcar</a></li>
+								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/event/online}">En Linea</a></li>
 							</ul>
-							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
 						</li>
-
+						<!-- Empleados -->
 						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -65,6 +68,23 @@
 								</li>
 								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')"
 										th:href="@{/peoples/formPeople}">Registrar Empleado</a></li>
+							</ul>
+							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
+						</li>
+						
+						<!-- Clientes -->
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
+								role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Clientes
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li>
+									<a class="dropdown-item" th:href="@{/customer/listCustomers}">Lista de Clientes</a>
+								</li>
+								<li>
+									<a class="dropdown-item" th:href="@{/customer/formCustomer}">Registrar Cliente</a>
+								</li>
 							</ul>
 							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
 						</li>
@@ -79,7 +99,7 @@
 								<li><a class="dropdown-item" th:href="@{/user/formUser}">Nuevo Usuario</a></li>
 							</ul>
 						</li>
-						<li class="nav-item dropdown" >
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Asistencia
@@ -107,7 +127,7 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-light" th:href="@{/user/perfil}" title="ver perfil de usuario">
+							<a class="nav-link text-light" th:href="@{/user/profileuser}" title="ver perfil de usuario">
 								<ion-icon name="person-outline" style="font-size: 20px;"></ion-icon>
 							</a>
 						</li>
@@ -178,18 +198,7 @@
 			<!-- mensaje info -->
 			<div id="message4" class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
 			
-			<!--Actividad
-			<div class="card-header">
-				<h5 class="mb-0"><i class="fas fa-tasks" style="color: rgb(0, 0, 0);"></i> Evento en Progreso:
-					<strong>ACTIVIDADES ADMINISTRATIVAS</strong>
-				</h5>
-				<span class="toggle-btn" data-bs-toggle="collapse" data-bs-target="#collapseForm" aria-expanded="false"
-					aria-controls="collapseForm" style="margin-right: 10px;">
-					<div id="timer">00:00:00</div>
-					<i class="fas fa-chevron-down" style="color: cadetblue;"></i>
-				</span>
-			</div>
-			-->
+			
 		</div>
 	</header>
 	<footer th:fragment="footer" class="container-fluid d-none d-xxl-block" style="height: auto;margin-top: 10px;">
@@ -199,47 +208,14 @@
 				Derechos reservados copyright © CONTACTEMP
 			</p>
 		</div>
-		<script type="text/javascript">
-		/* function startTimer() {
-	        let hours = 0;
-	        let minutes = 0;
-	        let seconds = 0;
-
-	        const timerElement = document.getElementById('timer');
-
-	        setInterval(() => {
-	            seconds++;
-
-	            if (seconds === 60) {
-	                seconds = 0;
-	                minutes++;
-
-	                if (minutes === 60) {
-	                    minutes = 0;
-	                    hours++;
-	                }
-	            }
-
-	            let formattedTime = 
-	                (hours < 10 ? "0" + hours : hours) + ":" + 
-	                (minutes < 10 ? "0" + minutes : minutes) + ":" + 
-	                (seconds < 10 ? "0" + seconds : seconds);
-
-	            timerElement.textContent = formattedTime;
-	        }, 1000);
-	    }
-
-	    // Iniciar el temporizador
-	    startTimer(); */
-		</script>
 		<!-- Ionicons Script -->
 		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 		<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script th:src="@{/js/jquery-3.4.1.js}"></script>
+		<!-- jQuery first, then Popper.js, then Bootstrap JS<script th:src="@{/js/jquery-3.4.1.js}"></script>-->
+		<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
 		<script th:src="@{/js/bootstrap.min.js}"></script>
-		<script th:src="@{/js/funciones.js}"></script>
 		<script th:src="@{/js/sweetalert.min.js}"></script>
+		<script th:src="@{/js/funciones.js}"></script>
 	</footer>
 </body>
 </html>

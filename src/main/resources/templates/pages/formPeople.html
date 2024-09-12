@@ -47,8 +47,16 @@
 								<div class="col-lg-2 text-center" style="width: 50%;">
 									<div class="row align-items-center">
 										<div class="col-12">
-											<img id="imgAvatar" th:src="@{/images/default.png}" width="150" height="150"
-												class="rounded-circle img-fluid">
+										<!-- Muestra cuando la persona tiene foto -->
+										<img id="imgAvatar"
+										th:if="${employee.foto != null and #strings.length(employee.foto) > 0}"
+										class="rounded-circle img-fluid"  width="150" height="150"
+										th:src="@{'/TallerWeb-Fotos/'+${employee.foto}}"
+										th:alt="${employee.foto}" />
+										<!-- Si la persoan no tiene foto muestra una imagen por defecto -->
+										<img id="imgAvatar" th:if="${employee.foto == null}"
+										class="rounded-circle img-fluid"  width="150" height="150" th:src="@{/images/predeterminado.png}"
+										alt="Imganen predeterminado" />
 										</div>
 		                				<div class="input-group mb-3" style="margin-top: 5px;">
 											<input class="form-control" name="file" type="file" id="formFile"> 
@@ -282,6 +290,19 @@
 			</div>
 		</div>
 	</div>
+	<!-- Ver foto previa -->
+	<script type="text/javascript">
+	document.getElementById('formFile').addEventListener('change', function(event) {
+		const file = event.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				document.getElementById('imgAvatar').src = e.target.result;
+			}
+			reader.readAsDataURL(file);
+		}
+	});
+	</script>
 	<footer th:replace="main/layout :: footer" class="d-none d-md-block"></footer>
 </body>
 

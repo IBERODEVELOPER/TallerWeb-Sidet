@@ -2,6 +2,7 @@ package com.ibero.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +34,7 @@ public class DayScheduleController {
 	private IScheduleService scheduleservice;
 
 	// Editar horario por día
+	@Secured({"ROLE_ADMIN","ROLE_MANAGER"})
 	@GetMapping(value = "/editschudule/{id}")
 	public String editSchedule(@PathVariable("id") Integer id, Model model) {
 		// Obtener el `Schedule` usando el servicio
@@ -50,6 +52,7 @@ public class DayScheduleController {
 		return "/pages/formschudule";
 	}
 
+	@Secured({"ROLE_ADMIN","ROLE_MANAGER"})
 	@PostMapping(value = "/updateScheduleday")
 	public String processForm(@Valid @ModelAttribute DaySchedule daySchedule, BindingResult result, Model model,
 			RedirectAttributes flash) {
@@ -65,7 +68,7 @@ public class DayScheduleController {
 		flash.addFlashAttribute("success", "Datos actualizados correctamente");
 		return "redirect:/peoples/verschedule/" + daySchedule.getSchedule().getEmployee().getId();
 	}
-
+	@Secured({"ROLE_ADMIN"})
 	@GetMapping(value = "/deletediaby/{id}")
 	public String eliminarCliente(@PathVariable(value = "id") Integer id, RedirectAttributes flash) {
 		// Obtener el `Schedule` usando el servicio

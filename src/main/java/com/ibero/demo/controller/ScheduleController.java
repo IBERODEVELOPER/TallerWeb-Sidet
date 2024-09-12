@@ -1,6 +1,7 @@
 package com.ibero.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +31,7 @@ public class ScheduleController {
 	@Autowired
 	private IPeopleService peopleService;
 	
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_EMPLOYEE"})
 	@GetMapping(value = "/schuduleweek/{id}")
 	public String showForm(@PathVariable("id") Integer id,Model model) {
 		// Obtener el empleado mediante su ID
@@ -47,6 +49,7 @@ public class ScheduleController {
 		return "/pages/formschuduleAll";
 	}
 	
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_EMPLOYEE"})
 	@PostMapping(value = "/schuduleweek/{emploID}")
 	public String processFormAll(@PathVariable("emploID") Integer id,@ModelAttribute Schedule schedule, BindingResult result,Model model,RedirectAttributes flash) {
 		Employee employee = peopleService.findOnePerson(id);
@@ -67,8 +70,4 @@ public class ScheduleController {
 		flash.addFlashAttribute("success", "Horario creado correctamente correctamente");
 		return "redirect:/peoples/listPeople";
 	}
-	
-	
-	
-
 }
