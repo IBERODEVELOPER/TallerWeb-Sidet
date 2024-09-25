@@ -53,20 +53,26 @@
 									<div class="form-text text-danger" th:if="${#fields.hasErrors('identityCustomer')}"
 										th:errors="*{identityCustomer}"></div>
 								</div>
-							</div>
-							
-							<div class="form-group row mb-3 xs-3">
 								<!-- RUC -->
-								<label class="col-sm-2 col-form-label">RUC</label>
-								<div class="col-sm-4">
+								<label class="col-auto col-form-label">RUC</label>
+								<div class="col-sm-3">
 									<input type="text" th:field="*{RUC}" class="form-control" placeholder="10758876015" th:errorclass="'form-control alert-danger'"  />
 									<div class="form-text text-danger" th:if="${#fields.hasErrors('RUC')}" th:errors="*{RUC}"></div>
 								</div>
+							</div>
+							
+							<div class="form-group row mb-3 xs-3">
 								<!-- RAZON SOCIAL -->
 								<label class="col-sm-2 col-form-label" style="width:auto !important;">Razon Social</label>
 								<div class="col-sm-4">
 									<input type="text" th:field="*{razonsocial}" class="form-control" placeholder="latin Systems SAC" th:errorclass="'form-control alert-danger'"/>
 									<div class="form-text text-danger" th:if="${#fields.hasErrors('razonsocial')}" th:errors="*{razonsocial}"></div>
+								</div>
+								<!-- EMAIL -->
+								<label class="col-sm-2 col-form-label">Correo Electrónico</label>
+								<div class="col-sm-4">
+									<input type="text" th:field="*{emailCustomer}" class="form-control" placeholder="migatomichi@gmail.com" th:errorclass="'form-control alert-danger'" />
+									<div class="form-text text-danger" th:if="${#fields.hasErrors('emailCustomer')}" th:errors="*{emailCustomer}"></div>
 								</div>
 							</div>
 							<div class="form-group row">

@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -26,7 +28,7 @@ import com.ibero.demo.entity.Employee;
 import com.ibero.demo.entity.Schedule;
 import com.ibero.demo.entity.UserEntity;
 import com.ibero.demo.service.IPeopleService;
-import com.ibero.demo.service.TardinessRecordService;
+import com.ibero.demo.service.AttendWorkService;
 import com.ibero.demo.util.DaysWeek;
 
 import jakarta.servlet.ServletException;
@@ -37,11 +39,13 @@ import jakarta.servlet.http.HttpSession;
 @Component
 public class LoginSuccesHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private IPeopleService employeeService;
 
 	@Autowired
-	private TardinessRecordService tardinesservice;
+	private AttendWorkService tardinesservice;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -69,7 +73,8 @@ public class LoginSuccesHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 			try {
 				// Valido el rol del usuario
-				if (hasRole("ROLE_ADMIN") || hasRole("ROLE_CUSTOMER") ||hasRole("ROLE_MANAGER")) {
+				if (hasRole("ROLE_ADMIN")||hasRole("ROLE_MANAGER")) {
+					logger.info("LoginSuccesHandler Estoy en ADMIN Y MANAGER");
 					if (session.getAttribute("asistenciaRegistrada") == null) {
 						Employee employee = employeeService.getEmployeeWithFullSchedule(userentity);
 						if (employee != null) {
@@ -86,17 +91,25 @@ public class LoginSuccesHandler extends SimpleUrlAuthenticationSuccessHandler {
 						response.sendRedirect(request.getContextPath() + "/index");
 					}
 				} else if (hasRole("ROLE_EMPLOYEE") || hasRole("ROLE_SUPPORT")) {
+					logger.info("LoginSuccesHandler Estoy en hasRole(\"ROLE_EMPLOYEE\") Y hasRole(\"ROLE_SUPPORT\")");
 					// Si es empleado o soporte, se valida el horario.
 					if (verificarHorario(request, response, authentication)) {
-						logger.info("Entro en verificar horardio");
+						logger.info("Entro en verificarHorario(request, response, authentication) horario");
 						if (userentity.isTemporaryPassword()) {
 							response.sendRedirect(request.getContextPath() + "/user/changekey");
 						} else {
 							response.sendRedirect(request.getContextPath() + "/index");
 						}
 					} else {
-						logger.info("Entro al else de fuera de turno");
+						logger.info("LoginSuccesHandler Entro al else de fuera de turno");
 						response.sendRedirect(request.getContextPath() + "/outofturn");
+					}
+				}else {
+					logger.info("LoginSuccesHandler Estoy en Cliente");
+					if (userentity.isTemporaryPassword()) {
+						response.sendRedirect(request.getContextPath() + "/user/changekey");
+					} else {
+						response.sendRedirect(request.getContextPath() + "/index");
 					}
 				}
 				return;
@@ -133,26 +146,67 @@ public class LoginSuccesHandler extends SimpleUrlAuthenticationSuccessHandler {
 						LocalTime horaEntrada = LocalTime.parse(daySchedule.getEntryTime(), formatter);
 						LocalTime horaEntradaConTolerancia = horaEntrada.plusMinutes(margenToleranciaMinutos);
 						LocalTime horaSalida = LocalTime.parse(daySchedule.getLeavWork(), formatter);
-						if (horaActualTime.isAfter(horaEntrada.minusMinutes(margenToleranciaMinutos))
-								&& horaActualTime.isBefore(horaSalida)) {
-							if (horaActualTime.isAfter(horaEntradaConTolerancia)) {
-								LocalDate today = LocalDate.now();
-								if (!tardinesservice.existsByEmployeeAndDate(employee, today)) {
-									// Registrar la tardanza
-									tardinesservice.savetarding(employee, diaEnum, horaEntrada, horaActualTime);
+						// Verifica si el turno cruza la medianoche
+						boolean cruzaMedianoche = horaSalida.isBefore(horaEntrada);
+						logger.info("LoginSuccesHandler verificarHorario() Valor de horaEntrada: " + horaEntrada);
+						logger.info("LoginSuccesHandler verificarHorario() Valor de horaEntradaConTolerancia: " + horaEntradaConTolerancia);
+						logger.info("LoginSuccesHandler verificarHorario() Valor de horaSalida: " + horaSalida);
+						logger.info("LoginSuccesHandler verificarHorario() Valor de horaActualTime: " + horaActualTime);
+						logger.info("LoginSuccesHandler verificarHorario() Valor de cruzaMedianoche: " + cruzaMedianoche);
+						if (cruzaMedianoche) {
+						    if ((horaActualTime.isAfter(horaEntrada.minusMinutes(margenToleranciaMinutos)) 
+						    		|| horaActualTime.equals(horaEntrada))
+						            || horaActualTime.isBefore(horaSalida)) {
+						        // Está dentro del turno
+						        logger.info("Empleado está dentro del turno");
+						        LocalDate today = LocalDate.now();
+						        if (horaActualTime.isAfter(horaEntradaConTolerancia)) {
+									if (!tardinesservice.existsByEmployeeAndDate(employee, today)) {
+										// Registrar la tardanza
+										tardinesservice.savetarding(employee, diaEnum, horaEntrada, horaActualTime);
+									} else {
+										logger.info("Empleado inicia sesión por segunda vez");
+									}
 								} else {
-									logger.info("Empleado inicia sesión por segunda vez");
+									if(!tardinesservice.existsByEmployeeAndDate(employee, today)) {
+										// registrar asistencia
+										tardinesservice.savetarding(employee, diaEnum, horaEntrada, horaActualTime);
+										logger.info("El empleado ingresó a tiempo.");
+									}else {
+										logger.info("El empleado ingresó a tiempo. Existe su asistencia registrado");
+									}
 								}
-							}
+						        
+						        
+						    } 
+						    return true;// Está dentro del horario permitido
+						}else {
+							if (horaActualTime.isAfter(horaEntrada.minusMinutes(margenToleranciaMinutos))
+									&& horaActualTime.isBefore(horaSalida)) {
+								LocalDate today = LocalDate.now();
+								if (horaActualTime.isAfter(horaEntradaConTolerancia)) {
+									if (!tardinesservice.existsByEmployeeAndDate(employee, today)) {
+										// Registrar la tardanza
+										tardinesservice.savetarding(employee, diaEnum, horaEntrada, horaActualTime);
+									} else {
+										logger.info("Empleado inicia sesión por segunda vez");
+									}
+								}
+								else {
+									// registrar asistencia
+									if(!tardinesservice.existsByEmployeeAndDate(employee, today)) {
+										// registrar asistencia
+										tardinesservice.savetarding(employee, diaEnum, horaEntrada, horaActualTime);
+										logger.info("El empleado ingresó a tiempo.");
+									}else {
+										logger.info("El empleado ingresó a tiempo. Existe su asistencia registrado");
+									}
+								}
 
-							else {
-								// registrar asistencia
-								tardinesservice.savetarding(employee, diaEnum, horaEntrada, horaActualTime);
-								logger.info("El empleado ingresó a tiempo.");
+								return true; // Está dentro del horario permitido
 							}
-
-							return true; // Está dentro del horario permitido
 						}
+						
 					}
 				}
 			}
@@ -162,7 +216,6 @@ public class LoginSuccesHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	// registrar asistencia.
 	public void registrarAsistencia(Employee employee) {
-
 		Calendar calendar = Calendar.getInstance();
 		int horaActual = calendar.get(Calendar.HOUR_OF_DAY);
 		int minutosActuales = calendar.get(Calendar.MINUTE);

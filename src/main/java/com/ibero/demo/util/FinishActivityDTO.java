@@ -6,6 +6,8 @@ public class FinishActivityDTO {
 	private String endTime; // Fecha y hora de finalización
     private String totalTime; //Tiempo tomado en el evento
     private String detailsevent;
+    private String status;
+    private String codeAct;
     private boolean isClosed = true;
     
 	public boolean isClosed() {
@@ -38,4 +40,17 @@ public class FinishActivityDTO {
 	public void setDetailsevent(String detailsevent) {
 		this.detailsevent = detailsevent;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getCodeAct() {
+		return codeAct;
+	}
+	public void setCodeAct(String codeAct) {
+		this.codeAct = codeAct;
+	}
+	
 }

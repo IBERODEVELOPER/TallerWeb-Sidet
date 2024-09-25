@@ -29,7 +29,7 @@ public class MvcConfig implements WebMvcConfigurer{
 	public void addCorsMappings(CorsRegistry registry) {
 		WebMvcConfigurer.super.addCorsMappings(registry);
 		 registry.addMapping("/**") // Permite solicitudes a todos los endpoints
-         .allowedOrigins("http://20.197.224.167:8080") // Reemplaza con el origen adecuadohttp://20.197.224.167:8080/
+         .allowedOrigins("http://20.197.229.70:80") // Reemplaza con el origen adecuadohttp://20.197.224.167:8080/
          .allowedMethods("GET")
          .allowedHeaders("*")
          .allowCredentials(true);

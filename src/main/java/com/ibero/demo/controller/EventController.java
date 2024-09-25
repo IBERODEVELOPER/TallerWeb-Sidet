@@ -104,7 +104,6 @@ public class EventController {
 	            eventosAdministrativos.add(e);
 	        }
 	    }
-	    logger.info("Eventos : " + eventosAdministrativos);
 		return eventosAdministrativos;
 	}
 	

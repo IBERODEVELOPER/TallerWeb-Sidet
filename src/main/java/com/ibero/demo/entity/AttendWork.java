@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tardinessrecord")
-public class TardinessRecord implements Serializable {
+public class AttendWork implements Serializable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +43,8 @@ public class TardinessRecord implements Serializable {
     
 	@Column(name = "justifytard", length = 255)
 	private String justifytard;
+	
+	private LocalTime exitTime; // Hora de salida del empleado
 
 	public Integer getId() {
 		return id;
@@ -106,6 +108,14 @@ public class TardinessRecord implements Serializable {
 
 	public void setJustifytard(String justifytard) {
 		this.justifytard = justifytard;
+	}
+
+	public LocalTime getExitTime() {
+		return exitTime;
+	}
+
+	public void setExitTime(LocalTime exitTime) {
+		this.exitTime = exitTime;
 	}
 
 	private static final long serialVersionUID = 1L;

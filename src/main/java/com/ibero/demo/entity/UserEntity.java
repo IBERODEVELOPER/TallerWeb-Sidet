@@ -32,6 +32,13 @@ public class UserEntity implements Serializable{
 	@JoinColumn(name = "people_id", referencedColumnName = "id")
 	private Employee employee;
 	
+	@OneToOne
+	@JoinColumn(name = "customer_id", referencedColumnName = "id")
+    private Customer customer;
+
+	@Column(name="tipoUsuario", length = 10)
+	private String tipoUsuario;
+	
 	@NotEmpty
 	@Column(name="username", length = 40)
     private String userName;
@@ -136,6 +143,22 @@ public class UserEntity implements Serializable{
 		this.userestado = userestado;
 	}
 
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public String getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(String tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+	
 	private static final long serialVersionUID = 1L;
 	
 }

@@ -8,7 +8,7 @@ import java.util.Comparator;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
-import com.ibero.demo.entity.TardinessRecord;
+import com.ibero.demo.entity.AttendWork;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
@@ -38,7 +38,7 @@ public class ReporteAsistenciaPdfView extends AbstractPdfView {
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		@SuppressWarnings("unchecked")
-		List<TardinessRecord> tardinessRecords = (List<TardinessRecord>) model.get("tardins");
+		List<AttendWork> attendWorks = (List<AttendWork>) model.get("tardins");
 		// Agregar el logo al documento
         addLogo(document);
 		// Crear una fuente con color
@@ -50,22 +50,22 @@ public class ReporteAsistenciaPdfView extends AbstractPdfView {
 		title.setSpacingAfter(10f);  // Espacio después del título
 		document.add(title);
 		// Obtener la fecha mínima (inicio) y máxima (fin)
-		LocalDate startDate = tardinessRecords.stream().min(Comparator.comparing(TardinessRecord::getDate)).get()
+		LocalDate startDate = attendWorks.stream().min(Comparator.comparing(AttendWork::getDate)).get()
 				.getDate();
 
-		LocalDate endDate = tardinessRecords.stream().max(Comparator.comparing(TardinessRecord::getDate)).get()
+		LocalDate endDate = attendWorks.stream().max(Comparator.comparing(AttendWork::getDate)).get()
 				.getDate();
 		// Formato de la fecha
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		String formattedStartDate = startDate.format(formatter);
 		String formattedEndDate = endDate.format(formatter);
 		// Mostrar detalle del reporte
-		long attendanceDays = tardinessRecords.stream().map(TardinessRecord::getDate).distinct().count();
+		long attendanceDays = attendWorks.stream().map(AttendWork::getDate).distinct().count();
 		// Calcular la suma total de minutos de tardanza usando Long
-		long totalTardinessMinutes = tardinessRecords.stream().mapToLong(TardinessRecord::getTardinessMinutes).sum();
+		long totalTardinessMinutes = attendWorks.stream().mapToLong(AttendWork::getTardinessMinutes).sum();
 		// Agregar resumen al PDF
 		Paragraph summary = new Paragraph();
-		summary.add("Reporte de Asistencia del Empleado: " + tardinessRecords.get(0).getEmployee().getFullName() + "\n");
+		summary.add("Reporte de Asistencia del Empleado: " + attendWorks.get(0).getEmployee().getFullName() + "\n");
 		summary.add("Desde: " + formattedStartDate + " Hasta: " + formattedEndDate+ "\n");
 		summary.add("Días de asistencia: " + attendanceDays + "\n");
 		summary.add("Minutos totales de tardanza: " + totalTardinessMinutes + " minutos" + "\n");
@@ -80,7 +80,7 @@ public class ReporteAsistenciaPdfView extends AbstractPdfView {
 		// Agregar encabezados
 		addTableHeader(table);
 		// Agregar datos
-		addRows(table, tardinessRecords);
+		addRows(table, attendWorks);
 		document.add(table);
 	}
 
@@ -94,8 +94,8 @@ public class ReporteAsistenciaPdfView extends AbstractPdfView {
 		});
 	}
 
-	private void addRows(PdfPTable table, List<TardinessRecord> tardinessRecords) {
-		for (TardinessRecord record : tardinessRecords) {
+	private void addRows(PdfPTable table, List<AttendWork> attendWorks) {
+		for (AttendWork record : attendWorks) {
 			table.addCell(record.getEmployee().getFullName());
 			table.addCell(record.getDay().toString());
 			table.addCell(record.getDate().toString());

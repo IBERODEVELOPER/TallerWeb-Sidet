@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -49,7 +48,7 @@ public class CustomerController {
 		// Calcula el total de registros
 	    long totalRecords = customers.getTotalElements();
 		PageRender<Customer> pageRender = new PageRender<Customer>("/customer/listCustomers", customers);
-		model.addAttribute("titlepage", "Empleados registrados en el sistema");
+		model.addAttribute("titlepage", "Clientes registrados en el sistema");
 		model.addAttribute("customers", customers);
 		model.addAttribute("page", pageRender);
 		model.addAttribute("totalRecords", totalRecords);

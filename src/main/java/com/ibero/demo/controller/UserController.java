@@ -38,8 +38,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ibero.demo.entity.Role;
 import com.ibero.demo.entity.Schedule;
+import com.ibero.demo.entity.Customer;
 import com.ibero.demo.entity.Employee;
 import com.ibero.demo.entity.UserEntity;
+import com.ibero.demo.service.CustomerService;
 import com.ibero.demo.service.EmailService;
 import com.ibero.demo.service.IPeopleService;
 import com.ibero.demo.service.IScheduleService;
@@ -52,10 +54,22 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private EmailService emailservice;
+	
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
+	private IPeopleService peopleService;
+	
+	@Autowired
+	private CustomerService CustomerService;
+	
 	//ruta externa
 	private String rootC = "C://TallerWeb-Fotos";
 	// configurar el emisor
@@ -63,10 +77,6 @@ public class UserController {
 	private String mailFrom;
 	// asunto del email
 	private static final String subject = "Alta de acceso al sistema";
-	@Autowired
-	private EmailService emailservice;
-	@Autowired
-	private IPeopleService peopleService;
 
 	@Secured({"ROLE_ADMIN","ROLE_MANAGER"})
 	@GetMapping("/listUsers")
@@ -119,7 +129,7 @@ public class UserController {
 	}
 
 	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_SUPPORT", "ROLE_EMPLOYEE","ROLE_CUSTOMER"})
-	@CrossOrigin(origins = "http://20.197.224.167:8080")
+	@CrossOrigin(origins = "http://20.197.229.70:80")
 	@GetMapping(value = "/password/{username}")
 	public ResponseEntity<String> getPassword(@PathVariable String username, @RequestParam String currentPassword) {
 		String password = userService.getPasswordByUsername(username);
@@ -196,10 +206,9 @@ public class UserController {
 	@GetMapping("/formUser")
 	public String showFormUser(Model model) {
 		UserEntity user = new UserEntity();
-		// Paso 1: Obtener la lista completa de empleados
+		//Obtener la lista completa de empleados
 		List<Employee> allPeople = peopleService.findAllPeople();
-		// Crear un conjunto para almacenar los IDs de los empleados que ya tienen un
-		// usuario
+		//Empleados que ya tienen un usuario
 		Set<Integer> employeeIdsWithUsers = new HashSet<>();
 		// Paso 3: Rellenar el conjunto con los IDs de empleados asociados a un usuario
 		for (Employee empl : allPeople) {
@@ -214,8 +223,26 @@ public class UserController {
 				availablePeople.add(person);
 			}
 		}
+		// Obtener la lista completa de clientes
+	    List<Customer> allCustomers = CustomerService.findAllCustomer();
+	    //IDs de los clientes que ya tienen un usuario
+	    Set<Integer> customerIdsWithUsers = new HashSet<>();
+	    //IDs de clientes asociados a un usuario
+	    for (Customer cust : allCustomers) {
+	        if (cust.getUser() != null) {
+	            customerIdsWithUsers.add(cust.getId());
+	        }
+	    }
+	    // Filtrar la lista de clientes para remover aquellos que ya tienen un usuario
+	    List<Customer> availableCustomers = new ArrayList<>();
+	    for (Customer customer : allCustomers) {
+	        if (!customerIdsWithUsers.contains(customer.getId())) {
+	            availableCustomers.add(customer);
+	        }
+	    }
 		model.addAttribute("titlepage", "Creación de Cuenta");
 		model.addAttribute("people", availablePeople);
+		model.addAttribute("customers", availableCustomers);
 		model.addAttribute("user", user);
 		return "/pages/formUser"; // Nombre de tu archivo HTML de registro
 	}
@@ -242,15 +269,24 @@ public class UserController {
 			user.setRoles(new ArrayList<>()); // O manejar el caso de no tener roles seleccionados
 		}
 		if (user.getId() == null) {
+			String emailpara = null;
+			String nombreremitente = null;
+			if(user.getEmployee() != null) {
+				emailpara = user.getEmployee().getEmailPeople();
+				nombreremitente = user.getEmployee().getFullName();
+			}else {
+				emailpara = user.getCustomer().getEmailCustomer();
+				nombreremitente = user.getCustomer().getNameComplete();
+			}
 			// Anotar el De Para Asunto del Correo
 			EmailValuesDTO dto = new EmailValuesDTO();
 			dto.setMailFrom(mailFrom);//DE
-			dto.setMailTo(user.getEmployee().getEmailPeople());//PARA
+			dto.setMailTo(emailpara);//PARA
 			dto.setSubject(subject);//Asunto
-			dto.setEmployeename(user.getEmployee().getFullName());//Nombre del empleado
+			dto.setEmployeename(nombreremitente);//Nombre del empleado
 			dto.setUserName(user.getUserName());
 			dto.setNewuserpass(user.getUserPassword());
-			//enviar al sevice
+			//enviar al service
 			emailservice.sendEmailNewUser(dto);
 			//guardar el nuevo usuario
 			userService.saveUser(user);

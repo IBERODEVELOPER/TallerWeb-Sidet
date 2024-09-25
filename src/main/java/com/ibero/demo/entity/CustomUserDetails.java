@@ -53,8 +53,6 @@ public class CustomUserDetails extends User {
 		this.employeeFoto = employeeFoto;
 	}
 
-
-
 	private static final long serialVersionUID = 1L;
 
 }

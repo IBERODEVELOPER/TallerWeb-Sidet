@@ -101,9 +101,7 @@ public class IUserServiceImpl implements IUserService, UserDetailsService {
 				currentRoles.add(newRole);
 			}
 		}
-		//lanzar un email 
-		
-		
+		//lanzar un email 		
 		userDao.save(user);
 	}
 
@@ -124,8 +122,16 @@ public class IUserServiceImpl implements IUserService, UserDetailsService {
 			throw new UsernameNotFoundException(
 					"Error en el login: usuario '" + username + "' no tiene roles asignados");
 		}
-		// Obtener la foto del empleado asociado al usuario
-	    String employeeFoto = user.getEmployee().getFoto();
+		// Verificar si el usuario es un empleado
+	    String employeeFoto = null; // Valor por defecto
+	    if (user.getEmployee() != null) {
+	        // Si el usuario tiene un empleado asociado, obtener su foto
+	        employeeFoto = user.getEmployee().getFoto();
+	    } else {
+	        // Si es un cliente
+	    	employeeFoto = "/images/predeterminado.png";
+	        logger.info("El usuario '" + username + "' es un cliente o no tiene un empleado asociado.");
+	    }
 		
 		return new CustomUserDetails(user, user.getUserName(), user.getUserPassword(), user.getUserestado(),
 	            true, true, true, authorities, employeeFoto);

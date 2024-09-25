@@ -38,7 +38,7 @@ public interface IPeopleDao extends CrudRepository<Employee, Integer>, PagingAnd
 	@Query("SELECT e FROM Employee e " +
 	           "JOIN e.userEntity u " +
 	           "JOIN u.roles r " +
-	           "LEFT JOIN FETCH e.tardinessRecords " +
+	           "LEFT JOIN FETCH e.attendWorks " +
 	           "WHERE r.authority IN ('ROLE_SUPPORT', 'ROLE_EMPLOYEE')")
 	Page<Employee> findAllPeopleWithTardinessRecordsAndRoles(Pageable pageable);
     

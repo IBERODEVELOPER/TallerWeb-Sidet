@@ -67,7 +67,7 @@ public class TurnOffEmployeeFilter extends OncePerRequestFilter {
 	// Método para verificar el horario
 		private boolean verificarHorario(HttpServletRequest request, HttpServletResponse response,
 		        Authentication authentication) throws Exception {
-			logger.info("VALIDANDO HORARIO DESDE EL INTERCEPTOR");
+			logger.info("Validando horario TurnOffEmployeeFilter");
 		    Calendar calendar = Calendar.getInstance();
 		    int horaActual = calendar.get(Calendar.HOUR_OF_DAY);
 		    int minutosActuales = calendar.get(Calendar.MINUTE);
@@ -77,9 +77,7 @@ public class TurnOffEmployeeFilter extends OncePerRequestFilter {
 		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 		    // Obtener el usuario autenticado
 		    CustomUserDetails usercustom = (CustomUserDetails) authentication.getPrincipal();
-		    logger.info("US" + usercustom.getUsername());
 		    UserEntity usere = usercustom.getUserEntity();
-		    logger.info("USER" + usere.getUserName());
 		 // Carga completa del empleado con sus horarios
 		    Employee employee = employeeService.getEmployeeWithFullSchedule(usere);
 		    if (employee != null) {
@@ -88,14 +86,23 @@ public class TurnOffEmployeeFilter extends OncePerRequestFilter {
 		            	 if (daySchedule.getDayWeek().equals(diaEnum)) {
 		            		 int margenToleranciaMinutos = 10; // Permitir 10 minutos de tolerancia
 			                    LocalTime horaEntrada = LocalTime.parse(daySchedule.getEntryTime(), formatter);
-			            		LocalTime horaEntradaConTolerancia = horaEntrada.plusMinutes(margenToleranciaMinutos);
 			                    LocalTime horaSalida = LocalTime.parse(daySchedule.getLeavWork(), formatter);
-			                    logger.info("Entrada : " + horaEntrada);
-			                    logger.info("Salida   : " + horaSalida);
-			                    logger.info("Dia : " + diaEnum);
-			                    if (horaActualTime.isAfter(horaEntrada.minusMinutes(margenToleranciaMinutos)) 
-			                    		&& horaActualTime.isBefore(horaSalida)) {
-			                    	 return true; // Está dentro del horario permitido
+			                    logger.info("TurnOffEmployeeFilter Entrada : " + horaEntrada);
+			                    logger.info("TurnOffEmployeeFilter horaActualTime : " + horaActualTime);
+			                    logger.info("TurnOffEmployeeFilter Dia : " + diaEnum);
+			                    // Verifica si el turno cruza la medianoche
+			                    boolean cruzaMedianoche = horaSalida.isBefore(horaEntrada);
+			                    if (cruzaMedianoche) {
+			                        // Si cruza la medianoche, la hora actual debe estar entre la hora de entrada y medianoche
+			                        // o entre medianoche y la hora de salida
+			                        if ((horaActualTime.isAfter(horaEntrada.minusMinutes(margenToleranciaMinutos)) || horaActualTime.equals(horaEntrada))
+			                                || horaActualTime.isBefore(horaSalida)) {
+			                            return true; // Está dentro del horario permitido
+			                        }
+			                    }else {
+				                    if (horaActualTime.isAfter(horaEntrada.minusMinutes(margenToleranciaMinutos))&& horaActualTime.isBefore(horaSalida)) {
+				                    	 return true; // Está dentro del horario permitido
+				                    }
 			                    }
 			                }
 		            	 }

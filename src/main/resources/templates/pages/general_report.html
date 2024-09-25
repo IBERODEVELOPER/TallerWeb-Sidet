@@ -8,85 +8,244 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<header th:replace="main/layout :: header"></header>
 	<div class="container-fluid" id="pantll">
 		<div class="container">
-			<h1 class="text-info">Eventos en progreso <strong class="text-success">En linea</strong>
-			<span style="display:inline-block; width:10px; height:10px; background-color:red; border-radius:50%; margin-left:10px;"></span>
+			<h1 class="text-info">Reporte de Eventos <strong class="text-success"> General</strong>			
 			</h1>
 			<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item"><a th:href="@{/index}">Inicio</a></li>
-						<li class="breadcrumb-item active" aria-current="page">Eventos en progreso en tiempo real</li>
+						<li class="breadcrumb-item active" aria-current="page">Reporte de Gestiones</li>
 					</ol>
 			</nav>
-    		<table class="table table-hover table-striped">
-					<thead class="table-dark" style="border-radius: 15px; overflow: hidden;">
-						<tr class="text-center">
-							<th><ion-icon name="ellipsis-vertical-outline"></ion-icon></th>
-							<th>Usuario</th>
-							<th>Evento</th>
-							<th>E. Iniciado</th>
-						</tr>
-					</thead>
-					<tbody id="eventTableBody">	
-					</tbody>
-				</table>
+			<!-- CADS -->
+			<div class="row">
+				<!-- Card on the Left -->
+	            <div class="col-md-6">
+	                <div class="card">
+	                    <div class="card-header bg-success text-white fw-bold">
+	                        Descargar reporte de Eventos
+	                    </div>
+	                    <div class="card-body">
+						    <div class="row">
+						        <!-- Fecha de Inicio -->
+						        <div class="col-md-6 mb-3">
+						            <label class="form-label">Inicio:</label>
+						            <input type="date" class="form-control" id="startdate">
+						        </div>
+						        <!-- Fecha Hasta -->
+						        <div class="col-md-6 mb-3">
+						            <label for="endDateLeft" class="form-label">Hasta:</label>
+						            <input type="date" class="form-control" id="enddate">
+						        </div>
+						    </div>
+						    <a href="#" class="btn bg-success bg-gradient text-white fw-bold" onclick="downloadReport()">Descargar reporte Xlsx</a>
+						</div>
+	                </div>
+	            </div>
+	            <!-- Card on the Right -->
+	            <div class="col-md-6">
+	                <div class="card">
+	                    <div class="card-header bg-success text-white fw-bold">
+	                        Descargar reporte de Eventos por Tipo
+	                    </div>
+		                    <div class="card-body">
+							    <div class="row">
+							    	<!-- lista con opciones de seleccionar -->
+						             <div class="col-md-12 mb-3">
+						                    <label for="eventList" class="form-label">Seleccionar evento:</label>
+						                    <div id="eventList">
+						                        <ul class="list-group">
+						                            <!-- Iterar sobre la lista de eventos gestionTickets -->
+						                            <li th:each="event : ${gestionTickets}" class="list-group-item">
+						                                <input type="radio" th:id="'event-' + ${event.id}" th:value="${event.id}" name="eventType">
+						                                <label th:for="'event-' + ${event.id}">
+						                                <i class="fas fa-circle me-2"></i> <!-- Icono de círculo -->
+						                                <span th:text="${event.nameEvent}"></span> <!-- Nombre del tipo de evento -->
+						                                </label>
+						                            </li>
+						                        </ul>
+						                    </div>
+						             </div>
+							        <!-- Fecha de Inicio -->
+							        <div class="col-md-6 mb-3">
+							            <label for="startDateRig" class="form-label">Inicio:</label>
+							            <input type="date" class="form-control" id="startDateRig">
+							        </div>
+							        <!-- Fecha Hasta -->
+							        <div class="col-md-6 mb-3">
+							            <label for="endDateRig" class="form-label">Hasta:</label>
+							            <input type="date" class="form-control" id="endDateRig">
+							        </div>
+							    </div>
+							    <a href="#" class="btn bg-success bg-gradient text-white fw-bold" onclick="downloadReportByEvent()">Descargar reporte Xlsx</a>
+							</div>
+	                </div>
+	            </div>
+			</div>
 		</div>
 	</div>
-	 <script>
- // Conexión con SockJS
- var socket = new SockJS('/eventprogress');
-var stompClient = Stomp.over(socket);
-
-stompClient.connect({}, function(frame) {
-    console.log('Conectado al WebSocket: ' + frame);
-
-    // Suscripción al canal donde se publican los eventos
-    stompClient.subscribe('/topic/events', function(event) {
-        const eventData = JSON.parse(event.body);  // Accede al body del mensaje
-
-        // Crea una nueva fila (tr)
-        const newRow = document.createElement('tr');
-
-        // Crea la primera celda con el círculo
-        const statusCell = document.createElement('td');
-        const statusIndicator = document.createElement('span');
-        statusIndicator.style.display = "inline-block";
-        statusIndicator.style.width = "10px";
-        statusIndicator.style.height = "10px";
-        statusIndicator.style.backgroundColor = "green"; // Cambia el color a verde para "en línea"
-        statusIndicator.style.borderRadius = "50%";
-        statusIndicator.style.marginLeft = "10px";
-        statusCell.appendChild(statusIndicator);
-
-        // Crea la celda de usuario
-        const userCell = document.createElement('td');
-        userCell.textContent = eventData.username;
-
-        // Crea la celda de evento
-        const eventCell = document.createElement('td');
-        eventCell.textContent = eventData.eventName;
-
-        // Crea la celda de tiempo de inicio
-        const startTimeCell = document.createElement('td');
-        startTimeCell.textContent = eventData.startTime;
-
-        // Añadir todas las celdas a la fila
-        newRow.appendChild(statusCell);
-        newRow.appendChild(userCell);
-        newRow.appendChild(eventCell);
-        newRow.appendChild(startTimeCell);
-
-        // Añadir la nueva fila al tbody
-        document.getElementById('eventTableBody').appendChild(newRow);
+<script>
+function downloadReport() {
+    const startDate = document.getElementById('startdate').value;
+    const endDate   = document.getElementById('enddate').value;
+    //Si no hay fecha seleccionado
+    if (!startDate || !endDate) {
+    	swal({
+	        title: 'Advertencia',
+	        text: 'Por favor, selecciona las fechas de inicio y fin.',
+	        icon: 'warning',
+	        button: 'OK'
+	    });
+        return;
+    }
+    //La fecha de inicio no puede ser menor a la fecha fin
+    if(startDate > endDate){
+    	swal({
+	        title: 'Advertencia',
+	        text: 'La fecha de inicio no puede ser superior a la hasta.',
+	        icon: 'warning',
+	        button: 'OK'
+	    });
+        return;
+    }
+ 	// Función para convertir de 'YYYY-MM-DD' a 'DD/MM/YYYY'
+    function formatDate(dateStr) {
+        const [year, month, day] = dateStr.split('-');  // Dividimos la fecha por guión
+        return `${parseInt(day)}/${parseInt(month)}/${year}`;  // Reorganizamos a DD/MM/YYYY
+    }
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    // Hacer la solicitud al backend con fetch
+    fetch(`/reports/download-report?startDate=${formattedStartDate}&endDate=${formattedEndDate}`, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'}
+    })
+    .then(response => {
+        if (!response.ok) {
+            // Si la respuesta no es exitosa, obtener el mensaje de error
+            return response.text().then(message => {
+                swal({
+                    title: 'Advertencia',
+                    text: message,  // Mostrar el mensaje de error del backend
+                    icon: 'warning',
+                    button: 'OK'
+                });
+                throw new Error(message);  // Lanzar error para detener el flujo
+            });
+        }
+        return response.blob();  // Si la respuesta es correcta, obtener el archivo
+    })
+    .then(blob => {
+        // Crear un enlace para descargar el archivo
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'reporte_eventos.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        swal({
+            title: 'Reporte Descargado',
+            text: 'Se ha descargado el archivo correctamente.',  // Mostrar el mensaje de error del backend
+            icon: 'success',
+            button: 'OK'
+        });
+    })
+    .catch(error => {
+        console.error('Error al descargar el reporte:', error);
     });
-}, function(error) {
-    console.error('Error al conectar a WebSocket', error);
-});
+}
 
-socket.onclose = function(event) {
-    console.log("Desconectado del WebSocket");
-};
-
- </script>
+//funcion para la derecha:
+	function downloadReportByEvent(){
+		 const startDate = document.getElementById('startDateRig').value;
+		 const endDate   = document.getElementById('endDateRig').value;
+		 const eventRadio = document.querySelector('input[name="eventType"]:checked');
+		 const eventId = eventRadio ? eventRadio.value : null;
+		// Verificar si las fechas y el evento están seleccionados
+		    if (!startDate || !endDate) {
+		        swal({
+		            title: 'Advertencia',
+		            text: 'Por favor, selecciona las fechas de inicio y fin.',
+		            icon: 'warning',
+		            button: 'OK'
+		        });
+		        return;
+		    }
+		if(startDate && endDate && !eventId){
+			swal({
+	            title: 'Advertencia',
+	            text: 'Por favor, seleccione un evento',
+	            icon: 'warning',
+	            button: 'OK'
+	        });
+		}
+		    if (!eventId) {
+		        swal({
+		            title: 'Advertencia',
+		            text: 'Por favor, selecciona un evento.',
+		            icon: 'warning',
+		            button: 'OK'
+		        });
+		        return;
+		    }
+		    
+		 // La fecha de inicio no puede ser mayor que la fecha fin
+		    if (startDate > endDate) {
+		        swal({
+		            title: 'Advertencia',
+		            text: 'La fecha de inicio no puede ser superior a la fecha fin.',
+		            icon: 'warning',
+		            button: 'OK'
+		        });
+		        return;
+		    }
+		 
+		 // Función para convertir de 'YYYY-MM-DD' a 'DD/MM/YYYY'
+		    function formatDate(dateStr) {
+		        const [year, month, day] = dateStr.split('-');  // Dividimos la fecha por guión
+		        return `${parseInt(day)}/${parseInt(month)}/${year}`;  // Reorganizamos a DD/MM/YYYY
+		    }
+		 
+		    const formattedStartDate = formatDate(startDate);
+		    const formattedEndDate = formatDate(endDate);
+		    
+		 // Hacer la solicitud al backend con fetch
+		    fetch(`/reports/download-reportbyevent?startDate=${formattedStartDate}&endDate=${formattedEndDate}&eventId=${eventId}`, {
+		        method: 'GET',
+		        headers: {'Content-Type': 'application/json'}
+		    })
+		    .then(response => {
+		        if (!response.ok) {
+		            return response.text().then(message => {
+		                swal({
+		                    title: 'Advertencia',
+		                    text: message,
+		                    icon: 'warning',
+		                    button: 'OK'
+		                });
+		                throw new Error(message);
+		            });
+		        }
+		        return response.blob();  // Obtener el archivo si la respuesta es correcta
+		    }).then(blob => {
+		        const url = window.URL.createObjectURL(blob);
+		        const a = document.createElement('a');
+		        a.href = url;
+		        a.download = 'reporte_eventos_por_eventos.xlsx';
+		        document.body.appendChild(a);
+		        a.click();
+		        a.remove();
+		        swal({
+		            title: 'Reporte Descargado',
+		            text: 'Se ha descargado el archivo correctamente.',  // Mostrar el mensaje de error del backend
+		            icon: 'success',
+		            button: 'OK'
+		        });
+		    }).catch(error => {
+		        console.error('Error al descargar el reporte:', error);
+		    });
+	}
+</script>
 	<footer th:replace="main/layout :: footer"></footer>
 </body>
 

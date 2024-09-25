@@ -1,15 +1,342 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" style="color-scheme: light;" xmlns:th="http://www.thymeleaf.org"
+<html lang="en" data-theme="light" style="color-scheme: light;"
+	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="main/layout :: head"></head>
+<head th:replace="main/layout :: head">
+<style>
+body {
+	background-color: #01797E;
+	color: white;
+}
+
+.container {
+	background-color: #136E73;
+	padding: 20px;
+	border-radius: 10px;
+}
+
+.form-label {
+	color: white;
+}
+
+.circle-clock {
+	background-color: white;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 20px auto;
+}
+
+.btn-custom {
+	background-color: #04C19A;
+	color: white;
+}
+
+.icon-buttons i {
+	font-size: 1.5rem;
+}
+</style>
+</head>
 <body>
 	<header th:replace="main/layout :: header"></header>
 	<div class="container-fluid" id="pantll">
 		<div class="container">
-			
+			<div class="row bg-secondary text-white rounded">
+				 	<!-- Columna 1 -->
+				 	<div class="col-md-4" >
+				        <label class="form-label mt-2">Tipo de Evento:</label>
+				        <select class="form-select" id="tipoEvento" name="tipoEvento">
+				          <option value="" disabled>[seleccione]</option>
+				          <!-- Recorrer los tipos de eventos -->
+        				  <option th:text="'Gestión de Ticket'" selected></option>
+				        </select>
+				        <label class="form-label">Sub-proceso:</label>
+				        	<input type="hidden" id="startTime" th:value="${startTime}">
+				        	<input type="hidden" id="userauthenticacion" th:value="${#authentication.principal.username}">
+				        	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+				        <select class="form-select mb-2" name="eventId" id="eventId">
+				          <option value="" selected disabled>[seleccione]</option>
+				           <!-- Recorrer la lista de eventos filtrados -->
+        				  <option th:each="gestion : ${listGestiones}" th:value="${gestion.getId()}" th:text="${gestion.getNameEvent()}"></option>
+				        </select>
+				        <!-- Boton iniciar -->
+				        <button class="btn btn-light mb-3" id="btniniciargestion"><i class="fas fa-play"></i> Iniciar</button>
+			      </div>
+			      <!-- Columna 2 -->
+			      <div class="col-md-4">
+			        <label class="form-label mt-2">Estado (tipo de operación):</label>
+			        <select class="form-select" id="statusac">
+			          <option value="" selected disabled>[seleccione]</option>
+			          <option value="Open">Abierto</option>
+					  <option value="In progress">En progreso</option>
+					  <option value="Closed">Cerrado</option>
+			        </select>
+			         <label class="form-label">Código de ticket:</label>
+			         <!-- Start desde el controlador -->
+					 <input type="hidden" id="startTime" th:value="${startTime}"> 
+					 <input type="hidden" id="ID" th:value="${ID}">
+					 <input type="hidden" id="eventName" th:value="${eventName}"> 
+					 <input type="hidden" id="eventId" th:value="${activityId}"> 
+			         <input type="hidden" id="activityId" name="activityId" value="">
+			         <div class="input-group">
+					    <input type="text" class="form-control" id="codeac" placeholder="código...">
+					 </div>
+					 <!-- 
+					    <button class="btn btn-outline-light" type="button" id="btnbuscaractividad">
+					      <i class="fas fa-search"></i>
+					    </button>
+					    <div class="form-check mt-2">
+			          <input class="form-check-input" type="checkbox" value="" id="sinCodigo">
+			          <label class="form-check-label" for="sinCodigo">Sin Código</label>
+			        </div> -->
+			        <!-- Comentario del Caso -->
+			        <label class="form-label">Detalle:</label>
+			        <textarea class="form-control mb-2" rows="3" id="detalleCaso"></textarea>
+			        <!-- Boton completar -->
+			        <button class="btn btn-light mb-3" id="btnfinalizargestion"><i class="fas fa-check"></i> Completar</button>
+			      </div>
+			      <!-- Columna 3 -->
+			      <div class="col-md-4 d-flex justify-content-center align-items-center">
+				      <div class="col-md-12 text-center">
+				        <div class="circle-clock">
+				          <i class="fas fa-clock fa-5x" style="color: #01797E;"></i>
+				        </div>
+				        <h3 id="timer">00:00:00</h3>
+				      </div>
+				 </div>
+				  </div>
+			</div>
 		</div>
-	</div>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+	 // Capturar valores ocultos al cargar el DOM
+    let eventId = document.getElementById('ID').value;
+    let startTime = document.getElementById('startTime').value;
+ // Verificar si el eventId no es null o está vacío
+    if (eventId) {
+        // Seleccionar el valor del select si coincide con el eventId
+        let selectElement = document.getElementById('eventId');
+        for (let option of selectElement.options) {
+            if (option.value == eventId) {
+                option.selected = true;
+                break;
+            }
+        }
+    }
+    if (startTime) {
+        startTimer(new Date(startTime)); // Pasar la hora de inicio al temporizador
+    }
 
+
+// Escuchar el clic del botón "SI" para iniciar el evento de almuerzo
+document.getElementById('btniniciargestion').addEventListener('click', function () {
+// Obtener el usuario autenticado (si es necesario)
+const authenticatedUser = document.getElementById('userauthenticacion').value;
+const eventId = document.getElementById('eventId').value;
+const csrfToken = document.querySelector('input[name="_csrf"]').value;
+// Capturar la hora actual como hora de inicio en formato local (Perú) con el formato d/M/yyyy, HH:mm:ss
+	        const localStartTime = new Date().toLocaleString('es-PE',{
+	            timeZone: 'America/Lima',
+	            day: 'numeric',
+	            month: 'numeric',
+	            year: 'numeric',
+	            hour: '2-digit',
+	            minute: '2-digit',
+	            second: '2-digit',
+	            hour12: false // Para usar el formato de 24 horas
+	        });
+	        const activityIdInput = document.getElementById('activityId');
+	       // Enviar los datos al servidor con fetch
+	        fetch('/api/events/start-activity', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json',
+	                'Accept': 'application/json',
+	                'X-CSRF-TOKEN': csrfToken // Incluir el token CSRF en los encabezados
+	            },
+	            body: JSON.stringify({
+	            	activityId: eventId, // ID del Evento
+	                username: authenticatedUser, // Usuario autenticado
+	                startTime: localStartTime // Hora de inicio
+	            })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	            	// Si la actividad se inició correctamente, asigna el ID de la actividad al input hidden
+	                activityIdInput.value = data.activityId;
+	            	// Mostrar una alerta de confirmación con SweetAlert2
+	                swal({
+	                	title: '¡Gestión Registrado!',
+	                    text: 'Ha iniciado una gestión de Ticket.',
+	                    icon: 'success',
+	                    timer: 1000, // La alerta se cerrará automáticamente en 1 segundos
+	                    showConfirmButton: false, // Ocultar el botón de confirmación
+	                }).then(() => {
+	                	// Guardar en sessionStorage
+                        sessionStorage.setItem('activityId', data.activityId);
+    					console.log("Valor de activityId:", data.activityId);
+	                	startTimer();
+	                      });
+	            } else {
+	            	// Mostrar una alerta de error si no se pudo iniciar la actividad
+	                swal({
+	                  title: 'Error',
+	                  text: data.message || 'Ya tienes una actividad en curso. Debes finalizarla antes de iniciar una nueva.',
+	                  icon: 'error',
+	                  button: 'OK'
+	                });
+	            }
+	        })
+	        .catch(error => {
+	        	 console.error('Error al iniciar la actividad:', error);
+	        	 swal({
+	                 title: 'Error',
+	                 text: 'Ocurrió un error al iniciar la actividad.',
+	                 icon: 'error',
+	                 button: 'OK'
+	             });
+	        });
+	    });
+		
+		 // Función de temporizador
+		let timerInterval;
+		function startTimer() {
+			    try {
+			        // Obtener el elemento del temporizador
+			        const timerElement = document.getElementById('timer');
+			        // Obtener el tiempo de inicio desde el input y convertirlo a milisegundos
+			        const startTimeInput = document.getElementById('startTime');
+			        let startTime = startTimeInput ? new Date(startTimeInput.value).getTime() : null;
+			        // Verificar si hay un tiempo de inicio guardado en localStorage
+			        if (startTime) {
+			            localStorage.setItem('startTime', startTime);
+			        } else {
+			            // Si no hay tiempo guardado, establecer la hora actual como el tiempo de inicio
+			            startTime = Date.now();
+			            localStorage.setItem('startTime', startTime);
+			        }
+
+			        // Intervalo para actualizar el temporizador
+			        const timerInterval = setInterval(() => {
+			            // Obtener el tiempo actual
+			            const now = Date.now();
+			            // Calcular el tiempo transcurrido desde startTime
+			            const elapsedTime = Math.floor((now - startTime) / 1000);
+			            const hours = Math.floor(elapsedTime / 3600);
+			            const minutes = Math.floor((elapsedTime % 3600) / 60);
+			            const seconds = elapsedTime % 60;
+			            
+			            // Formatear el tiempo
+			            const formattedTime =
+			                (hours < 10 ? "0" + hours : hours) + ":" +
+			                (minutes < 10 ? "0" + minutes : minutes) + ":" +
+			                (seconds < 10 ? "0" + seconds : seconds);
+			            
+			            // Mostrar el tiempo en el elemento
+			            timerElement.textContent = formattedTime;
+
+			        }, 1000);
+			        
+			    } catch (error) {
+			        console.error('Error al iniciar el temporizador:', error);
+			    }
+			}
+	 
+		// Al presionar el botón "Finalizar"
+	    document.getElementById('btnfinalizargestion').addEventListener('click', function () {
+	        // Obtener el ID de la actividad desde sessionStorage
+	        let activityId = sessionStorage.getItem('activityId');
+	        let statusact = document.getElementById('statusac').value;
+	        let codeac = document.getElementById('codeac').value;
+			// Obtener el ID del evento desde el DOM
+			const eventId = document.getElementById('eventId') ? document.getElementById('eventId').value : null;
+	        const detailsevent = document.querySelector('#detalleCaso').value;
+	        const csrfToken = document.querySelector('input[name="_csrf"]').value;
+	        // Verificar que el ID de la actividad exista
+	        if (!activityId) {
+				// Si activityId está vacío, intentar obtenerlo de eventId
+				activityId = eventId;
+	        }
+			
+			// Verificar si el ID de la actividad sigue sin estar presente
+			if (!activityId) {
+			    swal({
+			        title: 'Advertencia',
+			        text: 'No se encontró la actividad en progreso.',
+			        icon: 'warning',
+			        button: 'OK'
+			    });
+			    return;
+			}
+	        // Capturar la hora actual como hora de finalización en formato local (Perú)
+	        const localEndTime = new Date().toLocaleString('es-PE', {
+	            timeZone: 'America/Lima',
+	            day: 'numeric',
+	            month: 'numeric',
+	            year: 'numeric',
+	            hour: '2-digit',
+	            minute: '2-digit',
+	            second: '2-digit',
+	            hour12: false // Para usar el formato de 24 horas
+	        });
+	     	// Imprimir o usar la hora formateada
+	        console.log("Valor de localEndTime", localEndTime);
+	        console.log("Valor de statusact", statusact);
+	        console.log("Valor de codeac", codeac);
+	        console.log("Valor de csrfToken", csrfToken);
+	        // Enviar los datos al servidor con fetch para finalizar la actividad
+	        fetch('/api/events/finish-activity', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json',
+	                'Accept': 'application/json',
+	                'X-CSRF-TOKEN': csrfToken // Asegúrate de incluir el token CSRF
+	            },
+	            body: JSON.stringify({
+	                activityId: activityId, // ID de la actividad
+	                endTime: localEndTime, // Hora de finalización
+	                detailsevent: detailsevent, // Detalle del evento
+	                status : statusact,
+	                codeAct: codeac
+	                
+	            })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	        	if (data.success) {
+	        	    // Mostrar un mensaje de confirmación con SweetAlert v1
+	        	    swal({
+	        	      title: 'Evento finalizado',
+	        	      text: 'El evento ha sido finalizado correctamente.',
+	        	      icon: 'success',
+	        	      timer: 1000,
+	        	      showConfirmButton: false,
+	        	    }).then(() => {
+	        	      // Limpiar sessionStorage
+	        	      sessionStorage.clear();
+	        	      localStorage.removeItem('startTime');
+	        	   	  // Detener el temporizador
+	                  clearInterval(timerInterval);
+	                  window.location.href = `/efforts`;
+	        	    });
+	        	} else {
+	            	// Mostrar una alerta de error si no se pudo iniciar la actividad
+	                swal({
+	                  title: 'Error',
+	                  text: 'Error al finalizar la actividad.',
+	                  icon: 'error',
+	                  button: 'OK'
+	                });
+	            }
+	        })
+	        .catch(error => console.error('Error al finalizar la actividad:', error));
+	    });
+	});
+		</script>
 	<footer th:replace="main/layout :: footer"></footer>
 </body>
 

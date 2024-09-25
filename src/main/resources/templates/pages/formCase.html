@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" style="color-scheme: light;"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="main/layout :: head"></head>
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container-fluid" id="pantll">
+		<div class="container">
+			<span>ID <span th:text="${caso.id}">-Incidente</span> <span
+				class="text-white fw-bold" th:text="${caso.statusCase}"
+				style="background-color: #2980b9; padding: 5px; border-radius: 3px;"></span></span>
+			<!-- Datos Generales -->
+			<div class="card mt-2">
+				<div
+					class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">Datos generales</h5>
+					<!-- Icono para colapsar -->
+					<button class="btn btn-sm" type="button" data-bs-toggle="collapse"
+						data-bs-target="#datosGenerales" aria-expanded="true"
+						aria-controls="datosGenerales">
+						<i class="fas fa-chevron-down"></i>
+					</button>
+				</div>
+				<div id="datosGenerales" class="collapse show">
+					<div class="card-body">
+						<div class="row mb-3">
+							<div class="col-md-4">
+								<strong>Operador Asignado:</strong>
+								<div>
+									<!-- <span th:text="${caso.user.employee.fullName}"></span> -->
+								</div>
+							</div>
+							<div class="col-md-4">
+								<strong>Operador Responsable:</strong>
+								<div></div>
+							</div>
+							<div class="col-md-4">
+								<strong>Proceso:</strong>
+								<div>
+									<span th:text="${caso.event.tipoEvento}"></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<div class="col-md-4">
+								<strong>Prioridad <span class="text-danger">*</span>:
+								</strong>
+								<div class="input-group">
+									<span class="input-group-text"
+										th:classappend="${caso.priority == 'Alta' ? 'bg-warning text-light fw-bold' : (caso.priority == 'Media' ? 'bg-secondary text-light fw-bold' : (caso.priority == 'Baja' ? 'bg-primary text-light fw-bold' : (caso.priority == 'Crítica' ? 'bg-danger text-light fw-bold' : '')))}">
+										<i
+										th:classappend="${caso.priority == 'Alta' ? 'fa-solid fa-exclamation-circle' : 
+						                           (caso.priority == 'Media' ? 'fa-solid fa-exclamation-triangle' : 
+						                           (caso.priority == 'Baja' ? 'fa-solid fa-info-circle' : 
+						                           (caso.priority == 'Crítica' ? 'fa-solid fa-skull-crossbones' : '')))}"></i>
+										<span th:text="${caso.priority}"></span>
+									</span>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<strong>Sub-Proceso:</strong>
+								<div>
+									<span th:text="${caso.event.nameEvent}"></span>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<strong>SLA - Caso:</strong>
+								<div>-</div>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<div class="col-md-4">
+								<strong>Fecha de entrada:</strong>
+								<div>
+									<span
+										th:text="${#temporals.format(caso.entryDate, 'dd/MM/yyyy HH:mm:ss')}"></span>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<strong>Fecha de cierre:</strong>
+								<div>-</div>
+							</div>
+							<div class="col-md-4">
+								<strong>Id Externo:</strong>
+								<div>-</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Datos del Cliente -->
+			<div class="card mt-2">
+				<div
+					class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">Datos del Caso</h5>
+					<!-- Icono para colapsar -->
+					<button class="btn btn-sm" type="button" data-bs-toggle="collapse"
+						data-bs-target="#datosNegocio" aria-expanded="true"
+						aria-controls="datosGenerales">
+						<i class="fas fa-chevron-down"></i>
+					</button>
+				</div>
+				<div id="datosNegocio" class="collapse show">
+					<div class="card-body">
+						<div class="row mb-3">
+							<div class="col-md-4">
+								<strong>Cliente:</strong>
+								<div>
+									<span th:if="${caso.user.customer != null}" th:text="${caso.user.customer.nameComplete}"></span>
+									<span th:if="${caso.user.employee != null}" th:text="${caso.user.employee.fullName}"></span>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<strong>Email del Informador <span class="text-danger">*</span>:
+								</strong>
+								<div>
+									<span th:if="${caso.user.customer != null}" th:text="${caso.user.customer.emailCustomer}"></span>
+									<span th:if="${caso.user.employee != null}" th:text="${caso.user.employee.emailPeople}"></span>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<strong>Asunto <span class="text-danger">*</span>:
+								</strong>
+								<div>
+									<span th:text="${caso.affairCase}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12">
+								<label for="description" class="form-label"> <strong>Descripción
+										<span class="text-danger">*</span>:
+								</strong>
+								</label>
+								<div class="input-group">
+									<textarea class="form-control" id="description" rows="5"
+										th:text="${caso.descriptionCase}"
+										placeholder="Escribe aquí la descripción..."></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Adjuntos -->
+			<div class="card mt-2">
+				<div
+					class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">
+						Archivos adjuntos <span>Cantidad</span>
+					</h5>
+					<!-- Icono para colapsar -->
+					<button class="btn btn-sm" type="button" data-bs-toggle="collapse"
+						data-bs-target="#Adjuntos" aria-expanded="true"
+						aria-controls="datosGenerales">
+						<i class="fas fa-chevron-down"></i>
+					</button>
+				</div>
+				<div id="Adjuntos" class="collapse show">
+					<div class="card-body">
+						<table class="table table-bordered table-hover">
+							<thead class="table-light text-center">
+								<tr>
+									<th>NOMBRE ARCHIVO</th>
+									<th>FECHA</th>
+									<th>USUARIO</th>
+									<th class="text-center">...</th>
+									<!-- Para los íconos de descarga y eliminar -->
+								</tr>
+							</thead>
+							<tbody th:if="${!#lists.isEmpty(attachs)}">
+								<tr th:each="item: ${attachs}">
+									<td th:text="${item.nameAttach}"></td>
+									<td
+										th:text="${#temporals.format(item.dateAttach,'dd/MM/yyyy HH:mm:ss')}"></td>
+									<td th:text="${item.uploadedBy.employee.fullName}"></td>
+									<td class="text-center"><a href="#"
+										class="text-primary me-3"> <i class="fas fa-download"></i>
+									</a> <a href="#" class="text-danger"> <i
+											class="fas fa-trash-alt"></i>
+									</a></td>
+								</tr>
+							</tbody>
+							<tbody th:if="${#lists.isEmpty(attachs)}">
+								<tr>
+									<td colspan="4" class="text-center">No hay adjuntos en el
+										caso</td>
+								</tr>
+							</tbody>
+						</table>
+						<!-- Botón de añadir archivo -->
+						<button type="button" class="btn btn-outline-primary">
+							<i class="fas fa-plus"></i> Añadir archivo
+						</button>
+					</div>
+				</div>
+			</div>
+			<!-- Comentario -->
+			<div class="card mt-2">
+				<div
+					class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">
+						Comentarios <span>Cantidad</span>
+					</h5>
+					<!-- Icono para colapsar -->
+					<button class="btn btn-sm" type="button" data-bs-toggle="collapse"
+						data-bs-target="#Comentarios" aria-expanded="true"
+						aria-controls="datosGenerales">
+						<i class="fas fa-chevron-down"></i>
+					</button>
+				</div>
+				<div id="Comentarios" class="collapse show">
+					<div class="card-body">
+						<table class="table table-bordered table-hover">
+							<thead class="table-light text-center">
+								<tr>
+									<th>FECHA y HORA</th>
+									<th>USUARIO</th>
+									<th>ESTADO</th>
+									<th>COMENTARIO</th>
+								</tr>
+							</thead>
+							<tbody th:if="${!#lists.isEmpty(commentcass)}">
+								<tr th:each="item: ${commentcass}">
+									<td
+										th:text="${#temporals.format(item.dateComment,'dd/MM/yyyy HH:mm:ss')}"></td>
+									<td th:text="${item.commentedBy.employee.fullName}"></td>
+									<td th:text="${item.statusComment}"></td>
+									<td th:text="${item.Comment}"></td>
+								</tr>
+							</tbody>
+							<tbody th:if="${#lists.isEmpty(commentcass)}">
+								<tr>
+									<td colspan="4" class="text-center">No hay comentarios en
+										el caso</td>
+								</tr>
+							</tbody>
+						</table>
+						<!-- Botón de añadir comentario -->
+						<button type="button" class="btn btn-outline-primary">
+							<i class="fas fa-plus"></i> Añadir comentario
+						</button>
+					</div>
+				</div>
+			</div>
+			<!-- Estados -->
+			<div class="row mt-2">
+				<div class="col align-items-center">
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-outline-secondary">Open</button>
+						<button type="button" class="btn btn-outline-secondary">In progress</button>
+						<button type="button" class="btn btn-outline-secondary">Closed</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-secondary">Salir</button>
+					</div>
+					<div class="col-auto">
+						<button class="btn btn-primary">Guardar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="main/layout :: footer"></footer>
+</body>
+
+</html>

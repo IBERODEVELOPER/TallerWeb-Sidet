@@ -1,14 +1,19 @@
 package com.ibero.demo.entity;
 
 import java.io.Serializable;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
 @Entity
@@ -34,17 +39,25 @@ public class Customer implements Serializable {
 	@Column(name = "tdocumento", length = 30)
 	private String tipoDocumento;
 
-	@NotEmpty
+	@NotEmpty 
 	@Column(unique = true, length = 20)
 	private String identityCustomer;
+	
+	@NotEmpty
+	@Email
+	@Column(length = 40)
+	private String emailCustomer;
 
 	@NotEmpty
 	@Column(name = "ruc", length = 30)
 	private String RUC;
 	
 	@NotEmpty
-	@Column(name = "razon_social", length = 30)
+	@Column(name = "razon_social", length = 100)
 	private String razonsocial;
+	
+	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private UserEntity user;
 	
 	//para manejar el nombre completo
 	@PreUpdate
@@ -116,7 +129,22 @@ public class Customer implements Serializable {
 	public void setIdentityCustomer(String identityCustomer) {
 		this.identityCustomer = identityCustomer;
 	}
+	
+	public UserEntity getUser() {
+		return user;
+	}
 
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
+	
+	public String getEmailCustomer() {
+		return emailCustomer;
+	}
+
+	public void setEmailCustomer(String emailCustomer) {
+		this.emailCustomer = emailCustomer;
+	}
 
 	private static final long serialVersionUID = 1L;
 }

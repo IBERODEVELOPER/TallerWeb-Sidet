@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html 
+xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
 	<meta charset="UTF-8" />
 	<!-- Bootstrap CSS -->
@@ -30,24 +31,24 @@
 				</button>
 				<div id="menunav" class="collapse navbar-collapse" style="width: 100%;">
 					<ul class="navbar-nav ms-3" style="width: 100%;">
-						<li class="nav-item">
+						<li class="nav-item" >
 							<a class="nav-link text-light fw-bold" th:href="@{/index}">Inicio</a>
 						</li>
 
-						<li class="nav-item dropdown">
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER') or hasRole('ROLE_CUSTOMER')">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Gestión
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/efforts}">Agregar operación</a></li>
-								<li><a class="dropdown-item" th:href="@{/incidents}">Bandeja de Tickets</a>
+								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER')" th:href="@{/efforts}">Agregar operación</a></li>
+								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER') or hasRole('ROLE_CUSTOMER')" th:href="@{/incidents}">Bandeja de Tickets</a>
 								</li>
 							</ul>
 						</li>
 
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle text-light fw-bold" th:href="@{/peoples/events}" id="navbarDropdown"
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER')">
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Eventos
 							</a>
@@ -58,22 +59,19 @@
 							</ul>
 						</li>
 						<!-- Empleados -->
-						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER')">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Empleados
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Lista de Empleados</a>
-								</li>
-								<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')"
-										th:href="@{/peoples/formPeople}">Registrar Empleado</a></li>
+								<li><a class="dropdown-item" th:href="@{/peoples/listPeople}">Lista de Empleados</a></li>
+								<li><a class="dropdown-item" th:href="@{/peoples/formPeople}">Registrar Empleado</a></li>
 							</ul>
-							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
 						</li>
 						
 						<!-- Clientes -->
-						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER')">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Clientes
@@ -86,10 +84,9 @@
 									<a class="dropdown-item" th:href="@{/customer/formCustomer}">Registrar Cliente</a>
 								</li>
 							</ul>
-							<!--<li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/userReg}">Crear usuario</a></li>-->
 						</li>
 
-						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER')">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Usuarios
@@ -99,7 +96,7 @@
 								<li><a class="dropdown-item" th:href="@{/user/formUser}">Nuevo Usuario</a></li>
 							</ul>
 						</li>
-						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER')">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Asistencia
@@ -108,29 +105,33 @@
 								<li><a class="dropdown-item" th:href="@{/reports/asistence_general}">Asistencia y Tardanzas</a></li>
 							</ul>
 						</li>
-						<li class="nav-item dropdown" >
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER')">
 							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
 								role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Reportes
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<li><a class="dropdown-item" th:href="@{/reports/general_report}">General</a></li>
-								<li><a class="dropdown-item" th:href="@{/reports/reports_export}">Exportar</a></li>
 							</ul>
 						</li>
-						<li class="nav-item dropdown" style="margin-right: 7% !important;margin-left: 7%;margin-top: 1%;">
+						<!-- USERNAME -->
+						<li sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER') or hasRole('ROLE_CUSTOMER')"
+						 class="nav-item dropdown" style="margin-right: 2% !important;margin-left: 2%;margin-top: 1%;">
 							<span class="text-light fw-bold" th:text="${'Bienvenido '+ #authentication.principal.username}"></span>
 						</li>
-						<li class="nav-item">
+						<!-- CAMBIAR CONTRASEÑA -->
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER') or hasRole('ROLE_CUSTOMER')">
 							<a class="nav-link text-light" th:href="@{/user/changekey}" title="Cambiar contraseña">
 								<ion-icon name="key-outline" style="font-size: 20px;"></ion-icon>
 							</a>
 						</li>
-						<li class="nav-item">
+						<!-- PERFIL -->
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER')">
 							<a class="nav-link text-light" th:href="@{/user/profileuser}" title="ver perfil de usuario">
 								<ion-icon name="person-outline" style="font-size: 20px;"></ion-icon>
 							</a>
 						</li>
+						<!-- CERRAR SESIÓN -->
 						<li class="nav-item">
 							<form th:action="@{/logout}" method="post" style="display: inline;">
 								<button type="submit" class="nav-link text-light"
@@ -139,8 +140,14 @@
 								</button>
 							</form>
 						</li>
-						<li class="nav-item">
-							<img title="Foto del usuario" class="rounded-circle"	th:src="@{'/TallerWeb-Fotos/' + ${#authentication.principal.employeeFoto}}"	style="margin-top: 4px;width: 25px;height: 25px;">
+						<!-- FOTO -->
+						<li class="nav-item" >
+							<!-- USUARIO INTERNO -->
+							<img sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER')  " title="Foto del usuario" class="rounded-circle"
+     						th:src="@{'/TallerWeb-Fotos/' + ${#authentication.principal.employeeFoto}}"	style="margin-top: 4px;width: 25px;height: 25px;">
+     						<!-- USUARIO EXTERNO -->
+     						<img sec:authorize="hasRole('ROLE_CUSTOMER')" title="Foto del usuario" class="rounded-circle"
+     						th:src="@{/images/predeterminado.png}"	style="margin-top: 4px;width: 25px;height: 25px;">
 						</li>
 					</ul>
 				</div>

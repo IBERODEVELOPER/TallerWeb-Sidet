@@ -15,14 +15,26 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<!-- Titulo de la Página -->
 	<link rel="icon" type="image/jpg" href="/images/favicon.png" />
-	<title th:if="${titlepage == null}" th:text="'© CONTACTEMP'"></title>
+	<title th:text="'Eventos en linea'"></title>
 
 <style type="text/css">
 #pantll {
-	height:90%;
-	max-height:95%;
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    min-height: 86vh; /* Asegura que cubra toda la altura de la ventana */
+}
+
+.container {
+    flex-grow: 1; /* Permite que el contenido crezca */
+}
+
+.footer {
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
 
 /* Estilo para las filas de la tabla */
@@ -78,10 +90,34 @@ table.table-hover, table.table-hover th, table.table-hover td {
 					</tbody>
 				</table>
 		</div>
-	</div>
+
 <script>
 //Lista de eventos activos
 let activeEvents = [];
+
+//Función para cargar las actividades abiertas al iniciar la página
+function loadOpenActivities() {
+    fetch('/api/events/actives')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al cargar actividades abiertas');
+            }
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(activity => {
+            	console.log(activity);
+                addEventToTable(activity);  // Agregar cada actividad a la tabla
+                activeEvents.push(activity); // Añadir actividad a la lista
+            });
+        })
+        .catch(error => console.error('Error al cargar actividades abiertas:', error));
+}
+
+//Llama a la función cuando la página se carga
+document.addEventListener('DOMContentLoaded', function() {
+	loadOpenActivities();
+});
 
 // Conexión con SockJS
 var socket = new SockJS('/eventprogress');
@@ -96,7 +132,6 @@ stompClient.connect({}, function(frame) {
         console.log(eventData);  // Para verificar que se están recibiendo los datos
      // Convertir el campo isClosed a un valor booleano
         const isClosed = eventData.isClosed === "true";
-        console.log(isClosed);
         // Si el evento está cerrado, eliminarlo
         if (eventData.isClosed) {
         	console.log('evento esta cerrado');
@@ -229,6 +264,7 @@ function updateRowTimer(timerElement, startTime) {
     }
 }
 </script>
+</div>
 	<footer th:replace="main/layout :: footer"></footer>
 </body>
 </html>

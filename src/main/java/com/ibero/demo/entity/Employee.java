@@ -92,19 +92,19 @@ public class Employee implements Serializable {
 	@Column(length = 40)
 	private String emailPeople;
 	
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Schedule> schedule;
 	
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<TardinessRecord> tardinessRecords = new ArrayList<>();
+	private List<AttendWork> attendWorks = new ArrayList<>();
 
-	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
 	private UserEntity userEntity;
 
-	@OneToOne(mappedBy = "employe", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "employe", cascade = CascadeType.ALL,orphanRemoval = true)
 	private Address address;
 
-	@OneToOne(mappedBy = "employet", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "employet", cascade = CascadeType.ALL,orphanRemoval = true)
 	private Phone phone;
 
 	public Employee() {
@@ -287,11 +287,11 @@ public class Employee implements Serializable {
 		this.schedule = schedule;
 	}
 	
-	public List<TardinessRecord> getTardinessRecords() {
-		return tardinessRecords;
+	public List<AttendWork> getTardinessRecords() {
+		return attendWorks;
 	}
-	public void setTardinessRecords(List<TardinessRecord> tardinessRecords) {
-		this.tardinessRecords = tardinessRecords;
+	public void setTardinessRecords(List<AttendWork> attendWorks) {
+		this.attendWorks = attendWorks;
 	}
 
 	private static final long serialVersionUID = 1L;

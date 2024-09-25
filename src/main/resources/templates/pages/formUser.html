@@ -26,7 +26,7 @@
 				<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
-						<li class="breadcrumb-item active" aria-current="page">Creación de Usuario del empleado</li>
+						<li class="breadcrumb-item active" aria-current="page">Creación de Usuario</li>
 					</ol>
 				</nav>
 				<div class="card">
@@ -35,21 +35,49 @@
 						<form th:action="@{/user/formUser}" th:object="${user}" method="post" onsubmit="return validateForm()">
 							<h2 class="text-center" th:text="${titlepage}"></h2>
 							<input type="hidden" th:field="*{id}">
-							<div th:if="${user.getId() == null}" class="form-group row mb-3">
-								<label class="col-sm-4 col-form-label">Empleado </label>
-								<div class="col-sm-7">
-									<select class="form-control" th:field="*{employee}">
-										<option value="0">Seleccione Cliente</option>
-										<option th:each="option: ${people}" th:value="${option.id}"
-											th:text="${option.name+ ' '+option.firstLastName+ ' '+option.secondLastName+' ('+option.agePeople+')'}">
-										</option>
-									</select>
-								</div>
+							<!-- Tipo de Usuario -->
+							<div th:if="${user.getId()==null}" class="form-group row mb-3">
+							    <label class="col-sm-4 col-form-label">Tipo de Usuario</label>
+							    <div class="col-sm-7">
+							        <select id="userType" class="form-control" th:field="*{tipoUsuario}" onchange="toggleUserSelection()">
+							            <option value="0">Seleccione Tipo de Usuario</option>
+							            <option value="Empleado">Empleado</option>
+							            <option value="Cliente">Cliente</option>
+							        </select>
+							    </div>
 							</div>
-							<div th:if="${user.getId()>0}" class="form-group row mb-3">
+							<!-- Lista de empleados -->
+							<div id="employeeSection" class="form-group row mb-3 justify-content-center" 
+								style="display: none;padding-left: 60px;padding-right: 60px;">
+							        		<select class="form-control" th:field="*{employee}" style="border: 2px solid #6610f2;">
+									            <option value="0">Seleccione Empleado</option>
+									            <option th:each="option: ${people}" th:value="${option.id}"
+									                th:text="${option.name + ' ' + option.firstLastName + ' ' + option.secondLastName + ' (' + option.agePeople + ')'}">
+									            </option>
+								        </select>
+							</div>
+							<!-- Lista de clientes -->
+							<div id="customerSection" class="form-group row mb-3 align-items-center" 
+								style="display: none;padding-left: 60px;padding-right: 60px;">
+							        <select class="form-control" th:field="*{customer}" style="border: 2px solid #0d6efd">
+							            <option value="0">Seleccione Cliente</option>
+							            <option th:each="option: ${customers}" th:value="${option.id}"
+							                th:text="${option.name + ' ' + option.lastNames + ' (' + option.identityCustomer + ')'}">
+							            </option>
+							        </select>
+							</div>
+							<!-- SI ES EMPLEADO MUESTRA ESTO -->
+							<div th:if="${user.getId()>0 and user.employee !=null}" class="form-group row mb-3">
 								<label class="col-sm-4 col-form-label">Empleado </label>
 								<div class="col-sm-7">
 									<input type="text" th:field="*{employee.fullName}" class="form-control" disabled />
+								</div>
+							</div>
+							<!-- SI ES CLIENTE MUESTRA ESTO -->
+							<div th:if="${user.getId()>0 and user.customer !=null}" class="form-group row mb-3">
+								<label class="col-sm-4 col-form-label">Cliente </label>
+								<div class="col-sm-7">
+									<input type="text" th:field="*{customer.nameComplete}" class="form-control" disabled />
 								</div>
 							</div>
 							<div class="form-group row mb-3">
@@ -166,6 +194,13 @@
 			</div>
 		</div>
 	</div>
+	<script>
+    function toggleUserSelection() {
+        var userType = document.getElementById("userType").value;
+        document.getElementById("employeeSection").style.display = (userType == "Empleado") ? "block" : "none";
+        document.getElementById("customerSection").style.display = (userType == "Cliente") ? "block" : "none";
+    }
+	</script>
 	<footer th:replace="main/layout :: footer" class="d-md-none d-lg-block"></footer>
 </body>
 

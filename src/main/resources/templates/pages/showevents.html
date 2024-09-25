@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <head>
-
 	<head th:replace="~{main/layout :: head}"></head>
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+	<!-- CSRF Meta Tags -->
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
 	<style>
 		.chart-container {
 			position: relative;
@@ -210,43 +211,47 @@
 
 <body>
 	<header th:replace="~{main/layout :: header}"></header>
-
 	<div class="container mt-4" id="pantll">
-
-		<!--Eventos admnistrativos-->
+		<!--EVENTOS-->
 		<div class="container mt-5">
 			<div class="card-container">
-				<!-- Card 1 -->
+				<!-- ACTIVIDADES ADMINSTRATIVAS -->
 				<div class="card-custom" data-bs-toggle="modal" data-bs-target="#modal1">
 					<div class="card-icon">
 						<i class="fas fa-tasks"></i>
 					</div>
 					<div class="card-title">Actividades Administrativas</div>
 				</div>
-				<!-- Card 2 -->
+				<!-- ALMUERZO -->
 				<div class="card-custom" data-bs-toggle="modal" data-bs-target="#modal2">
 					<div class="card-icon">
 						<i class="fas fa-utensils"></i>
 					</div>
 					<div class="card-title">Almuerzo</div>
 				</div>
-				<!-- Card 5 -->
-				<div class="card-custom" data-bs-toggle="modal" data-bs-target="#modal5">
+				<!-- SS.HH -->
+				<div class="card-custom" data-bs-toggle="modal" data-bs-target="#modal3">
 					<div class="card-icon">
 						<i class="fas fa-user-tie"></i>
 					</div>
 					<div class="card-title">SS.HH.</div>
 				</div>
-				<!-- Card 6 -->
-				<div class="card-custom" data-bs-toggle="modal" data-bs-target="#modal6">
+				<!-- COFFEE BREAK -->
+				<div class="card-custom" data-bs-toggle="modal" data-bs-target="#modal4">
 					<div class="card-icon">
 						<i class="fas fa-coffee"></i>
 					</div>
 					<div class="card-title">Coffee Break</div>
 				</div>
+				<!-- SALIDA -->
+				<div class="card-custom" data-bs-toggle="modal" data-bs-target="#modal5">
+					<div class="card-icon">
+						<i class="fas fa-sign-out-alt"></i>
+					</div>
+					<div class="card-title">Salida</div>
+				</div>
 			</div>
 		</div>
-
 		<!-- Modal de Actividades administrativas -->
 		<div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal1Label" aria-hidden="true">
 		    <div class="modal-dialog">
@@ -257,8 +262,7 @@
 		            </div>
 		            <div class="modal-body">
 		                <p id="modalEventDescription">¿Desea iniciar el evento "Actividades Administrativas"?</p>
-		                <input type="hidden" id="authenticatedUser" 
-		                th:value="${#authentication.principal.username}">
+		                <input type="hidden" id="authenticatedUser" th:value="${#authentication.principal.username}">
 		                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 		                <!-- Lista de eventos dinámica -->
 		                <select class="form-select" aria-label="Selección de subtipo">
@@ -272,11 +276,8 @@
 		        </div>
 		    </div>
 		</div><!-- Fin administrativas -->
-		
-		<!-- Fin administrativas -->
-
-		<!-- Modal 2 -->
-		<div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="modal2Label" aria-hidden="true">
+		<!-- Almuerzo -->
+		<div th:if="${eventoAlmuerzo != null}" class="modal fade" id="modal2" tabindex="-1" aria-labelledby="modal2Label" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -284,115 +285,79 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<p>¿Desea iniciar el evento "Almuerzo"?</p>
-						<select class="form-select" aria-label="Selección de subtipo">
-							<option selected>[Seleccione subtipo]</option>
-							<option value="1">Almuerzo con Equipo</option>
-							<option value="2">Almuerzo con Cliente</option>
-						</select>
+						<p>¿Desea iniciar el evento <strong id="eventName" th:text="${eventoAlmuerzo.nameEvent}"></strong>?</p>
+						<input type="hidden" id="authenticatedUser" th:value="${#authentication.principal.username}">
+						<input type="hidden" id="eventId"  th:value="${eventoAlmuerzo.id}">
+						<input type="hidden" id="TipoEvento"  th:value="${eventoAlmuerzo.tipoEvento}">
+		                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+						
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary">Aceptar</button>
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+						<button type="button" class="btn btn-primary" id="startLunchEventBtn">SI</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
 					</div>
 				</div>
 			</div>
-		</div>
-
-		<!-- Modal 3 -->
-		<div class="modal fade" id="modal3" tabindex="-1" aria-labelledby="modal3Label" aria-hidden="true">
+		</div><!-- Fin Almuerzo -->
+		<!-- SS.HH -->
+		<div th:if="${eventoSSHH != null}" class="modal fade" id="modal3" tabindex="-1" aria-labelledby="modal3Label" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="modal3Label">Problemas Técnicos</h5>
+						<h5 class="modal-title" id="modal3Label">SS.HH.</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<p>¿Desea iniciar el evento "Problemas Técnicos"?</p>
-						<select class="form-select" aria-label="Selección de subtipo">
-							<option selected>[Seleccione subtipo]</option>
-							<option value="1">Solución de Incidencias</option>
-							<option value="2">Mantenimiento de Sistemas</option>
-							<option value="3">Actualización de Software</option>
-						</select>
+						<p>¿Desea iniciar el evento <strong id="nameEvent" th:text="${eventoSSHH.nameEvent}"></strong>?</p>
+						<input type="hidden" id="authenticatiouser" th:value="${#authentication.principal.username}">
+						<input type="hidden" id="idevent"  th:value="${eventoSSHH.id}">
+						<input type="hidden" id="tipoevent"  th:value="${eventoSSHH.tipoEvento}">
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary">Aceptar</button>
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+						<button type="button" class="btn btn-primary" id="startsshhEventBtn">SI</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
 					</div>
 				</div>
 			</div>
 		</div>
-
 		<!-- Modal 4 -->
 		<div class="modal fade" id="modal4" tabindex="-1" aria-labelledby="modal4Label" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="modal4Label">Reunión</h5>
+						<h5 class="modal-title" id="modal4Label">Coffee Break</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<p>¿Desea iniciar el evento "Reunión"?</p>
-						<select class="form-select" aria-label="Selección de subtipo">
-							<option selected>[Seleccione subtipo]</option>
-							<option value="1">Sesión de Brainstorming</option>
-							<option value="2">Reunión con Cliente</option>
-							<option value="3">Reunión Interna</option>
-						</select>
+						<p>¿Desea iniciar el evento <strong id="nameCoffee" th:text="${eventoCoffeeBreak.nameEvent}"></strong>?</p>
+						<input type="hidden" id="userauthenticacion" th:value="${#authentication.principal.username}">
+						<input type="hidden" id="idcoffee"  th:value="${eventoCoffeeBreak.id}">
+						<input type="hidden" id="tipocoffee"  th:value="${eventoCoffeeBreak.tipoEvento}">
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary">Aceptar</button>
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+						<button type="button" class="btn btn-primary" id="startCoffeeEventBtn">SI</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
 					</div>
 				</div>
 			</div>
 		</div>
-
 		<!-- Modal 5 -->
 		<div class="modal fade" id="modal5" tabindex="-1" aria-labelledby="modal5Label" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="modal5Label">SS.HH.</h5>
+						<h5 class="modal-title" id="modal5Label">CONTACTEMP</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<p>¿Desea iniciar el evento "SS.HH."?</p>
-						<select class="form-select" aria-label="Selección de subtipo">
-							<option selected>[Seleccione subtipo]</option>
-							<option value="1">Contratación</option>
-							<option value="2">Evaluación de Desempeño</option>
-							<option value="3">Capacitación</option>
-						</select>
+						<p>¿Desea registrar su <strong>HORA DE SALIDA</strong>?.</p>
+						<span>Recuerde que una vez registrada, no podrá realizar ninguna operación en el sistema.</span>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary">Aceptar</button>
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Modal 6 -->
-		<div class="modal fade" id="modal6" tabindex="-1" aria-labelledby="modal6Label" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="modal6Label">Coffee Break</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<p>¿Desea iniciar el evento "Coffee Break"?</p>
-						<select class="form-select" aria-label="Selección de subtipo">
-							<option selected>[Seleccione subtipo]</option>
-							<option value="1">Coffee Break con Equipo</option>
-							<option value="2">Coffee Break con Cliente</option>
-						</select>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary">Aceptar</button>
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+						<button type="button" class="btn btn-primary" id="finishWork">SI</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
 					</div>
 				</div>
 			</div>
@@ -544,8 +509,307 @@
 	             });
 	        });
 	    });
+	 	
+	 	// Escuchar el clic del botón "SI" para iniciar el evento de almuerzo
+	    document.getElementById('startLunchEventBtn').addEventListener('click', function () {
+	        // Obtener el usuario autenticado (si es necesario)
+	        const authenticatedUser = document.getElementById('authenticatedUser').value;
+	        const eventId = document.getElementById('eventId').value;
+	        const TipoEvento = document.getElementById('TipoEvento').value;
+	        const eventName = document.getElementById('eventName').textContent;
+	        const csrfToken = document.querySelector('input[name="_csrf"]').value;
+	     // Capturar la hora actual como hora de inicio en formato local (Perú) con el formato d/M/yyyy, HH:mm:ss
+	        const localStartTime = new Date().toLocaleString('es-PE',{
+	            timeZone: 'America/Lima',
+	            day: 'numeric',
+	            month: 'numeric',
+	            year: 'numeric',
+	            hour: '2-digit',
+	            minute: '2-digit',
+	            second: '2-digit',
+	            hour12: false // Para usar el formato de 24 horas
+	        });
+	        // Realizar la solicitud fetch al backend para registrar el evento de almuerzo
+	       // Enviar los datos al servidor con fetch
+	        fetch('/api/events/start-activity', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json',
+	                'Accept': 'application/json',
+	                'X-CSRF-TOKEN': csrfToken // Incluir el token CSRF en los encabezados
+	            },
+	            body: JSON.stringify({
+	            	activityId: eventId, // ID del Evento
+	                username: authenticatedUser, // Usuario autenticado
+	                startTime: localStartTime // Hora de inicio
+	            })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	            	// Mostrar una alerta de confirmación con SweetAlert2
+	                swal({
+	                	title: '¡Actividad iniciada!',
+	                    text: 'El evento ha comenzado exitosamente.',
+	                    icon: 'success',
+	                    timer: 1000, // La alerta se cerrará automáticamente en 1 segundos
+	                    showConfirmButton: false, // Ocultar el botón de confirmación
+	                }).then(() => {
+	                        // Guardar el nombre del evento en sessionStorage antes de redirigir
+	                        sessionStorage.setItem('eventId', eventId);
+	                        sessionStorage.setItem('TipoEvento', TipoEvento);
+	                        sessionStorage.setItem('eventName', eventName);
+	                        sessionStorage.setItem('localStartTime', localStartTime);
+	                        // Cerrar el modal
+	                        $('#modal1').modal('hide');
+	                        // Redirigir a la página donde se muestra el evento en progreso
+	                        window.location.href = `/index`;
+	                      });
+	            } else {
+	            	// Mostrar una alerta de error si no se pudo iniciar la actividad
+	                swal({
+	                  title: 'Error',
+	                  text: data.message || 'Ya tienes una actividad en curso. Debes finalizarla antes de iniciar una nueva.',
+	                  icon: 'error',
+	                  button: 'OK'
+	                });
+	            }
+	        })
+	        .catch(error => {
+	        	 console.error('Error al iniciar la actividad:', error);
+	        	 swal({
+	                 title: 'Error',
+	                 text: 'Ocurrió un error al iniciar la actividad.',
+	                 icon: 'error',
+	                 button: 'OK'
+	             });
+	        });
+	    });
+	 // Escuchar el clic del botón "SI sshh" para iniciar el evento de almuerzo
+	    document.getElementById('startsshhEventBtn').addEventListener('click', function () {
+	        // Obtener el usuario autenticado (si es necesario)
+	        const authenticatedUser = document.getElementById('authenticatiouser').value;
+	        const eventId = document.getElementById('idevent').value;
+	        const TipoEvento = document.getElementById('tipoevent').value;
+	        const eventName = document.getElementById('nameEvent').textContent;
+	        const csrfToken = document.querySelector('input[name="_csrf"]').value;
+	     // Capturar la hora actual como hora de inicio en formato local (Perú) con el formato d/M/yyyy, HH:mm:ss
+	        const localStartTime = new Date().toLocaleString('es-PE',{
+	            timeZone: 'America/Lima',
+	            day: 'numeric',
+	            month: 'numeric',
+	            year: 'numeric',
+	            hour: '2-digit',
+	            minute: '2-digit',
+	            second: '2-digit',
+	            hour12: false // Para usar el formato de 24 horas
+	        });
+	        console.log("Valor de authenticatedUser:", authenticatedUser);
+	        console.log("Valor de eventId:", eventId);
+	        console.log("Valor de TipoEvento:", TipoEvento);
+	        console.log("Valor de eventName:", eventName);
+	        console.log("Valor de localStartTime:", localStartTime);
+	        // Realizar la solicitud fetch al backend para registrar el evento de almuerzo
+	       // Enviar los datos al servidor con fetch
+	        fetch('/api/events/start-activity', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json',
+	                'Accept': 'application/json',
+	                'X-CSRF-TOKEN': csrfToken // Incluir el token CSRF en los encabezados
+	            },
+	            body: JSON.stringify({
+	            	activityId: eventId, // ID del Evento
+	                username: authenticatedUser, // Usuario autenticado
+	                startTime: localStartTime // Hora de inicio
+	            })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	            	// Mostrar una alerta de confirmación con SweetAlert2
+	                swal({
+	                	title: '¡Actividad iniciada!',
+	                    text: 'El evento ha comenzado exitosamente.',
+	                    icon: 'success',
+	                    timer: 1000, // La alerta se cerrará automáticamente en 1 segundos
+	                    showConfirmButton: false, // Ocultar el botón de confirmación
+	                }).then(() => {
+	                        // Guardar el nombre del evento en sessionStorage antes de redirigir
+	                        sessionStorage.setItem('eventId', eventId);
+	                        sessionStorage.setItem('TipoEvento', TipoEvento);
+	                        sessionStorage.setItem('eventName', eventName);
+	                        sessionStorage.setItem('localStartTime', localStartTime);
+	                        // Cerrar el modal
+	                        $('#modal1').modal('hide');
+	                        // Redirigir a la página donde se muestra el evento en progreso
+	                        window.location.href = `/index`;
+	                      });
+	            } else {
+	            	// Mostrar una alerta de error si no se pudo iniciar la actividad
+	                swal({
+	                  title: 'Error',
+	                  text: data.message || 'Ya tienes una actividad en curso. Debes finalizarla antes de iniciar una nueva.',
+	                  icon: 'error',
+	                  button: 'OK'
+	                });
+	            }
+	        })
+	        .catch(error => {
+	        	 console.error('Error al iniciar la actividad:', error);
+	        	 swal({
+	                 title: 'Error',
+	                 text: 'Ocurrió un error al iniciar la actividad.',
+	                 icon: 'error',
+	                 button: 'OK'
+	             });
+	        });
+	    });
+	 
+	 // Escuchar el clic del botón "SI COFFEE" para iniciar el evento de almuerzo
+	    document.getElementById('startCoffeeEventBtn').addEventListener('click', function () {
+	        // Obtener el usuario autenticado (si es necesario)
+	        const authenticatedUser = document.getElementById('userauthenticacion').value;
+	        const eventId = document.getElementById('idcoffee').value;
+	        const TipoEvento = document.getElementById('tipocoffee').value;
+	        const eventName = document.getElementById('nameCoffee').textContent;
+	        const csrfToken = document.querySelector('input[name="_csrf"]').value;
+	     // Capturar la hora actual como hora de inicio en formato local (Perú) con el formato d/M/yyyy, HH:mm:ss
+	        const localStartTime = new Date().toLocaleString('es-PE',{
+	            timeZone: 'America/Lima',
+	            day: 'numeric',
+	            month: 'numeric',
+	            year: 'numeric',
+	            hour: '2-digit',
+	            minute: '2-digit',
+	            second: '2-digit',
+	            hour12: false // Para usar el formato de 24 horas
+	        });
+	        console.log("Valor de authenticatedUser:", authenticatedUser);
+	        console.log("Valor de eventId:", eventId);
+	        console.log("Valor de TipoEvento:", TipoEvento);
+	        console.log("Valor de eventName:", eventName);
+	        console.log("Valor de localStartTime:", localStartTime);
+	        // Realizar la solicitud fetch al backend para registrar el evento de almuerzo
+	       // Enviar los datos al servidor con fetch
+	        fetch('/api/events/start-activity', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json',
+	                'Accept': 'application/json',
+	                'X-CSRF-TOKEN': csrfToken // Incluir el token CSRF en los encabezados
+	            },
+	            body: JSON.stringify({
+	            	activityId: eventId, // ID del Evento
+	                username: authenticatedUser, // Usuario autenticado
+	                startTime: localStartTime // Hora de inicio
+	            })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	            	// Mostrar una alerta de confirmación con SweetAlert2
+	                swal({
+	                	title: '¡Actividad iniciada!',
+	                    text: 'El evento ha comenzado exitosamente.',
+	                    icon: 'success',
+	                    timer: 1000, // La alerta se cerrará automáticamente en 1 segundos
+	                    showConfirmButton: false, // Ocultar el botón de confirmación
+	                }).then(() => {
+	                        // Guardar el nombre del evento en sessionStorage antes de redirigir
+	                        sessionStorage.setItem('eventId', eventId);
+	                        sessionStorage.setItem('TipoEvento', TipoEvento);
+	                        sessionStorage.setItem('eventName', eventName);
+	                        sessionStorage.setItem('localStartTime', localStartTime);
+	                        // Cerrar el modal
+	                        $('#modal1').modal('hide');
+	                        // Redirigir a la página donde se muestra el evento en progreso
+	                        window.location.href = `/index`;
+	                      });
+	            } else {
+	            	// Mostrar una alerta de error si no se pudo iniciar la actividad
+	                swal({
+	                  title: 'Error',
+	                  text: data.message || 'Ya tienes una actividad en curso. Debes finalizarla antes de iniciar una nueva.',
+	                  icon: 'error',
+	                  button: 'OK'
+	                });
+	            }
+	        })
+	        .catch(error => {
+	        	 console.error('Error al iniciar la actividad:', error);
+	        	 swal({
+	                 title: 'Error',
+	                 text: 'Ocurrió un error al iniciar la actividad.',
+	                 icon: 'error',
+	                 button: 'OK'
+	             });
+	        });
+	    });
+	 
+	 //btn finalizar trabajo del día
+	  document.getElementById('finishWork').addEventListener('click', function () {
+		// Obtener el token CSRF y el nombre del encabezado desde las etiquetas
+		  const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+		  const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+	       // Enviar los datos al servidor con fetch
+	        fetch('/api/events/register-outwork', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json',
+	                'Accept': 'application/json',
+	                [csrfHeader]: csrfToken // Incluir el token CSRF en los encabezados
+	            }
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	            	// Mostrar una alerta de confirmación con SweetAlert2
+	                swal({
+	                	title: '¡Salida Registrada!',
+	                    text: 'Se ha registrado su hora de salida correctamente.',
+	                    icon: 'success',
+	                    timer: 1000, // La alerta se cerrará automáticamente en 1 segundos
+	                    buttons: false, // Ocultar el botón de confirmación
+	                }).then(() => {
+                        // Cerrar el modal
+                        $('#modal5').modal('hide');
+                     	// Crear un formulario de cierre de sesión y enviarlo
+		                var form = document.createElement('form');
+		                form.method = 'POST';
+		                form.action = '/logout'; // URL de cierre de sesión
+		             // Añadir el campo CSRF al formulario
+		                var inputCsrf = document.createElement('input');
+		                inputCsrf.type = 'hidden';
+		                inputCsrf.name = '_csrf'; // Nombre esperado del token CSRF
+		                inputCsrf.value = csrfToken;
+		                form.appendChild(inputCsrf);
 
-	    
+		                document.body.appendChild(form);
+		                form.submit();
+                      });
+	            }
+	            else {
+	            	// Mostrar una alerta de error si no se pudo iniciar la actividad
+	                swal({
+	                  title: 'Error',
+	                  text: data.message,
+	                  icon: 'error',
+	                  button: 'OK'
+	                });
+	            }
+	        })
+	        .catch(error => {
+	        	 console.error('Error al iniciar el proceso:', error);
+	        	 swal({
+	                 title: 'Error',
+	                 text: 'Ocurrió un error al intentar registrar la hora de salida.',
+	                 icon: 'error',
+	                 button: 'OK'
+	             });
+	        });
+	    });
+	 
 	});
 	</script>
 	<footer th:replace="~{main/layout :: footer}"></footer>

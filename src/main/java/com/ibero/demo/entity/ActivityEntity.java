@@ -2,6 +2,7 @@ package com.ibero.demo.entity;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,17 +18,22 @@ public class ActivityEntity implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; // ID de la actividad administrativa
-	
+	@Column(name="username",length = 10)
     private String username; // Nombre del usuario que inicia la actividad
-    
     @ManyToOne
     @JoinColumn(name = "event_id") // Foreign key column
     private Event event; // Relación con la entidad Event
-    
+    @Column(length = 20)
     private String startTime; // Fecha y hora de inicio
+    @Column(length = 20)
     private String endTime; // Fecha y hora de finalización
+    @Column(length = 40)
     private long totalTime; // Tiempo total transcurrido en formato "HH:mm:ss"
     private String detailsevent;
+    @Column(length = 20)
+    private String codeActivity;
+    @Column(name="status", length = 20)
+    private String status;
 
     // Getters y Setters
     public Integer getId() {
@@ -84,6 +90,21 @@ public class ActivityEntity implements Serializable{
 
 	public void setDetailsevent(String detailsevent) {
 		this.detailsevent = detailsevent;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getCodeActivity() {
+		return codeActivity;
+	}
+
+	public void setCodeActivity(String codeActivity) {
+		this.codeActivity = codeActivity;
 	}
 
 

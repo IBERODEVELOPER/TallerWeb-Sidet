@@ -14,23 +14,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ibero.demo.dao.TardinessRecordDao;
+import com.ibero.demo.dao.AttendWorkDao;
 import com.ibero.demo.entity.Employee;
-import com.ibero.demo.entity.TardinessRecord;
+import com.ibero.demo.entity.AttendWork;
 import com.ibero.demo.util.DaysWeek;
 
 @Service
-public class TardinessRecordServiceImpl implements TardinessRecordService{
-
-	private final Logger logger = LoggerFactory.getLogger(getClass());
+public class AttendWorkServiceImpl implements AttendWorkService{
 	
 	@Autowired
-	private TardinessRecordDao rectardao;
+	private AttendWorkDao rectardao;
 	
 	@Override
 	@Transactional
 	public void savetarding(Employee employee, DaysWeek diaEnum, LocalTime horaEntrada, LocalTime horaActual) {
-		TardinessRecord tardrec = new TardinessRecord();
+		AttendWork tardrec = new AttendWork();
 		tardrec.setEmployee(employee);
 		tardrec.setDay(diaEnum);
 		tardrec.setScheduledEntryTime(horaEntrada);
@@ -53,19 +51,19 @@ public class TardinessRecordServiceImpl implements TardinessRecordService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<TardinessRecord> findAllTardingreport(Pageable page) {
+	public Page<AttendWork> findAllTardingreport(Pageable page) {
 		return rectardao.findAll(page);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public TardinessRecord findbyIdtardinesRecord(Integer id) {
+	public AttendWork findbyIdtardinesRecord(Integer id) {
 		return rectardao.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
-	public void saveTarding(TardinessRecord tardingrecord) {
+	public void saveTarding(AttendWork tardingrecord) {
 		rectardao.save(tardingrecord);
 	}
 
@@ -77,32 +75,36 @@ public class TardinessRecordServiceImpl implements TardinessRecordService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<TardinessRecord> findTardinessByEmployee(Employee employee, Pageable pageable) {
+	public Page<AttendWork> findTardinessByEmployee(Employee employee, Pageable pageable) {
 	    return rectardao.findByEmployee(employee, pageable);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<TardinessRecord> findByEmployee(Employee employee) {
+	public List<AttendWork> findByEmployee(Employee employee) {
 		return rectardao.findByEmployee(employee);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<TardinessRecord> findTardinessByEmployeeAndMonth(Employee employee, int month, Pageable pageable) {
+	public Page<AttendWork> findTardinessByEmployeeAndMonth(Employee employee, int month, Pageable pageable) {
 		return rectardao.findByEmployeeAndMonth(employee, month, pageable);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<TardinessRecord> findTardinessByEmployeeAndMonth(Employee employee, int month) {
+	public List<AttendWork> findTardinessByEmployeeAndMonth(Employee employee, int month) {
 		return rectardao.findByEmployeeAndMonthL(employee, month);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<TardinessRecord> findAllReports() {
-		return (List<TardinessRecord>) rectardao.findAll();
+	public List<AttendWork> findAllReports() {
+		return (List<AttendWork>) rectardao.findAll();
 	}
 
+	@Override
+	public Optional<AttendWork> findByEmployeeAndDate(Employee employee, LocalDate date) {
+		return rectardao.findByEmployeeAndDate(employee, date);
+	}
 }

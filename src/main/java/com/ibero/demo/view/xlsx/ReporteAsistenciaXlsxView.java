@@ -8,7 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
-import com.ibero.demo.entity.TardinessRecord;
+import com.ibero.demo.entity.AttendWork;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,8 +16,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-
-import org.apache.poi.ss.usermodel.Workbook;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,7 +29,7 @@ public class ReporteAsistenciaXlsxView extends AbstractXlsxView {
 		response.setHeader("Content-Disposition", "attachment; filename=\"reporte_asistencia.xlsx\"");
 
 		@SuppressWarnings("unchecked")
-		List<TardinessRecord> tardinessRecords = (List<TardinessRecord>) model.get("tardins");
+		List<AttendWork> attendWorks = (List<AttendWork>) model.get("tardins");
 
 		// Crear la hoja
 		Sheet sheet = workbook.createSheet("Reporte de Asistencia");
@@ -45,13 +43,13 @@ public class ReporteAsistenciaXlsxView extends AbstractXlsxView {
 		createTitleRow(workbook, sheet);
 
 		// Agregar los detalles del reporte
-		createReportDetails(workbook, sheet, tardinessRecords);
+		createReportDetails(workbook, sheet, attendWorks);
 
 		// Crear el encabezado de la tabla
 		createTableHeader(workbook, sheet);
 
 		// Agregar los datos a la tabla
-		addTableRows(workbook, sheet, tardinessRecords);
+		addTableRows(workbook, sheet, attendWorks);
 	}
 
 	private void addLogo(Workbook workbook, Sheet sheet) throws Exception {
@@ -94,23 +92,23 @@ public class ReporteAsistenciaXlsxView extends AbstractXlsxView {
 		return style;
 	}
 
-	private void createReportDetails(Workbook workbook, Sheet sheet, List<TardinessRecord> tardinessRecords) {
-		LocalDate startDate = tardinessRecords.stream().min(Comparator.comparing(TardinessRecord::getDate)).get()
+	private void createReportDetails(Workbook workbook, Sheet sheet, List<AttendWork> attendWorks) {
+		LocalDate startDate = attendWorks.stream().min(Comparator.comparing(AttendWork::getDate)).get()
 				.getDate();
-		LocalDate endDate = tardinessRecords.stream().max(Comparator.comparing(TardinessRecord::getDate)).get()
+		LocalDate endDate = attendWorks.stream().max(Comparator.comparing(AttendWork::getDate)).get()
 				.getDate();
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		String formattedStartDate = startDate.format(formatter);
 		String formattedEndDate = endDate.format(formatter);
 
-		long attendanceDays = tardinessRecords.stream().map(TardinessRecord::getDate).distinct().count();
-		long totalTardinessMinutes = tardinessRecords.stream().mapToLong(TardinessRecord::getTardinessMinutes).sum();
+		long attendanceDays = attendWorks.stream().map(AttendWork::getDate).distinct().count();
+		long totalTardinessMinutes = attendWorks.stream().mapToLong(AttendWork::getTardinessMinutes).sum();
 
 		// Fila 5: Reporte de Asistencia del Empleado
 		Row row1 = sheet.createRow(5);
 		row1.createCell(0).setCellValue(
-				"Reporte de Asistencia del Empleado: " + tardinessRecords.get(0).getEmployee().getFullName());
+				"Reporte de Asistencia del Empleado: " + attendWorks.get(0).getEmployee().getFullName());
 
 		// Fila 6: Desde - Hasta
 		Row row2 = sheet.createRow(6);
@@ -138,8 +136,9 @@ public class ReporteAsistenciaXlsxView extends AbstractXlsxView {
 		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
 		font.setFontName("Helvetica");
 		font.setBold(true);
+		font.setColor(IndexedColors.WHITE.getIndex());
 		headerStyle.setFont(font);
-		headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+		headerStyle.setFillForegroundColor(IndexedColors.BLUE.getIndex());
 		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		headerStyle.setAlignment(HorizontalAlignment.CENTER);
 
@@ -155,12 +154,12 @@ public class ReporteAsistenciaXlsxView extends AbstractXlsxView {
 	    sheet.addMergedRegion(new CellRangeAddress(12, 12, 5, 6));
 	}
 
-	private void addTableRows(Workbook workbook, Sheet sheet, List<TardinessRecord> tardinessRecords) {
+	private void addTableRows(Workbook workbook, Sheet sheet, List<AttendWork> attendWorks) {
 		int rowCount = 13;
 		CellStyle style = workbook.createCellStyle();
 		style.setWrapText(true);
 
-		for (TardinessRecord record : tardinessRecords) {
+		for (AttendWork record : attendWorks) {
 			Row row = sheet.createRow(rowCount);
 			row.createCell(0).setCellValue(record.getEmployee().getFullName());
 			row.createCell(1).setCellValue(record.getDay().toString());
