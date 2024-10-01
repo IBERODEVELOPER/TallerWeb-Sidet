@@ -1,36 +1,15 @@
 # PROYECTO-SIDET2024
 Desarrollo de un sistema web destinado al control de empleados en el ámbito de la Tecnología de la Información aplicado a servicios remotos en el periodo 2024.
 Funcionalidades:
-                •	Módulo de Usuario:
-                                                      1.	Crear Usuarios
-                                                      2.	Crear Roles de Usuario
-                                                      3.	Cambiar contraseñas
-                                                      4.	Modificar las funciones de los Usuarios.
-                                                      5.	Modificar datos del Usuarios
-                                                      6.	Eliminar Usuarios
-                                                      7.	Recuperar Credenciales de Acceso al Sistema.
-                                                    
-                •	Módulo de Gestión de Eventos:
-                                                      1.	Crear eventos.
-                                                      2.  Visualizar lista de Eventos
-                                                      2.	Modificar detalles del evento.
-                                                      3.	Eliminar Eventos.
-                                                      4.	Reporte de Evento
-                                                      5.	Modificar tipos de eventos
-                                                      6.	Visualizar registro de eventos
-                                                      7.	Calcular los tiempos por evento.
-                •	Modulo 	NUEVO:
+Modulo de Empleado:
+Registrar empleado
+Imagen: ![image](https://github.com/user-attachments/assets/23a345fa-52a1-4ffa-949c-dab31ede47a2)
+Listar Empleado
+![image](https://github.com/user-attachments/assets/fd370c81-0061-412d-abee-f3c9d09041fc)
+Editar empleado
+![image](https://github.com/user-attachments/assets/f456b382-81b8-4adb-ad3f-fdeabdfd1de5)
+![image](https://github.com/user-attachments/assets/47e05e69-8def-423b-9a24-b656a6e622e5)
+Eliminar Empleado
+![image](https://github.com/user-attachments/assets/f07902b6-27af-48d9-a733-4b8d1198c434)
 
-
-
-                Imagenes de Módulo Persona
-![image](https://github.com/IBERODEVELOPER/PROYECTO-SIDET2024/assets/12779523/15ddee9a-83a5-4897-b4aa-f3357b207149)
-![image](https://github.com/IBERODEVELOPER/PROYECTO-SIDET2024/assets/12779523/8cce28f7-12bf-4d70-8039-6a36d1bebe26)
-![image](https://github.com/IBERODEVELOPER/PROYECTO-SIDET2024/assets/12779523/c215f95e-3e1b-49e7-9329-a165091f8b79)
-![image](https://github.com/IBERODEVELOPER/PROYECTO-SIDET2024/assets/12779523/e828f448-2637-4b49-9ae1-d105f6b9cb0c)
-
-                Imagenes del Módulo Rol
-![image](https://github.com/IBERODEVELOPER/PROYECTO-SIDET2024/assets/12779523/a1ea7d50-a586-4cf1-8b74-5c0201c34cf1)
-![image](https://github.com/IBERODEVELOPER/PROYECTO-SIDET2024/assets/12779523/d490cd83-a694-4d06-9e0c-8f9c9912edbb)
-![image](https://github.com/IBERODEVELOPER/PROYECTO-SIDET2024/assets/12779523/8faa38e7-f4ec-4d8a-b740-fd89935dd938)
-![image](https://github.com/IBERODEVELOPER/PROYECTO-SIDET2024/assets/12779523/e6a2c431-71a6-4f69-b34c-83e14b0bd1e1)
+           
