@@ -1,0 +1,54 @@
+	<div class="container-fluid" id="pantll">
+		<div class="container">
+			<div class="row justify-content-center">
+				<h1 class="text-info" th:text="${titlepage}"></h1>
+
+				<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/rol/listRol}">Inicio</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Formulario de Registro de Roles</li>
+					</ol>
+				</nav>
+				<div class="card">
+					<div class="card-body text-dark fa-solid fa-floppy-disk">
+						<form th:action="@{/role/formrol}" th:object="${role}" method="post">
+						  <legend class="text-center" th:text="${titleform}"></legend>
+							<div class="form-group row mb-3">
+								<label class="col-sm-3 col-form-label">Rol</label>
+								<div class="col-sm-9">
+									<input type="text" th:field="*{authority}" class="form-control"
+										placeholder="Administrador" th:errorclass="'form-control alert-danger'" />
+									<div class="form-text text-danger" th:if="${#fields.hasErrors('authority')}"
+										th:errors="*{authority}">
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group row mb-3">
+								<label class="col-sm-3 col-form-label">Descripción</label>
+								<div class="col-sm-9">
+									<input type="text" th:field="*{descripRolUser}" class="form-control"
+										placeholder="Tiene acceso a todo el sistema" th:errorclass="'form-control alert-danger'" />
+									<div class="form-text text-danger"
+										th:if="${#fields.hasErrors('descripRolUser')}"
+										th:errors="*{descripRolUser}">
+									</div>
+								</div>
+							</div>
+							<br>
+							<div class="form-group row">
+								<div class="row col-sm-5 mt-end" style="margin-left: 20px;margin-right: 20px;">
+									<input type="submit" value="Guardar" class="btn btn-outline-info" />
+								</div>
+								<div class="row col-sm-6">
+									<a th:href="@{/rol/listRol}" class="btn btn-outline-success">
+										<ion-icon name="arrow-undo-outline"></ion-icon>Regresar</a>
+								</div>								
+							</div>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
