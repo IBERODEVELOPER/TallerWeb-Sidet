@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="042a30e4-0748-4345-9ebb-b5fd69d5a4cd" name="Changes" comment="Anadiendo Ajax">
+      <changelist_data name="tech" email="tamani1995@gmail.com" automatic="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/TallerWeb-Microservicios.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/MvcConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/SpringSecurityConf.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/TallerWebApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/WebSocketConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/auth/handler/LoginSuccesHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/controller/ActivityController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/controller/ControllerAttachCase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/controller/ControllerCase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/controller/ControllerMaster.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/controller/ControllerReports.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/controller/CustomerController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/controller/DayScheduleController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/controller/EmployeeController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/controller/EventController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/controller/ScheduleController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/controller/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/ActivityEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/Address.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/AttachCase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/AttendWork.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/Case.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/CommentCase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/CustomUserDetails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/Customer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/DaySchedule.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/EntityEmployee.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/Event.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/Phone.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/Schedule.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/entity/UserEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/interceptors/TemporaryPasswordFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/interceptors/TurnOffEmployeeFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/ActivityDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/AttachCaseDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/AttendWorkDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/CaseDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/CommentCaseDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/CustomerDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/EventDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/IAddressDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/IDayScheduleDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/IEmployeeRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/IRolUserDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/IScheduleDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/repository/IUserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/ActivityService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/ActivityServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/AttachCaseServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/AttendWorkService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/AttendWorkServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/CaseService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/CaseServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/CommentCaseServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/CustomerService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/CustomerServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/EmailService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/EventService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/EventServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IAddressService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IAddressServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IAttachCaseService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/ICommentCaseService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IDayScheduleService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IDayScheduleServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IEmployeeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IEmployeeServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IRolUserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IScheduleService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IScheduleServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IUserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/IUserServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/service/RolUserServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/util/ActivityDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/util/DaysWeek.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/util/EmailValuesDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/util/EventHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/util/FinishActivityDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/util/PageItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/util/PageRender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/util/StartActivityDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/view/pdf/ReporteAsistenciaPdfView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/java/com/ibero/demo/view/xlsx/ReporteAsistenciaXlsxView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/import.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/messages.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/css/all.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/css/bootstrap.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/css/estilo.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/css/jquery-ui.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/css/jquery-ui.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/images/500.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/images/background.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/images/default.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/images/error.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/images/error404.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/images/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/images/fondo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/images/fueradeoficina.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/images/iconlogo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/images/predeterminado.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/images/raul.ruiz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/js/ajax-navigation.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/js/bootstrap.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/js/eventos.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/js/funciones.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/js/ionicons.esm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/js/ionicons.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/js/jquery-3.4.1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/js/jquery-3.6.0.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/js/jquery-ui.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/js/scriptsindex.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/static/js/sweetalert.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/email-template.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/emailnewuser.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/error/403.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/error/404.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/error/500.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/main/layout.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/outofturn.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/allCustomer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/allEmployee.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/allRol.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/allSchudule.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/allUsers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/formCase.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/formChangePass.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/formCustomer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/formEmployee.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/formRol.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/formUser.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/formevent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/formschudule.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/formschuduleAll.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/formtardiness.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/general_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/go_works.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/markEfforts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/onlineEvent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/profiles.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/profileuser.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/showevents.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/pages/ticketsAll.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/main/resources/templates/paginator-nav.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/src/test/java/com/ibero/demo/TallerWebApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/MvcConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/SpringSecurityConf.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/TallerWebApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/WebSocketConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/auth/handler/LoginSuccesHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/controller/ActivityController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/controller/ControllerAttachCase.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/controller/ControllerCase.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/controller/ControllerMaster.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/controller/ControllerReports.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/controller/CustomerController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/controller/DayScheduleController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/controller/EmployeeController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/controller/EventController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/controller/ScheduleController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/ActivityEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/Address.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/AttachCase.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/AttendWork.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/Case.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/CommentCase.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/CustomUserDetails.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/Customer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/DaySchedule.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/EntityEmployee.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/Event.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/Phone.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/Role.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/Schedule.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/entity/UserEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/interceptors/TemporaryPasswordFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/interceptors/TurnOffEmployeeFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/ActivityDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/AttachCaseDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/AttendWorkDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/CaseDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/CommentCaseDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/CustomerDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/EventDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/IAddressDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/IDayScheduleDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/IEmployeeRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/IRolUserDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/IScheduleDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/repository/IUserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/ActivityService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/ActivityServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/AttachCaseServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/AttendWorkService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/AttendWorkServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/CaseService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/CaseServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/CommentCaseServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/CustomerService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/CustomerServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/EmailService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/EventService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/EventServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IAddressService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IAddressServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IAttachCaseService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/ICommentCaseService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IDayScheduleService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IDayScheduleServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IEmployeeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IEmployeeServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IRolUserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IScheduleService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IScheduleServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IUserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/IUserServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/service/RolUserServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/util/ActivityDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/util/DaysWeek.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/util/EmailValuesDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/util/EventHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/util/FinishActivityDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/util/PageItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/util/PageRender.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/util/StartActivityDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/view/pdf/ReporteAsistenciaPdfView.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/com/ibero/demo/view/xlsx/ReporteAsistenciaXlsxView.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/import.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/messages.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/css/all.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/css/bootstrap.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/css/estilo.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/css/jquery-ui.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/css/jquery-ui.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/images/500.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/images/background.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/images/default.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/images/error.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/images/error404.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/images/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/images/fondo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/images/fueradeoficina.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/images/iconlogo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/images/predeterminado.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/images/raul.ruiz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/js/ajax-navigation.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/js/bootstrap.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/js/eventos.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/js/funciones.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/js/ionicons.esm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/js/ionicons.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/js/jquery-3.4.1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/js/jquery-3.6.0.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/js/jquery-ui.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/js/scriptsindex.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/static/js/sweetalert.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/email-template.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/emailnewuser.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/error/403.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/error/404.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/error/500.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/main/layout.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/outofturn.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/allCustomer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/allEmployee.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/allRol.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/allSchudule.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/allUsers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/formCase.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/formChangePass.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/formCustomer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/formEmployee.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/formRol.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/formUser.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/formevent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/formschudule.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/formschuduleAll.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/formtardiness.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/general_report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/go_works.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/markEfforts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/onlineEvent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/profiles.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/profileuser.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/showevents.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/pages/ticketsAll.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/classes/templates/paginator-nav.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TallerWeb-Sidet-main/target/test-classes/com/ibero/demo/TallerWebApplicationTests.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="tech &lt;tamani1995@gmail.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
+    {
+      &quot;state&quot;: &quot;OPEN&quot;
+    }
+  ],
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/IBERODEVELOPER/TallerWeb-Sidet.git",
+    "accountId": "ebf66a97-471e-4962-9841-32e28ac7b19f"
+  }
+}]]></component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="38ZSh3PRA0oPSPpttCyIaVMGju5" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.TallerWebApplication.executor": "Run",
+    "git-widget-placeholder": "version-ajax",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/LENOVO/Documents/PROJECT SPRNG/TallerWeb-Microservicios",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="TallerWeb-Microservicios" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="TallerWeb-Microservicios" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TallerWebApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
+      <module name="TallerWeb" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ibero.demo.TallerWebApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ibero.demo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.TallerWebApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.138" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="042a30e4-0748-4345-9ebb-b5fd69d5a4cd" name="Changes" comment="" />
+      <created>1769005719676</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1769005719676</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Anadiendo Ajax">
+      <option name="closed" value="true" />
+      <created>1769009459238</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1769009459238</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Anadiendo Ajax">
+      <option name="closed" value="true" />
+      <created>1769009492520</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1769009492520</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
+    <MESSAGE value="Anadiendo Ajax" />
+    <option name="LAST_COMMIT_MESSAGE" value="Anadiendo Ajax" />
+  </component>
+</project>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html 
+xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+	<meta charset="UTF-8" />
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}">
+	<link rel="stylesheet" th:href="@{/css/estilo.css}">
+	<!-- WebSocket -->
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.4.0/dist/sockjs.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+	<!-- FontAwesome para el icono de ojito -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<!-- Titulo de la Página -->
+	<link rel="icon" type="image/jpg" href="/images/favicon.png" />
+	<title th:if="${titlepage != null}" th:text="'© CONTACTEMP'+ ' : ' +${titlepage}"></title>
+	<title th:if="${titlepage == null}" th:text="'© CONTACTEMP'"></title>
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+
+<body>
+	<header th:fragment="header">
+		<nav class="navbar navbar-expand-md navbar-light border-4 border-bottom border-warning"
+			style="background-color: cadetblue;">
+			<div class="container" sec:authorize="isAuthenticated()">
+				<a th:href="@{/index}" class="navbar-brand"
+					style="color: rgb(255, 255, 255);"><b><sup>©</sup>CONTACTEMP</b></a>
+				<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menunav">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div id="menunav" class="collapse navbar-collapse" style="width: 100%;">
+					<ul class="navbar-nav ms-3" style="width: 100%;">
+						<li class="nav-item" >
+							<a class="nav-link text-light fw-bold" th:href="@{/index}">Inicio</a>
+						</li>
+						
+						<!-- Empleados -->
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER')">
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
+							   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Empleados
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item ajax-link" th:href="@{/peoples/listPeople}">Lista de Empleados</a></li>
+								<li><a class="dropdown-item ajax-link" th:href="@{/peoples/formPeople}">Registrar Empleado</a></li>
+							</ul>
+						</li>
+						<!--Usuario-->
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER')">
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Usuarios
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item ajax-link" th:href="@{/user/listUsers}">Lista de Usuarios</a></li>
+								<li><a class="dropdown-item ajax-link" th:href="@{/user/formUser}">Nuevo Usuario</a></li>
+							</ul>
+						</li>
+
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER')">
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
+							   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Asistencia
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item ajax-link" th:href="@{/reports/asistence_general}">Asistencia y Tardanzas</a></li>
+							</ul>
+						</li>
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER')">
+							<a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="navbarDropdown"
+							   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Reportes
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item ajax-link" th:href="@{/reports/general_report}">General</a></li>
+							</ul>
+						</li>
+
+
+						<!-- USERNAME -->
+						<li sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER') or hasRole('ROLE_CUSTOMER')"
+							class="nav-item dropdown" style="margin-right: 2% !important;margin-left: 2%;margin-top: 1%;">
+							<span class="text-light fw-bold" th:text="${'Bienvenido '+ #authentication.principal.username}"></span>
+						</li>
+						<!-- CAMBIAR CONTRASEÑA -->
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER') or hasRole('ROLE_CUSTOMER')">
+							<a class="nav-link text-light ajax-link" th:href="@{/user/changekey}" title="Cambiar contraseña">
+								<ion-icon name="key-outline" style="font-size: 20px;"></ion-icon>
+							</a>
+						</li>
+						<!-- PERFIL -->
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER')">
+							<a class="nav-link text-light ajax-link" th:href="@{/user/profileuser}" title="ver perfil de usuario">
+								<ion-icon name="person-outline" style="font-size: 20px;"></ion-icon>
+							</a>
+						</li>
+						<!-- FOTO -->
+						<li class="nav-item" >
+							<!-- USUARIO INTERNO -->
+							<img sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_SUPPORT') or hasRole('ROLE_MANAGER')  " title="Foto del usuario" class="rounded-circle"
+     						th:src="@{'/TallerWeb-Fotos/' + ${#authentication.principal.employeeFoto}}"	style="margin-top: 4px;width: 25px;height: 25px;">
+     						<!-- USUARIO EXTERNO -->
+     						<img sec:authorize="hasRole('ROLE_CUSTOMER')" title="Foto del usuario" class="rounded-circle"
+     						th:src="@{/images/predeterminado.png}"	style="margin-top: 4px;width: 25px;height: 25px;">
+						</li>
+						<!-- CERRAR SESIÓN -->
+						<li class="nav-item">
+							<form th:action="@{/logout}" method="post" style="display: inline;">
+								<button type="submit" class="nav-link text-light"
+										style="background: none; border: none;" title="Cerrar sesión">
+									<ion-icon name="log-out-outline" style="font-size: 20px;"></ion-icon>
+								</button>
+							</form>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<br>
+		<div class="container">
+			
+					<!-- mensaje success -->
+			<div id="message1" class="alert alert-success d-flex align-items-center" role="alert"
+				th:if="${success != null}">
+				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+					<use xlink:href="#check-circle-fill" />
+				</svg>
+				<div th:text="${success}"></div>
+			</div>
+			<!-- mensaje horario -->
+			<div id="message1" class="alert alert-success d-flex align-items-center" role="alert"
+				th:if="${mensaje != null}">
+				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="mensaje:">
+					<use xlink:href="#check-circle-fill" />
+				</svg>
+				<div th:text="${mensaje}"></div>
+			</div>
+			<!-- mensaje error -->
+			<div id="message2" th:if="${error != null}" class="alert alert-danger d-flex align-items-center"
+				role="alert">
+				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+					<use xlink:href="#exclamation-triangle-fill" />
+				</svg>
+				<div th:text="${error}"></div>
+			</div>
+			<!-- mensaje warning -->
+			<div id="message3" th:if="${warning != null}" class="alert alert-warning d-flex align-items-center"
+				role="alert">
+				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+					<use xlink:href="#exclamation-triangle-fill" />
+				</svg>
+				<div th:text="${warning}"></div>
+			</div>
+			<!-- mensaje info -->
+			<div id="message4" class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
+			</div>
+	
+
+		<!--Para los mensajes-->
+			<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+				<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+					<path
+						d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+				</symbol>
+				<symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+					<path
+						d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+				</symbol>
+				<symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+					<path
+						d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+				</symbol>
+			</svg>
+	</header>
+	<footer th:fragment="footer" class="container-fluid d-none d-xxl-block" style="height: auto;margin-top: 10px;">
+		<div class="container" style="height: auto;">
+			<p align="center">
+				<img th:src="@{/images/iconlogo.png}" width="20" height="20" alt="Logo el informatico" />
+				Derechos reservados copyright © CONTACTEMP
+			</p>
+		</div>
+		<!-- Ionicons Script -->
+		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+		<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+		<!-- jQuery first, then Popper.js, then Bootstrap JS<script th:src="@{/js/jquery-3.4.1.js}"></script>-->
+		<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>
+		<script th:src="@{/js/sweetalert.min.js}"></script>
+		<script th:src="@{/js/funciones.js}"></script>
+		<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script th:src="@{/js/scriptsindex.js}"></script>
+		<script th:src="@{/js/ajax-navigation.js}"></script>
+		<script th:src="@{/js/eventos.js}"></script>
+	</footer>
+</body>
+</html>
