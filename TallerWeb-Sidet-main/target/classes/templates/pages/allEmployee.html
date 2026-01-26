@@ -1,0 +1,63 @@
+	<div class="container-fluid" id="pantll">
+		<div class="container">
+			<div class="row">
+				<h1 class="text-info" th:text="${titlepage}"></h1>
+				<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Lista de Personas</li>
+					</ol>
+				</nav>
+				<table class="table table-bordered table-hover table-striped">
+					<thead class="table-dark text-center">
+						<tr>
+							<th class="col-2">Nombre Completo</th>
+							<th class="col-sm-2">Doc. Identidad</th>
+							<th class="col-sm-1">Edad</th>
+							<th class="col-sm-1">Nacimiento</th>
+							<th class="col-sm-2">Correo Electronico</th>
+							<th sec:authorize="hasRole('ROLE_ADMIN')"><ion-icon
+									name="ellipsis-vertical-outline"></ion-icon></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item: ${employee}">
+							<td th:text="${item.fullName}"></td>
+							<td class="text-center" th:text="${item.identityPeople}"></td>
+							<td class="text-center" th:text="${item.agePeople}"></td>
+							<td th:text="${item.happyDay}"></td>
+							<td th:text="${item.emailPeople}"></td>
+							<td class="text-center" sec:authorize="hasRole('ROLE_ADMIN')">
+								<!-- th:href="@{/peoples/deleteByIdPerson/} + ${item.id}"-->
+								<!-- Ver perfil de empleado -->
+								<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/peoples/verdata/} + ${item.id}" 
+									class="btn btn-outline-info col-xs-4 tooltip-custom" title="Ver datos de la persona">
+									<ion-icon name="eye-outline" style="font-size: 20px;"></ion-icon></a>
+									<!-- Configurar horario -->
+									<a th:if="${item.schedule.isEmpty()}" sec:authorize="hasRole('ROLE_ADMIN')" 
+									th:href="@{/schedule/schuduleweek/}+ ${item.id}" 
+									class="btn bg-warning col-xs-4 tooltip-custom" title="Crear turno">
+									<ion-icon name="calendar-outline" style="font-size: 20px;"></ion-icon></a>
+									<!-- ver horario -->
+									<a th:if="${!item.schedule.isEmpty()}" sec:authorize="hasRole('ROLE_ADMIN')" 
+									th:href="@{/peoples/verschedule/} + ${item.id}" 
+									class="btn btn-success col-xs-4 tooltip-custom" title="Ver horario">
+									<ion-icon name="calendar-outline" style="font-size: 20px;"></ion-icon></a>
+									<!-- Editar empleado -->
+								<a sec:authorize="hasRole('ROLE_ADMIN')" th:onclick="QuestionEditPeople([[${item.id}]])"
+									class="btn btn-outline-primary col-xs-4" title="Editar">
+									<ion-icon name="create-outline" style="font-size: 20px;"></ion-icon></a>
+									<!-- Eliminar empleado -->
+								<a sec:authorize="hasRole('ROLE_ADMIN')" th:onclick="QuestionDeleteByIdPerson([[${item.id}]])"
+									title="Eliminar"
+									class="btn btn-outline-danger col-xs-4">
+									<ion-icon name="trash-outline" style="font-size: 20px;"></ion-icon></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- Paginador -->
+				<nav th:replace="~{paginator-nav :: paginator}"></nav>
+			</div>
+		</div>
+	</div>

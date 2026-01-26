@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="main/layout :: head"></head>
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<div class="container d-flex justify-content-center align-items-center mt-4" id="pantll">
+		<div class="card" style="width: 18rem;">
+			<img th:src="@{/images/fueradeoficina.png}" class="card-img-top"
+			style="max-height: 30em; max-width: 30em;padding-top: 10px;padding-bottom: 10px;padding-right: 10px;padding-left: 10px;">
+			<h5 class="fw-bold m-0 p-0 text-center text-danger" th:text="${titlepage}"></h5>
+			<div class="card-body d-flex flex-column align-items-center text-wrap">
+				<p class="m-0 p-0 lh-1" th:text="${mensajeoutofturn}"></p> 
+				<p class="m-0 p-0 lh-1">Si tuviera alguna duda o inconveniente favor de contactarse con su Lider de Equipo.</p>
+				<span id="passwordHelpInline" class="form-text">Equipo de Sistemas</span>
+
+			</div>
+		</div>
+	</div>
+	<script>
+		document.getElementById('logoutLink').addEventListener('click',
+				function(event) {
+					event.preventDefault(); // Previene el comportamiento por defecto del enlace
+					document.getElementById('logoutForm').submit(); // Envía el formulario
+				});
+	</script>
+	<footer th:replace="main/layout :: footer"></footer>
+</body>
+
+</html>

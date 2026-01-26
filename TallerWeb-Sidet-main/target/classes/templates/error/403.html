@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="main/layout :: head"></head>
+
+<body>
+
+	<header th:replace="main/layout :: header"></header>
+	<br>
+	<div class="container-fluid" id="pantll">
+		<br>
+		<div class="container" align="center">
+			<div class="card text-white bg-danger" style="max-width: 40rem;">
+				<div class="card-header">¡Alerta!</div>
+				<div class="card-body">
+					<h5 class="card-title"><strong>Acceso denegado</strong></h5>
+					<p class="card-text"><p><span sec:authentication="name"></span> no cuenta con permiso para realizar esta acción.</p>
+					<br>Contáctese con el <strong>Administrado</strong></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="main/layout :: footer"></footer>
+</body>
+
+</html>

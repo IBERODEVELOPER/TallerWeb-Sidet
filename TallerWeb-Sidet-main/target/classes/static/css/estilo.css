@@ -1,0 +1,339 @@
+html,
+body {
+	height: 100%;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.chart-container {
+			position: relative;
+			width: 80%;
+			max-width: 500px;
+			margin: auto;
+		}
+
+		.chart {
+			width: 100%;
+			height: auto;
+		}
+
+		.small-input {
+			max-width: 150px;
+			/* Ajusta este valor según tus necesidades */
+		}
+
+		.small-label {
+			font-size: 0.9em;
+			/* Ajusta este valor según tus necesidades */
+		}
+
+		ul li a {
+			color: aliceblue;
+		}
+
+		.text-primary-custom {
+			color: white;
+		}
+
+		.navbar-brand {
+			color: aliceblue;
+		}
+
+		.navbar-expand-lg {
+			background-color: dodgerblue;
+		}
+
+		.card-header {
+			position: relative;
+		}
+
+		.toggle-btn {
+			cursor: pointer;
+			font-size: 1.5rem;
+			position: absolute;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		.card-body {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.header-row {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+			/* Espacio entre los elementos */
+		}
+
+		.info-icons {
+			display: flex;
+			gap: 20px;
+			/* Espacio entre los íconos */
+			align-items: center;
+			justify-content: space-around;
+		}
+
+		.info-icons div {
+			text-align: center;
+		}
+
+		.small-label {
+			margin-bottom: 0;
+		}
+
+		.small-input {
+			max-width: 150px;
+			/* Ajusta el tamaño máximo del input si es necesario */
+		}
+
+		/*<!--aqui el modificado-->*/
+		.out {
+			text-align: center;
+		}
+
+		.small-input {
+			max-width: 150px;
+			/* Ajusta este valor según tus necesidades */
+		}
+
+		.small-label {
+			font-size: 0.9em;
+			/* Ajusta este valor según tus necesidades */
+		}
+
+		ul li a {
+			color: aliceblue;
+		}
+
+		.text-primary-custom {
+			color: white;
+		}
+
+		.navbar-brand {
+			color: aliceblue;
+		}
+
+		.navbar-expand-lg {
+			background-color: dodgerblue;
+		}
+
+		.container2 {
+
+			display: flex;
+
+			margin-bottom: 1em;
+		}
+
+		.item {
+			flex: auto;
+			padding-top: 1em;
+			padding-bottom: 1em;
+			padding: 10px;
+			height: 500px;
+		}
+
+		.card2 {
+			box-shadow: 0 0 0 1px teal;
+			display: flex;
+			margin-bottom: 1em;
+			height: 200px;
+		}
+
+		.cardpersonalizada {
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+			display: flex;
+			margin-bottom: 1em;
+			height: 450px;
+
+		}
+
+		.card-container {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+		}
+
+		.card-custom {
+			flex: 1 1 calc(33.333% - 1rem);
+			border: none;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			transition: transform 0.2s ease;
+			text-align: center;
+			padding: 20px;
+			background-color: #f8f9fa;
+			cursor: pointer;
+			margin-bottom: 1rem;
+		}
+
+		.card-custom:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+		}
+
+		.card-icon {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 50px;
+			color: #6c757d;
+			border: 2px solid black;
+			/* Borde negro */
+			border-radius: 10%;
+			/* Opcional: para borde circular */
+			padding: 10px;
+			/* Espacio alrededor del icono */
+			background-color: #f8f9fa;
+		}
+
+		.card-title {
+			font-size: 18px;
+			font-weight: bold;
+			color: #333;
+		}
+
+		.modal-header {
+			background-color: #ffcc00;
+		}
+
+		.modal-header .modal-title {
+			color: #333;
+			font-weight: bold;
+		}
+
+.input-group .form-control {
+			position: relative;
+		}
+
+		.input-group .password-toggle {
+			position: absolute;
+			top: 50%;
+			right: 15px;
+			transform: translateY(-50%);
+			cursor: pointer;
+			z-index: 1;
+		}
+		
+.input-group {
+			display: flex;
+			align-items: center;
+			/* Alinea verticalmente al centro */
+		}
+
+		.input-group input {
+			flex: 1;
+			/* Ocupa el espacio disponible */
+			margin-right: 10px;
+			/* Espacio entre el input y el botón */
+		}
+
+		.input-group button {
+			white-space: nowrap;
+			/* Evita que el texto del botón se rompa */
+		}
+
+#pantll {
+	height:90%;
+	max-height:95%;
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
+.hidden {
+	display: none !important;
+}
+
+.labels {
+	font-size: 11px
+}
+
+.icono {
+	font-size: 50px;
+	color: #333;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+#btnStyle :hover {
+	color: #fff !important;
+	border-color: rgb(0, 64, 64) !important;
+}
+
+
+#fondologin {
+	background-image: url('/images/background.jpg');
+	background-position: center;
+	/* Center the image */
+	background-repeat: no-repeat;
+	/* Do not repeat the image */
+	background-size: cover;
+}
+
+
+div.contenedor {
+	width: 100%;
+}
+
+button.centrado {
+	width: 110px;
+	/* Para que no se rompa en dos líneas, y lo translade tal cual. */
+	margin-left: 50%;
+	transform: translateX(-50%);
+}
+
+.small-table {
+	max-width: 30%;
+	/* Ajusta el ancho según tus necesidades */
+	font-size: 0.9rem;
+	/* Reduce el tamaño de la fuente */
+}
+
+
+.form-control:focus {
+	box-shadow: none;
+	border-color: #BA68C8
+}
+
+.profile-button {
+	background: rgb(99, 39, 120);
+	box-shadow: none;
+	border: none
+}
+
+.profile-button:hover {
+	background: #682773
+}
+
+.profile-button:focus {
+	background: #682773;
+	box-shadow: none
+}
+
+.profile-button:active {
+	background: #682773;
+	box-shadow: none
+}
+
+.back:hover {
+	color: #682773;
+	cursor: pointer
+}
+
+.labels {
+	font-size: 11px
+}
+
+.add-experience:hover {
+	background: #BA68C8;
+	color: #fff;
+	cursor: pointer;
+	border: solid 1px #BA68C8
+}

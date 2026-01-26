@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="main/layout :: head"></head>
+
+<body>
+	<header th:replace="main/layout :: header"></header>
+
+	<div class="container-fluid" id="pantll">
+		<br>
+		<div class="container" align="center">
+			<div class="card" style="width: 30rem;">
+				<img th:src="@{'/images/error404.png'}" class="card-img-top" alt="">
+				<div class="card-body">
+					<h1 align="center" class="text-info">Error 404</h1>
+					<div th:text="'Ruta ' + ${error}"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="main/layout :: footer"></footer>
+	</body>
+</html>

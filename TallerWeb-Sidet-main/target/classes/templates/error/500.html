@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="main/layout :: head"></head>
+
+<body>
+	<header th:replace="main/layout :: header"></header>
+	<br>
+	<div class="container-fluid" id="pantll">
+		<div class="container" align="center">
+			<div class="card" style="width: 30rem;">
+				<h1 style="color:rgb(0, 64, 128)"><strong>Error 500</strong></h1>
+				<h3 style="color:rgb(0, 128, 128)">Ooops.... Parece que algo salió mal.</h3>
+				<img th:src="@{'/images/error.png'}" class="card-img-top" alt="error 500">
+			</div>
+		</div>
+
+	</div>
+	<footer th:replace="main/layout :: footer"></footer>
+</body>
+
+</html>
