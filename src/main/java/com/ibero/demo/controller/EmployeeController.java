@@ -5,6 +5,7 @@ import com.ibero.demo.entity.EntityEmployee;
 import com.ibero.demo.entity.Schedule;
 import com.ibero.demo.service.IEmployeeService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.ui.Model;
@@ -36,12 +37,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -61,18 +57,120 @@ public class EmployeeController {
 
 	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
 	@GetMapping(value = "/listPeople")
-	public String ListPeople(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+	public String ListPeople(@RequestParam(name = "page", defaultValue = "0") int page,
+							 Model model,@RequestHeader(value = "X-Requested-With", required = false) String requestedWith,
+							 HttpServletResponse response) {
 		Pageable pageRequest = PageRequest.of(page, 8);
 		Page<EntityEmployee> employee = peopleService.findAllPeople(pageRequest);
 		// Calcula el total de registros
 	    long totalRecords = employee.getTotalElements();
 		PageRender<EntityEmployee> pageRender = new PageRender<EntityEmployee>("/peoples/listPeople", employee);
-		model.addAttribute("titlepage", "Empleados registrados en el sistema");
+		model.addAttribute("titlepage", "Empleados Registrados");
+		model.addAttribute("modulo", "Gestión de Personal");
 		model.addAttribute("employee", employee);
 		model.addAttribute("page", pageRender);
 		model.addAttribute("totalRecords", totalRecords);
+		// Esto le dice al navegador: "Cuidado, esta respuesta depende de si es AJAX o no"
+		response.setHeader("Vary", "X-Requested-With");
+		if ("XMLHttpRequest".equals(requestedWith)) {
+			return "/pages/allEmployee :: #pantll";
+		}
+
 		return "/pages/allEmployee";
 	}
+
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
+	@GetMapping(value = "/formPeople")
+	public String showForm(Map<String, Object> model) {
+		EntityEmployee employee = new EntityEmployee();
+		employee.setAgePeople(18);
+		model.put("titlepage", "Registrar empleado");
+		model.put("modulo", "Gestión de Personal");
+		model.put("titleform", "Ficha de datos");
+		model.put("employee", employee);
+		return "/pages/formEmployee";
+	}
+
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
+	@GetMapping(value = "/formPeople/{id}")
+	public String editForm(@PathVariable(value = "id") int id, Map<String, Object> model, RedirectAttributes flash,
+						   @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
+		if (id <= 0) {
+			flash.addFlashAttribute("error", "El ID del cliente no puede ser 0");
+			return "redirect:/peoples/listPeople";
+		}
+		EntityEmployee employee = peopleService.findOnePerson(id);
+		if (employee == null) {
+			flash.addFlashAttribute("error", "El ID del cliente no existe en la BBDD");
+			return "redirect:/peoples/listPeople";
+		}
+		model.put("titlepage", "Formulario de Registro de Clientes");
+		model.put("titleform", "Actualizar Datos");
+		model.put("employee", employee);
+
+		// Lógica para AJAX
+		if ("XMLHttpRequest".equals(requestedWith)) {
+			// IMPORTANTE: Quita la "/" inicial de "pages/formEmployee"
+			return "pages/formEmployee :: #pantll";
+		}
+
+		return "/pages/formEmployee";
+	}
+
+
+	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
+	@PostMapping(value = "/formPeople")
+	public String processForm(@Valid EntityEmployee employee,BindingResult result, Model model,
+			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status,
+			@RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
+
+		if (result.hasErrors()) {
+			model.addAttribute("titlepage", "Formulario de Registro de Clientes");
+			model.addAttribute("titleform", "Registro de Datos");
+			return "/pages/formPeople :: #pantll";
+		}
+		// Procesar foto
+		if (!foto.isEmpty()) {
+			// Obtener el nombre del archivo original y la extensión
+			String originalFilename = foto.getOriginalFilename();
+			String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+			// Crear el nuevo nombre de archivo utilizando el nombre del empleado
+			String nuevoNombreArchivo = employee.getName().replace(" ", "_") + extension;
+			// ruta relativa
+			Path rootPath = Paths.get(rootC).resolve(nuevoNombreArchivo);
+			// ruta absoluta
+			Path rootAbsPath = rootPath.toAbsolutePath();
+			if (employee.getId() != null && employee.getId() > 0 && employee.getFoto() != null
+					&& employee.getFoto().length() > 0) {
+				// Obtenemos el archivo
+				File archivo = rootAbsPath.toFile();
+				if (archivo.exists() && archivo.canRead()) {
+					archivo.delete();
+				}
+			}
+
+			try {
+				byte[] bytes = foto.getBytes();
+				Files.write(rootAbsPath, bytes);
+				flash.addFlashAttribute("info", "Has subido correctamente '" + nuevoNombreArchivo + "'");
+				employee.setFoto(nuevoNombreArchivo);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		peopleService.SavePeople(employee);
+		flash.addFlashAttribute("success", employee.getId() == null ? "Registrado con éxito" : "Actualizado con éxito");
+		status.setComplete();
+
+		if ("XMLHttpRequest".equals(requestedWith)) {
+			return "redirect:/peoples/listPeople";
+		}
+		return "redirect:/peoples/listPeople";
+	}
+
+
+
 
 	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
 	@GetMapping(value = "/verdata/{id}")
@@ -104,21 +202,11 @@ public class EmployeeController {
 		return "/pages/profiles";
 	}
 
-	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
-	@GetMapping(value = "/formPeople")
-	public String showForm(Map<String, Object> model) {
-		EntityEmployee employee = new EntityEmployee();
-		employee.setAgePeople(18);
-		model.put("titlepage", "Registro de datos del Empleado");
-		model.put("titleform", "Ficha de datos");
-		model.put("employee", employee);
-		return "/pages/formEmployee";
-	}
 
 	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
 	@PostMapping("/updatePicture")
 	public String updatePicture(@RequestParam("file") MultipartFile foto, @RequestParam("id") Integer id,
-			RedirectAttributes flash) {
+								RedirectAttributes flash) {
 		logger.info("Valor obtenido: "+foto.getName());
 		// obtenermos el empleado
 		EntityEmployee employee = peopleService.findOnePerson(id);
@@ -157,76 +245,7 @@ public class EmployeeController {
 		return "redirect:/peoples/verdata/"+id;
 	}
 
-	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
-	@PostMapping(value = "/formPeople")
-	public String processForm(@Valid EntityEmployee employee,BindingResult result, Model model,
-			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
 
-		if (result.hasErrors()) {
-			model.addAttribute("titlepage", "Formulario de Registro de Clientes");
-			model.addAttribute("titleform", "Registro de Datos");
-			return "/pages/formPeople";
-		}
-		// Procesar foto
-		if (!foto.isEmpty()) {
-			// Obtener el nombre del archivo original y la extensión
-			String originalFilename = foto.getOriginalFilename();
-			String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-			// Crear el nuevo nombre de archivo utilizando el nombre del empleado
-			String nuevoNombreArchivo = employee.getName().replace(" ", "_") + extension;
-			// ruta relativa
-			Path rootPath = Paths.get(rootC).resolve(nuevoNombreArchivo);
-			// ruta absoluta
-			Path rootAbsPath = rootPath.toAbsolutePath();
-			if (employee.getId() != null && employee.getId() > 0 && employee.getFoto() != null
-					&& employee.getFoto().length() > 0) {
-				// Obtenemos el archivo
-				File archivo = rootAbsPath.toFile();
-				if (archivo.exists() && archivo.canRead()) {
-					archivo.delete();
-				}
-			}
-
-			try {
-				byte[] bytes = foto.getBytes();
-				Files.write(rootAbsPath, bytes);
-				flash.addFlashAttribute("info", "Has subido correctamente '" + nuevoNombreArchivo + "'");
-				employee.setFoto(nuevoNombreArchivo);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		if (employee.getId() == null) {
-			peopleService.SavePeople(employee);
-			flash.addFlashAttribute("success", "Datos registrados correctamente");
-
-		} else {
-			// Actualizar solo los campos específicos si es necesario
-			peopleService.SavePeople(employee);
-			flash.addFlashAttribute("success", "Datos Actualizados correctamente");
-		}
-		status.setComplete();
-		return "redirect:/peoples/listPeople";
-	}
-
-	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
-	@GetMapping(value = "/formPeople/{id}")
-	public String editForm(@PathVariable(value = "id") int id, Map<String, Object> model, RedirectAttributes flash) {
-		if (id <= 0) {
-			flash.addFlashAttribute("error", "El ID del cliente no puede ser 0");
-			return "redirect:/peoples/listPeople";
-		}
-		EntityEmployee employee = peopleService.findOnePerson(id);
-		if (employee == null) {
-			flash.addFlashAttribute("error", "El ID del cliente no existe en la BBDD");
-			return "redirect:/peoples/listPeople";
-		}
-		model.put("titlepage", "Formulario de Registro de Clientes");
-		model.put("titleform", "Actualizar Datos");
-		model.put("employee", employee);
-		return "/pages/formPeople";
-	}
 
 	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN", "ROLE_EMPLOYEE"})
 	@GetMapping(value = "/verschedule/{id}")

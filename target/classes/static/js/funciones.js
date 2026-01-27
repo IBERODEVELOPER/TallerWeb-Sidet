@@ -167,6 +167,49 @@ function QuestionEditPeople(id) {
 		});
 }
 
+function QuestionEditPeople(id) {
+    const url = "/peoples/formPeople/" + id;
+    const content = document.getElementById("content");
+
+    swal({
+        title: "¿Deseas editar los datos del Cliente?",
+        text: "¡Existen algunos datos sensibles, por favor solicita permiso!",
+        icon: "info",
+        buttons: ["Cancelar", "Sí, editar"], // Define los nombres de los botones
+        dangerMode: false,
+    })
+    .then((willEdit) => {
+        // willEdit será true si el usuario hizo clic en "Sí, editar"
+        if (willEdit) {
+            // Mostramos un loader mientras carga
+            content.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-primary"></div></div>';
+
+            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(response => {
+                    if (!response.ok) throw new Error("Error en la respuesta del servidor");
+                    return response.text();
+                })
+                .then(html => {
+                    window.history.pushState({ path: url }, '', url);
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const nuevoContenido = doc.querySelector('#pantll');
+
+                    content.innerHTML = nuevoContenido ? nuevoContenido.innerHTML : html;
+
+                    // Volver a activar funciones de la vista cargada
+                    initFilePreview();
+                    if (typeof initEventos === 'function') initEventos();
+                })
+                .catch(error => {
+                    console.error("Error AJAX:", error);
+                    swal("Error", "No se pudo cargar el formulario", "error");
+                });
+        }
+    });
+}
+
+
 function QuestionEditUser(id) {
 	console.log(id);
 	swal({
@@ -236,4 +279,22 @@ function submitEventForm() {
     .catch(error => {
         console.error('Error al enviar el formulario:', error);
     });
+}
+
+function initFilePreview() {
+    const inputFile = document.getElementById("formFile");
+    const imgAvatar = document.getElementById("imgAvatar");
+
+    if (inputFile && imgAvatar) {
+        inputFile.addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imgAvatar.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
 }

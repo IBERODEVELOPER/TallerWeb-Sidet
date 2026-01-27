@@ -2,12 +2,24 @@
 		<div class="container">
 			<div class="row justify-content-center">
 				<h1 class="text-info" th:text="${titlepage}"></h1>
-				<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a th:href="@{/peoples/listPeople}">Inicio</a></li>
-						<li class="breadcrumb-item active" aria-current="page">Formulario de Registro Personas</li>
+
+				<nav aria-label="breadcrumb" class="my-3">
+					<ol class="breadcrumb custom-breadcrumb p-3 shadow-sm">
+						<li class="breadcrumb-item">
+							<a th:href="@{/index}" class="ajax-link d-inline-flex align-items-center">
+								<ion-icon name="home-outline" class="me-2"></ion-icon>
+								Inicio
+							</a>
+						</li>
+						<li class="breadcrumb-item" th:if="${modulo != null}">
+							<span th:text="${modulo}"></span>
+						</li>
+						<li class="breadcrumb-item active" aria-current="page">
+							<strong th:text="${titlepage}"></strong>
+						</li>
 					</ol>
 				</nav>
+
 				<div class="card shadow">
 					<div class="card-body text-dark">
 						<form class="container" th:action="@{/peoples/formPeople}" th:object="${employee}" method="post"
@@ -18,18 +30,17 @@
 								<div class="col-lg-2 text-center" style="width: 50%;">
 									<div class="row align-items-center">
 										<div class="col-12">
-										<!-- Muestra cuando la persona tiene foto -->
-										<img id="imgAvatar" th:if="${employee.foto != null and #strings.length(employee.foto) > 0}"
-										class="rounded-circle img-fluid"  width="150" height="150" th:src="@{'/TallerWeb-Fotos/'+${employee.foto}}"
-										th:alt="${employee.foto}" />
-										<!-- Si la persoan no tiene foto muestra una imagen por defecto -->
-										<img id="imgAvatar" th:if="${employee.foto == null}" class="rounded-circle img-fluid"  width="150" height="150" 
-										th:src="@{/images/predeterminado.png}" alt="Imganen predeterminado" />
+											<img id="imgAvatar"
+												 class="rounded-circle img-fluid shadow-sm"
+												 width="150" height="150"
+												 th:src="${employee.foto != null and !employee.foto.isEmpty()} ? @{'/TallerWeb-Fotos/' + ${employee.foto}} : @{/images/predeterminado.png}"
+												 th:alt="${employee.foto != null} ? ${employee.foto} : 'Sin foto'" />
 										</div>
-		                				<div class="input-group mb-3" style="margin-top: 5px;">
-											<input class="form-control" name="file" type="file" id="formFile"> 
-											<input type="hidden" name="id" th:value="${employee.id}">
-										</div>								
+
+										<div class="input-group mb-3" style="margin-top: 15px;">
+											<input class="form-control" name="file" type="file" id="formFile" accept="image/*">
+											<input type="hidden" name="id" th:field="*{id}">
+										</div>
 									</div>
 								</div>
 							</div>
@@ -244,7 +255,7 @@
 										style="width: 50%;" />
 								</div>
 								<div class="col-sm-6 text-center mt-2">
-									<a th:href="@{/peoples/listPeople}" class="btn btn-outline-success"
+									<a th:href="@{/peoples/listPeople}" class="btn btn-outline-success ajax-link"
 										style="width: 50%;">
 										<ion-icon name="arrow-undo-outline"></ion-icon>Lista de Empleados
 									</a>
