@@ -103,14 +103,36 @@ document.addEventListener("submit", function(event) {
 
     toggleUserSelection();
 
-    window.onpopstate = function(event) {
-        // Forzamos la recarga de la página para que el Layout se cargue correctamente
-        if (event.state && event.state.path) {
-            window.location.href = event.state.path;
-        } else {
-            window.location.reload();
-        }
-    };
+   // Crea una función reutilizable para cargar contenido
+   function cargarContenidoAjax(url, pushState = true) {
+       const content = document.getElementById("content");
+
+       fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+       .then(response => response.text())
+       .then(html => {
+           if (pushState) {
+               window.history.pushState({ path: url }, '', url);
+           }
+           const parser = new DOMParser();
+           const doc = parser.parseFromString(html, 'text/html');
+           const nuevoContenido = doc.querySelector('#pantll');
+
+           content.innerHTML = nuevoContenido ? nuevoContenido.innerHTML : html;
+
+           // Re-inicializar scripts
+           initFilePreview();
+           if (typeof initEventos === 'function') initEventos();
+       });
+   }
+
+   // Y en tu popstate usa la función, no el location.href
+   window.onpopstate = function(event) {
+       if (event.state && event.state.path) {
+           cargarContenidoAjax(event.state.path, false); // false porque ya estamos navegando en el historial
+       } else {
+           window.location.reload();
+       }
+   };
 
 });
 

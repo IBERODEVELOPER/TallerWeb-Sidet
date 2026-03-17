@@ -1,23 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="TallerWeb:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="042a30e4-0748-4345-9ebb-b5fd69d5a4cd" name="Changes" comment="Anadiendo Ajax">
       <changelist_data name="tech" email="tamani1995@gmail.com" automatic="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/TallerWeb_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ibero/demo/controller/ControllerReports.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ibero/demo/controller/ControllerReports.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ibero/demo/controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ibero/demo/controller/EmployeeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/import.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/import.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/ajax-navigation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/ajax-navigation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/funciones.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/funciones.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/main/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/main/layout.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/pages/allEmployee.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/pages/allEmployee.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/pages/formEmployee.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/pages/formEmployee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/MvcConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/MvcConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/SpringSecurityConf.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/SpringSecurityConf.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/TallerWebApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/TallerWebApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/WebSocketConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/WebSocketConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/auth/handler/LoginSuccesHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/auth/handler/LoginSuccesHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/ActivityController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/ActivityController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/ControllerCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/ControllerCase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/ControllerMaster.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/ControllerMaster.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/ControllerReports.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/ControllerReports.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/CustomerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/CustomerController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/DayScheduleController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/DayScheduleController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/EmployeeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/EventController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/EventController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/ScheduleController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/ScheduleController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/ActivityEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/ActivityEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Address.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Address.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/AttachCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/AttachCase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/AttendWork.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/AttendWork.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Case.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Case.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/CommentCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/CommentCase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/CustomUserDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/CustomUserDetails.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Customer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Customer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/DaySchedule.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/DaySchedule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/EntityEmployee.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/EntityEmployee.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Event.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Event.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Phone.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Phone.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Role.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Role.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Schedule.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/Schedule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/UserEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/entity/UserEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/interceptors/TemporaryPasswordFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/interceptors/TemporaryPasswordFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/interceptors/TurnOffEmployeeFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/interceptors/TurnOffEmployeeFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/ActivityDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/ActivityDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/AttachCaseDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/AttachCaseDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/AttendWorkDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/AttendWorkDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/CommentCaseDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/CommentCaseDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/IEmployeeRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/IEmployeeRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/IScheduleDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/IScheduleDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/IUserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/repository/IUserRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/ActivityService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/ActivityService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/ActivityServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/ActivityServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/AttachCaseServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/AttachCaseServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/AttendWorkService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/AttendWorkService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/AttendWorkServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/AttendWorkServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/CaseService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/CaseService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/CaseServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/CaseServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/CommentCaseServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/CommentCaseServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/CustomerService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/CustomerService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/CustomerServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/CustomerServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/EmailService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/EmailService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/EventService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/EventService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/EventServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/EventServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IAddressService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IAddressService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IAddressServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IAddressServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IAttachCaseService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IAttachCaseService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/ICommentCaseService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/ICommentCaseService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IDayScheduleService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IDayScheduleService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IDayScheduleServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IDayScheduleServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IEmployeeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IEmployeeService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IEmployeeServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IEmployeeServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IRolUserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IRolUserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IScheduleService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IScheduleService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IScheduleServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IScheduleServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IUserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IUserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IUserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/IUserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/RolUserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/service/RolUserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/ActivityDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/ActivityDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/DaysWeek.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/DaysWeek.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/EmailValuesDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/EmailValuesDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/EventHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/EventHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/FinishActivityDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/FinishActivityDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/PageItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/PageItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/PageRender.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/PageRender.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/StartActivityDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/util/StartActivityDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/view/pdf/ReporteAsistenciaPdfView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/view/pdf/ReporteAsistenciaPdfView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ibero/demo/view/xlsx/ReporteAsistenciaXlsxView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ibero/demo/view/xlsx/ReporteAsistenciaXlsxView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/import.sql" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/import.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/static/js/ajax-navigation.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/ajax-navigation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/js/funciones.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/funciones.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/templates/main/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/main/layout.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/templates/pages/allEmployee.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/pages/allEmployee.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/templates/pages/formEmployee.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/pages/formEmployee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/ibero/demo/TallerWebApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/ibero/demo/TallerWebApplicationTests.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +148,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -68,29 +159,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.TallerWebApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;version-ajax&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/LENOVO/Documents/PROJECT SPRNG/TallerWeb-Microservicios&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
+    "Maven.TallerWeb [clean,package].executor": "Run",
+    "Maven.TallerWeb [clean].executor": "Run",
+    "Maven.TallerWeb [install].executor": "Run",
+    "Maven.TallerWeb [package].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.TallerWebApplication.executor": "Run",
+    "git-widget-placeholder": "version-ajax",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/LENOVO/Documents/PROJECT SPRNG/TallerWeb-Microservicios/src/main/resources",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
-  <component name="RunManager">
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\LENOVO\Documents\PROJECT SPRNG\TallerWeb-Microservicios\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Maven.TallerWeb [package]">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="TallerWeb-Microservicios" />
       <method v="2">
@@ -100,6 +202,97 @@
     <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
       <module name="TallerWeb-Microservicios" />
       <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TallerWeb [clean]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="TallerWeb [clean,package]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="package" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="TallerWeb [package]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="package" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
       <method v="2" />
     </configuration>
     <configuration name="TallerWebApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
@@ -116,9 +309,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml" />
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Maven.TallerWeb [package]" />
+        <item itemvalue="Maven.TallerWeb [clean]" />
         <item itemvalue="Spring Boot.TallerWebApplication" />
+        <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+        <item itemvalue="Maven.TallerWeb [clean,package]" />
       </list>
     </recent_temporary>
   </component>

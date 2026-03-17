@@ -47,8 +47,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @SessionAttributes("employee")
 public class EmployeeController {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-	
 	@Autowired
 	private IEmployeeService peopleService;
 
@@ -207,7 +205,6 @@ public class EmployeeController {
 	@PostMapping("/updatePicture")
 	public String updatePicture(@RequestParam("file") MultipartFile foto, @RequestParam("id") Integer id,
 								RedirectAttributes flash) {
-		logger.info("Valor obtenido: "+foto.getName());
 		// obtenermos el empleado
 		EntityEmployee employee = peopleService.findOnePerson(id);
 		if (!foto.isEmpty()) {

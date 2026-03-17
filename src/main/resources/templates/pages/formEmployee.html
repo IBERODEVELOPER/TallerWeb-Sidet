@@ -1,4 +1,11 @@
-	<div class="container-fluid" id="pantll">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{main/layout :: head}"></head>
+<body>
+<header th:replace="~{main/layout :: header}"></header>
+<div class="container-fluid" id="pantll">
 		<div class="container">
 			<div class="row justify-content-center">
 				<h1 class="text-info" th:text="${titlepage}"></h1>
@@ -269,4 +276,6 @@
 			</div>
 		</div>
 	</div>
-
+<footer th:replace="~{main/layout :: footer}"></footer>
+</body>
+</html>

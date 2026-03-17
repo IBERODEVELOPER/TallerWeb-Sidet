@@ -215,7 +215,6 @@ public class ControllerReports {
         }
     }
 	
-	@Secured({ "ROLE_MANAGER", "ROLE_ADMIN","ROLE_EMPLOYEE"})
 	@GetMapping(value = "/asistence_general")
 	public String showReportsAsi(@RequestParam(name = "page", defaultValue = "0") int page
 			, Model model, HttpServletRequest request) {
